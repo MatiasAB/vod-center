@@ -61,8 +61,6 @@ An Example List with Embedded Items:
 
 ## Site map
 
-(___TODO__: draw out a site map that shows how pages are related to each other_)
-
 (documentation/sitemap.png)
 
 ## User Stories or Use Cases
