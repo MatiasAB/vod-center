@@ -1,35 +1,29 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
-(___TODO__: your project name_)
-
-# Shoppy Shoperson 
+# VOD Review (working title)
 
 ## Overview
 
-(___TODO__: a brief one or two paragraph, high-level description of your project_)
+As a competitor in a fighting game, one of the most useful tools for improvement is reviewing footage of your matches, or a VOD (side note: usually, players also study VODs they are not personally featured in). But more often than not, your VODs are not always in the same place, which can make it annoying to review multiple VODS in the same session.
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
-
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
+VOD Review (working title) is a web app that will allow users to keep track of their VODs. Users can register and login. Once they're logged in, they can create or view their VOD list/the list of all VODs added by every user on the site. Non-users can see the site-wide list, but not individual personal lists. For their personal list, users can add items (which would also add it the site-wide list). Users and non-users can filter lists by certain parameters (game, players, characters).
 
 
 ## Data Model
 
-(___TODO__: a description of your application's data and their relationships to each other_) 
-
 The application will store Users, Lists and Items
 
-* users can have multiple lists (via references)
 * each list can have multiple items (by embedding)
+* each list can be filtered by certain parameters (game, players, characters)
+  * the filtering for players and characters can be as follows:
+    * you can filter by just one player/character 
+    * you can filter by two players/characters, but you can specify whether you're looking for items that have both players/characters or just one of them 
 
-(___TODO__: sample documents_)
 
 An Example User:
 
 ```javascript
 {
-  username: "shannonshopper",
-  hash: // a password hash,
+  username: "fightingfred",
+  password: // a password,
   lists: // an array of references to List documents
 }
 ```
@@ -39,12 +33,10 @@ An Example List with Embedded Items:
 ```javascript
 {
   user: // a reference to a User object
-  name: "Breakfast foods",
   items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
-  createdAt: // timestamp
+    { title: "KJH vs Ginger - Melee Singles Top 48: Losers Round 4 - Full Bloom 5", url: "https://www.youtube.com/watch?v=sqejT7uo5eA", game: "Super Smash Bros. Melee", players: ["Ginger", "KJH"], chars: ["Falco", "Fox"]},
+    { name: "ZeRo vs Armada - Singles Bracket: Losers' Round 1 - Smash Ultimate Summit | Wolf vs Inkling", url: "https://www.youtube.com/watch?v=qo2UUed_p24&t=1428s", game: "Super Smash Bros. Ultimate", players: ["ZeRo", "Armada"], chars: ["Wolf", "Inkling"]},
+  ]
 }
 ```
 
@@ -77,31 +69,22 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 
 ## User Stories or Use Cases
 
-(___TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://www.mongodb.com/download-center?jmp=docs&_ga=1.47552679.1838903181.1489282706#previous)_)
-
 1. as non-registered user, I can register a new account with the site
-2. as a user, I can log in to the site
-3. as a user, I can create a new grocery list
-4. as a user, I can view all of the grocery lists I've created in a single list
-5. as a user, I can add items to an existing grocery list
-6. as a user, I can cross off items in an existing grocery list
+2. as non-registered user, I can view all the VOD items created by all users in a single list
+3. as a user, I can log in to the site
+4. as a user, I can create a new VOD item (which will automatically be added to my personal list and the site-wide list)
+5. as a user, I can view all of the VOD items I've created in a single list
+6. as a user, I can view all of the VOD items created by all users in single list
 
 ## Research Topics
 
 (___TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed_)
 
-* (5 points) Integrate user authentication
-    * I'm going to be using passport for user authentication
-    * And account has been made for testing; I'll email you the password
-    * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-    * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
-* (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+* (3 points) Unit testing with JavaScript - Mocha
+* (2 points) Use a CSS framework throughout the site - Bootstrap
+* (3 points) Configuration management - nconf
 
-10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit_)
+* 8 points out of the required 8 points
 
 
 ## [Link to Initial Main Project File](app.js) 
@@ -109,9 +92,3 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 (___TODO__: create a skeleton Express application with a package.json, app.js, views folder, etc. ... and link to your initial app.js_)
 
 ## Annotations / References Used
-
-(___TODO__: list any tutorials/references/etc. that you've based your code off of_)
-
-1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
-2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
-
