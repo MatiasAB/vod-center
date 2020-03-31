@@ -45,19 +45,23 @@ An Example List with Embedded Items:
 
 ## Wireframes
 
-(___TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc._)
+/[site_title]/[username]/add_new - page for creating a new VOD item
 
-/list/create - page for creating a new shopping list
+![add new](documentation/new_vod.png)
 
-![list create](documentation/list-create.png)
+/[site_title] - home page (shows site-wide list)
 
-/list - page for showing all shopping lists
+![list](documentation/home.png)
 
-![list](documentation/list.png)
+/[site_title]/[username] - page for showing user's VOD list
 
-/list/slug - page for showing specific shopping list
+![list](documentation/user_page.png)
 
-![list](documentation/list-slug.png)
+/[site_title]/login - page for signing in / creating an account
+
+![list](documentation/login.png)
+
+
 
 ## Site map
 
@@ -73,8 +77,6 @@ An Example List with Embedded Items:
 6. as a user, I can view all of the VOD items created by all users in single list
 
 ## Research Topics
-
-(___TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed_)
 
 * (3 points) Unit testing with JavaScript - Mocha
 * (2 points) Use a CSS framework throughout the site - Bootstrap
