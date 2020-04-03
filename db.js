@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const User = new mongoose.Schema({
   username: {type:String, required:true}, 
   password: {type:String, required:true},
-  list:  { type: mongoose.Schema.Types.ObjectId, ref: 'List' }
+  lists:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }]
 });
 
 
@@ -31,3 +31,9 @@ const List = new mongoose.Schema({
 });
 
 //stuff below here
+dbconf = "mongodb://localhost/final"
+
+mongoose.model('User', User);
+
+
+mongoose.connect(dbconf, {useUnifiedTopology: true, useNewUrlParser:true});

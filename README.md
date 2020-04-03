@@ -4,13 +4,14 @@
 
 As a competitor in a fighting game, one of the most useful tools for improvement is reviewing footage of your matches, or a VOD (side note: usually, players also study VODs they are not personally featured in). But more often than not, your VODs are not always in the same place, which can make it annoying to review multiple VODS in the same session.
 
-VOD Review (working title) is a web app that will allow users to keep track of their VODs. Users can register and login. Once they're logged in, they can create or view their VOD list/the list of all VODs added by every user on the site. Non-users can see the site-wide list, but not individual personal lists. For their personal list, users can add items (which would also add it the site-wide list). Users and non-users can filter lists by certain parameters (game, players, characters).
+VOD Review (working title) is a web app that will allow users to keep track of their VODs. Users can register and login. Once they're logged in, they can create or view their VOD lists. For every list, users can add items. Users can filter lists by certain parameters (game, players, characters).
 
 
 ## Data Model
 
 The application will store Users, Lists and Items
 
+* each user can have multiple lists
 * each list can have multiple items (by embedding)
 * each list can be filtered by certain parameters (game, players, characters)
   * the filtering for players and characters can be as follows:
@@ -45,22 +46,25 @@ An Example List with Embedded Items:
 
 ## Wireframes
 
-/[site_title]/[username]/add_new - page for creating a new VOD item
+/[site_title]/user/add_new - page for creating a new VOD item
 
 ![add new](documentation/new_vod.png)
 
-/[site_title] - home page (shows site-wide list)
-
-![list](documentation/home.png)
-
-/[site_title]/[username] - page for showing user's VOD list
-
-![list](documentation/user_page.png)
-
-/[site_title]/login - page for signing in / creating an account
+/[site_title] - home page (page for creating / logging into account)
 
 ![list](documentation/login.png)
 
+/[site_title]/user - page for showing user's VOD lists
+
+![list](documentation/user.png)
+
+/[site_title]/user/slist - page for showing a single list
+
+![list](documentation/slist.png)
+
+/[site_title]/user/newlist - page for creating a new list
+
+![list](documentation/newlist.png)
 
 
 ## Site map
@@ -69,12 +73,12 @@ An Example List with Embedded Items:
 
 ## User Stories or Use Cases
 
-1. as non-registered user, I can register a new account with the site
-2. as non-registered user, I can view all the VOD items created by all users in a single list
-3. as a user, I can log in to the site
-4. as a user, I can create a new VOD item (which will automatically be added to my personal list and the site-wide list)
-5. as a user, I can view all of the VOD items I've created in a single list
-6. as a user, I can view all of the VOD items created by all users in single list
+1. as non-registered user, I can register a new account with the site.
+2. as a user, I can log in to the site.
+3. as a user, I can create a new VOD item.
+4. as a user, I can view all of the VOD items I've created in a single list
+5. as a user, I can create new VOD lists.
+6. as a user, I can view all of the lists I created in a single list.
 
 ## Research Topics
 

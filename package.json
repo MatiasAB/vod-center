@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/nyu-csci-ua-0480-008-spring-2020/MatiasAB-final-project/issues"
   },
-  "homepage": "https://github.com/nyu-csci-ua-0480-008-spring-2020/MatiasAB-final-project#readme"
+  "homepage": "https://github.com/nyu-csci-ua-0480-008-spring-2020/MatiasAB-final-project#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "hbs": "^4.1.0",
+    "mongoose": "^5.9.7"
+  }
 }
