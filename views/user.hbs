@@ -1,7 +1,75 @@
-<img src="/img/hellothere.gif" height="200" width="400" style=""><br><h1> Page in Progress </h1>
+<div class = "container">
+	<h1><img src="/img/hellothere.gif" height="200" width="400" style=""><br><h1> Page in Progress </h1>
 
-<a href="/title">Back to home page</a>
+	<a class = "link" href="/title">Back to home page</a>
 
-<h3> User Info </h3>
-<h4><div>{{theUser.username}}</div>
-{{theUser.password}}</h4>
+
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-4">
+			<h3> User Info</h3>
+		</div>
+
+	</div>
+
+	<div class = "row">
+		<div class = "col-4">
+			<h4 class="info">Username:</h4>
+		</div>
+
+		<div class = "col-8">
+			<p style="font-size:24px">{{theUser.username}}</p>
+		</div>
+	</div>
+
+	<div class = "row">
+		<div class = "col-4">
+			<h4 class="info">Password:</h4>
+		</div>
+
+		<div class = "col-8">
+			<p style="font-size:24px">{{theUser.password}}</p>
+		</div>
+	</div>
+
+	<div class = "row">
+		<div class = "col-4">
+			<h4 class="info">Lists:</h4>
+		</div>
+	</div>
+
+	{{#each theUser.lists as |list|}}
+	<div class = "row">
+		<div class = "col-4">
+			<h3 class = "info">{{list.name}}</h3>
+		</div>
+
+		<table class = "col-8">
+			<tr>
+				<th> Entry Name </th>
+				<th> Entry URL </th>
+				<th> Game </th>
+				<th> Players </th>
+				<th> Characters </th>
+			</tr>
+
+			
+			{{#each list as |vod|}}
+				<tr>
+					<td> {{vod.name}} </td>
+					<td> <a href={{vod.url}}>{{vod.url}}</a></td>
+					<td> {{vod.game}} </td>
+					<td>
+						{{#each vod.players as |play|}}play, {{/each}}
+					</td>
+					<td>
+						{{#each vod.characters as |char|}}char, {{/each}}
+					</td>
+				</tr>
+			{{/each}}
+
+		</table>
+	</div>
+	{{/each}}
+
+
+</div>

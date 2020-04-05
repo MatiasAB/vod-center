@@ -1,6 +1,33 @@
-<h2> Create New User / Login </h2>
-<form method="POST" action="" id="form1">
-		<div class= "add">Username:  <input type="text" name="username"></div>
-		<div class = "add">Password:  <input type="text" name="password"></div>
-</form>
-<div class = "add"><button type="submit" form="form1" value="Add User">Create New User / Log In</button></div>
+<div class = "container">
+	<h2> Create New User / Login </h2>
+	<form method="POST" action="" id="form1">
+	
+	<div class = "row">
+			<div class = "col-4">
+				Username:  
+			</div>
+
+			<div class = "col-8">
+				<input type="text" name="username">
+			</div>
+	</div>
+
+	<div class = "row">
+			<div class = "col-4">
+				Password:  
+			</div>
+			<div class = "col-8">
+				<input type="text" name="password">
+			</div>
+	</div>
+
+	</form>
+	<div class = "row">
+		<div class = "col-4">
+			<button type="submit" form="form1"  name="addUser">Create New User</button>
+			<button type="submit" form="form1" name="login">Log In</button>
+		</div>
+	</div>
+
+	<p> You must create or login into an account in order to use this site. </p>
+</div>

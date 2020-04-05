@@ -22,7 +22,7 @@ const Item = new mongoose.Schema({
 
 
 //a VOD list
-	//every list that is not the site-wide list should have a User
+	//every list should have a User
 	//a list can have 0 or more items
 const List = new mongoose.Schema({
 	user: {type: mongoose.Types.ObjectId, ref: 'User'},
