@@ -37,7 +37,7 @@ const List = new mongoose.Schema({
 //change to hw #6 model --> read config from file
 if (nconf.get('NODE_ENV') === "PRODUCTION") {
 	console.log("PRODUCTION mode");
-	dbconf = nconf.get('database:dbconf');
+	dbconf = nconf.get('dbconf');
 } else {
 	console.log("Not in production");
 	dbconf = "mongodb://localhost/final";

@@ -9,3 +9,5 @@ Resources Used
 3. https://mongoosejs.com/docs/populate.html - populate()
 
 4. https://stackoverflow.com/questions/15825333/how-to-reload-current-page-in-express-js - Redirecting to the same page
+
+5. https://www.npmjs.com/package/bcrypt - using bcrypt
