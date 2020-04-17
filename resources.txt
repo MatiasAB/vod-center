@@ -1,0 +1,11 @@
+Resources Used
+
+1. https://www.youtube.com/watch?v=6Ovw43Dkp44 - Bootstrap themes
+
+2. https://github.com/indexzero/nconf - Using nconf
+
+3. https://www.youtube.com/watch?v=k92o42q2LGo&t=335s - Using nconf
+
+3. https://mongoosejs.com/docs/populate.html - populate()
+
+4. https://stackoverflow.com/questions/15825333/how-to-reload-current-page-in-express-js - Redirecting to the same page

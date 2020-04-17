@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+var nconf = require('nconf');
+nconf.file({ file: 'config.json' })
+	.env();
 
 //Users
 	//have a username and a password which allows access to a list belonging to that user
@@ -6,7 +9,7 @@ const mongoose = require('mongoose');
 const User = new mongoose.Schema({
   username: {type:String, required:true}, 
   password: {type:String, required:true},
-  lists:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }]
+  lists:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'List'}]
 });
 
 
@@ -31,9 +34,18 @@ const List = new mongoose.Schema({
 });
 
 
-dbconf = "mongodb://localhost/final"
+//change to hw #6 model --> read config from file
+if (nconf.get('NODE_ENV') === "PRODUCTION") {
+	console.log("PRODUCTION mode");
+	dbconf = nconf.get('database:dbconf');
+} else {
+	console.log("Not in production");
+	dbconf = "mongodb://localhost/final";
+}
+
 
 mongoose.model('User', User);
-
+mongoose.model('List', List);
+mongoose.model('Item', Item);
 
 mongoose.connect(dbconf, {useUnifiedTopology: true, useNewUrlParser:true});
