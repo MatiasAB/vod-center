@@ -1,6 +1,6 @@
 Resources Used
 
-1. https://www.youtube.com/watch?v=6Ovw43Dkp44 - Bootstrap themes
+1. https://www.youtube.com/watch?v=6Ovw43Dkp44 - Bootstrap themes, Sass
 
 2. https://github.com/indexzero/nconf - Using nconf
 
@@ -11,3 +11,9 @@ Resources Used
 4. https://stackoverflow.com/questions/15825333/how-to-reload-current-page-in-express-js - Redirecting to the same page
 
 5. https://www.npmjs.com/package/bcrypt - using bcrypt
+
+6. https://stackoverflow.com/questions/13077609/mongoose-populate-embedded - populating embedded documents within embedded documents
+
+7. https://expressjs.com/tr/guide/routing.html - using req.params for route handling
+
+8. https://stackoverflow.com/questions/13645084/access-a-variable-outside-the-scope-of-a-handlebars-js-each-loop - 

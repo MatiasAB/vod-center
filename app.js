@@ -6,9 +6,9 @@ const app = express();
 require('./db');
 const mongoose = require('mongoose');
 let nconf = require('nconf');
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const help = require('./helper.js');
 
 const User = mongoose.model('User');
 const List = mongoose.model('List');
@@ -53,7 +53,7 @@ app.post('/title', (req, res) => {
 						req.session.user = varToStoreResult[0];
 
 						//redirect
-						res.redirect('/title/user');
+						res.redirect('/user');
 					} else {
 						console.log("Incorrect password!");
 
@@ -93,7 +93,7 @@ app.post('/title', (req, res) => {
 						req.session.user = user;
 						
 						//redirect
-						res.redirect('/title/user');
+						res.redirect('/user');
 					});
 				});
 				
@@ -122,54 +122,239 @@ app.get('/', function (req, res) {
 
 });
 
-app.post('/title/user/newlist', function (req, res) { //route handler for page after using form
+app.post('/user/newlist', function (req, res) { //route handler for page after using form
 	if (req.body.listname === undefined || req.body.listname === "") { //checks if name was entered
 		res.redirect('back');
 	} else {
-		//console.log(`username before list add ${myUser.username}`);
+	
 		User.find({username:req.session.user.username}, function(err, varToStoreResult, count) {//something was entered, find current User in database
 			if (varToStoreResult.length < 1) {//check for valid username
 				res.redirect('back');
 			} else {//found valid user
 
 				const nList = new List({user: req.session.user._id, name: req.body.listname, items:[]})
-		        nList.save((err, list) => {
+		    	nList.save((err, list) => {
 		        
 		          if(err) {
 		            console.log('error saving nList'); 
 		          }
-		          //add list to User&#39;s lists
+		        
 		          varToStoreResult[0].lists.push(nList)
 
 		          //save changes
 		          varToStoreResult[0].save(function(err, user, count){
 		            req.session.user = user //update current user
-		            res.redirect('/title/user'); //redirect to user&#39;s page
+		            res.redirect('/user'); 
 		          })
 		        
 		        });
 				
 				
-			}///////////////////////////////////////////
+			}
 		});
 	}
 });
 
-app.get('/title/user/newlist', function (req, res) {
-	
+app.get('/user/newlist', function (req, res) {
+
 	res.render('newlist');
 
 });
 
-app.get('/title/user', function(req, res) {
-	console.log("---------------------------------------------");
-	console.log("---------------------------------------------");
-	console.log("---------------------------------------------");
-	console.log("---------------------------------------------");
+
+app.post('/user/:listname', function (req, res) {
+	console.log(req.params);
+	console.log(req.session.user.username);
+
+	if (help.itemCheck(req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars) === false) { //checks if name was entered
+		res.redirect('back');
+	} else {
+
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+			
+			if (err) { // error check
+				console.log(err);
+				res.redirect('/title');
+			} else { //success
+				
+				const chList = user.lists.find((x) => {
+					console.log(x.name);
+					return x.name === req.params.listname;
+				});
+
+				console.log(chList);
+
+				const nItem = new Item({
+					name: req.body.entryName,
+					url: req.body.entryURL,
+					game: req.body.entryGame,
+					players: req.body.entryPlays.split(","),
+					chars: req.body.entryChars.split(",")
+				});
+
+				nItem.save((err2, item) => {
+					if (err2) {
+						console.log("error saving nItem");
+					}
+
+					chList.items.push(nItem);
+
+					chList.save(function (err3, list){
+
+						if(err3) {
+							console.log('error saving list');
+						}
+
+						user.save(function(err, user2, count) {
+							req.session.user = user2;
+							res.redirect('back');
+						});
+
+					});
+
+				});
+
+			}
+		});
+
+	}
+	
+});
+
+app.get('/user/:listname', function (req, res) {
+	console.log(req.params);
+
+	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+			
+			if (err) { // error check
+				console.log(err);
+				res.redirect('/title');
+			} else { //success
+
+				console.log(user);
+				console.log(user.lists[0]);
+
+				res.render('slist', {list: user.lists.find((x) => {
+			     	return x.name === req.params.listname;
+			     })});
+
+			}
+		});
+});
+
+app.get('/user/remove/:listname', function(req, res) {
+
+	User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+
+		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+		// console.log(user.lists);
+
+		const chIndex = user.lists.findIndex((x) => {
+			return x.name === req.params.listname;
+		});
+
+		// console.log("HERE HERE HERE");
+
+		// console.log(user.lists);
+		// console.log(user.lists[chIndex]);
+
+		user.lists.splice(chIndex, 1);
+
+		// console.log(user.lists);
+
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+		user.save(function(err2, user2, count) {
+			req.session.user = user2;
+			res.redirect('/user');
+		})
+
+
+
+	});
+
+});
+
+app.get('/user/:listname/remove/:vodname', function(req, res) {
+
+	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+
+		console.log(req.params.listname);
+		console.log(req.params.vodname);
+
+		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+		console.log(user.lists);
+		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+		const chList = user.lists.find((x) => {
+			return x.name === req.params.listname;
+		});
+
+
+		console.log(chList.items);
+		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		const chIndex = chList.items.findIndex((y) => {
+			return y.name === req.params.vodname;
+		});
+
+		// console.log("HERE HERE HERE");
+
+		// console.log(user.lists);
+		// console.log(user.lists[chIndex]);
+		console.log(chIndex);
+
+		chList.items.splice(chIndex, 1);
+		console.log(chList.items);
+		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
+		chList.save(function(err2, list) {
+
+			if (err2) {
+				console.log(err2);
+			}
+
+			user.save(function(err3, user2, count) {
+				req.session.user = user2;
+				res.redirect(`/user/${req.params.listname}`);
+			})
+
+		});
+
+		// console.log(user.lists);
+
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+		// user.save(function(err2, user2, count) {
+		// 	req.session.user = user2;
+		// 	res.redirect('/user');
+		// })
+
+
+
+	});
+
+});
+
+app.get('/user', function(req, res) {
+	// console.log("---------------------------------------------");
+	// console.log("---------------------------------------------");
+	// console.log("---------------------------------------------");
+	// console.log("---------------------------------------------");
+
 	//find and print User with User.find()
 	User.find({}, function(err, varToStoreResult, count) {
 		//log results of find
-		console.log(varToStoreResult);
+		//console.log(varToStoreResult);
 		
 		//call findOne
 		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
@@ -178,15 +363,7 @@ app.get('/title/user', function(req, res) {
 				console.log(err);
 				res.redirect('/title');
 			} else { //success
-
-				//log current user
-				// console.log(`my User ${req.session.user}`);
-				// console.log(req.session.user.username);
-				// console.log(req.session.user.lists);
-			 //    //log user found by findOne
-			 //    console.log(`user ${user}`);
-
-			    //render user page
+				//console.log(user);
 			    res.render('user', {theUser: user});
 			}
 		});
@@ -195,33 +372,7 @@ app.get('/title/user', function(req, res) {
 
 });
 
-	//console.log(`username ${myUser.username}`);
-	//find and print User with findOne() and populate()
 
-
-		//check that usernames match 
-	  	//console.log(`The usernames match: ${user.username === myUser.username}`);
-
-	  	//check that passwords match
-	  	//console.log(`The passwords match: ${user.password === myUser.password}`);
-
-	  	//check that ids match
-	  	//console.log(`The ids match: ${user._id === myUser._id}`);
-	  	//print ids
-	  	//console.log(myUser._id);
-	  	//console.log(user._id);
-	    
-	  	//check that lists of lists match
-	    //console.log(`The lists match: ${user.lists === myUser.lists}`);
-	    //print lists of lists
-	    //console.log(myUser.lists);
-	    //console.log(user.lists);
-
-	    //update current User, render page
-	    
-	  
-		
-	//}
 const port = nconf.get('PORT') || 3000;
 app.listen(port);
 console.log(`server started on port ${port}`);

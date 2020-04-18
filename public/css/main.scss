@@ -1,7 +1,8 @@
 $theme-colors: (
 	"primary": darkgrey,
 	"secondary": darkviolet,
-	"info": darkblue
+	"info": darkblue,
+    "danger": darkred
 );
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
@@ -60,4 +61,12 @@ form {
 
 h4.info, h3.info {
     text-decoration: underline;
+}
+
+.rmv {
+    border: none;
+}
+
+th, td {
+  border: 4px solid black;
 }
