@@ -132,21 +132,25 @@ app.post('/title/user/newlist', function (req, res) { //route handler for page a
 				res.redirect('back');
 			} else {//found valid user
 
-				//make list to be inserted
-				const nList = new List({user: req.session.user._id, name: req.body.listname, items:[]});
+				const nList = new List({user: req.session.user._id, name: req.body.listname, items:[]})
+		        nList.save((err, list) => {
+		        
+		          if(err) {
+		            console.log('error saving nList'); 
+		          }
+		          //add list to User&#39;s lists
+		          varToStoreResult[0].lists.push(nList)
 
-
-				//add list to User's lists
-				varToStoreResult[0].lists.push(nList);
+		          //save changes
+		          varToStoreResult[0].save(function(err, user, count){
+		            req.session.user = user //update current user
+		            res.redirect('/title/user'); //redirect to user&#39;s page
+		          })
+		        
+		        });
 				
-
-				//save changes
-				varToStoreResult[0].save(function(err, user, count){
-					req.session.user = user; //update current user
-					res.redirect('/title/user'); //redirect to user's page
-				});
 				
-			}
+			}///////////////////////////////////////////
 		});
 	}
 });
@@ -158,7 +162,10 @@ app.get('/title/user/newlist', function (req, res) {
 });
 
 app.get('/title/user', function(req, res) {
-
+	console.log("---------------------------------------------");
+	console.log("---------------------------------------------");
+	console.log("---------------------------------------------");
+	console.log("---------------------------------------------");
 	//find and print User with User.find()
 	User.find({}, function(err, varToStoreResult, count) {
 		//log results of find
@@ -173,12 +180,14 @@ app.get('/title/user', function(req, res) {
 			} else { //success
 
 				//log current user
-				console.log(`my User ${req.session.user}`);
-			    //log user found by findOne
-			    console.log(`user ${user}`);
+				// console.log(`my User ${req.session.user}`);
+				// console.log(req.session.user.username);
+				// console.log(req.session.user.lists);
+			 //    //log user found by findOne
+			 //    console.log(`user ${user}`);
 
 			    //render user page
-			    res.render('user', {theUser: req.session.user});
+			    res.render('user', {theUser: user});
 			}
 		});
 		
