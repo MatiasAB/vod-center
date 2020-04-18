@@ -163,8 +163,8 @@ app.get('/user/newlist', function (req, res) {
 
 
 app.post('/user/:listname', function (req, res) {
-	console.log(req.params);
-	console.log(req.session.user.username);
+	//console.log(req.params);
+	//console.log(req.session.user.username);
 
 	if (help.itemCheck(req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars) === false) { //checks if name was entered
 		res.redirect('back');
@@ -182,7 +182,7 @@ app.post('/user/:listname', function (req, res) {
 					return x.name === req.params.listname;
 				});
 
-				console.log(chList);
+				//console.log(chList);
 
 				const nItem = new Item({
 					name: req.body.entryName,
@@ -222,7 +222,7 @@ app.post('/user/:listname', function (req, res) {
 });
 
 app.get('/user/:listname', function (req, res) {
-	console.log(req.params);
+	//console.log(req.params);
 
 	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 			
@@ -231,8 +231,8 @@ app.get('/user/:listname', function (req, res) {
 				res.redirect('/title');
 			} else { //success
 
-				console.log(user);
-				console.log(user.lists[0]);
+				// console.log(user);
+				// console.log(user.lists[0]);
 
 				res.render('slist', {list: user.lists.find((x) => {
 			     	return x.name === req.params.listname;
