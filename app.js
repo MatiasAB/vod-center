@@ -280,27 +280,27 @@ app.get('/user/:listname/remove/:vodname', function(req, res) {
 
 	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
-		console.log(req.params.listname);
-		console.log(req.params.vodname);
+		// console.log(req.params.listname);
+		// console.log(req.params.vodname);
 
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 
-		console.log(user.lists);
-		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// console.log(user.lists);
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		const chList = user.lists.find((x) => {
 			return x.name === req.params.listname;
 		});
 
 
-		console.log(chList.items);
-		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		// console.log(chList.items);
+		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 		const chIndex = chList.items.findIndex((y) => {
 			return y.name === req.params.vodname;
 		});
@@ -309,13 +309,13 @@ app.get('/user/:listname/remove/:vodname', function(req, res) {
 
 		// console.log(user.lists);
 		// console.log(user.lists[chIndex]);
-		console.log(chIndex);
+		//console.log(chIndex);
 
 		chList.items.splice(chIndex, 1);
-		console.log(chList.items);
-		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-		console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		// console.log(chList.items);
+		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
 		chList.save(function(err2, list) {
 
