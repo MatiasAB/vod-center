@@ -16,4 +16,4 @@ Resources Used
 
 7. https://expressjs.com/tr/guide/routing.html - using req.params for route handling
 
-8. https://stackoverflow.com/questions/13645084/access-a-variable-outside-the-scope-of-a-handlebars-js-each-loop - 
+8. https://stackoverflow.com/questions/13645084/access-a-variable-outside-the-scope-of-a-handlebars-js-each-loop - Accessing variables outside of the scope of a handlebars loop.
