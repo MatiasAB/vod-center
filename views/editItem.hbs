@@ -1,0 +1,69 @@
+<div class = "container">
+<h1><img src="/img/hellothere.gif" height="200" width="400" style=""><br><h1> Page in Progress </h1>
+
+	<a class = "link text-secondary" href="/title">Back to home page</a>
+	<a class = "link text-secondary" href="/user"> Back to User's Page </a>
+	<a class = "link text-secondary" href="/user/{{ln}}"> Back to List Page </a>
+	
+	<form method="POST" action="" id="form1">
+
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-4">
+			<h3>Current Name: {{vod.name}}</h3> 
+		</div>
+
+		<div class = "col-4">
+			<h3>New Name: </h3>   <input type="text" name="newName">  
+		</div>
+	</div>
+
+	<div class = "row edit">
+		<div class = "col-4">
+			<h3>Current URL: {{vod.url}}</h3> 
+		</div>
+
+		<div class = "col-4">
+			<h3>New URL: </h3>   <input type="text" name="newURL">  
+		</div>
+	</div>
+
+	<div class = "row edit">
+		<div class = "col-4">
+			<h3>Current Game: {{vod.game}}</h3> 
+		</div>
+
+		<div class = "col-4">
+			<h3>New Game: </h3>   <input type="text" name="newGame">  
+		</div>
+	</div>
+
+	<div class = "row edit">
+		<div class = "col-4">
+			<h3>Current Players: {{vod.players}}</h3> 
+		</div>
+
+		<div class = "col-4">
+			<h3>New Players (comma separated): </h3>   <input type="text" name="newPlays">  
+		</div>
+	</div>
+	
+	<div class = "row edit">
+		<div class = "col-4">
+			<h3>Current Characters: {{vod.chars}}</h3> 
+		</div>
+
+		<div class = "col-4">
+			<h3>New Characters (comma separated): </h3>   <input type="text" name="newChars">  
+		</div>
+	</div>
+
+	</form>
+
+	<div class = "row edit">
+		<div class = "col-4"></div>
+
+		<div class = "col-4">
+			<button type="submit" form="form1"  name="applyChg">Apply Changes</button>
+		</div>
+	</div>
+	

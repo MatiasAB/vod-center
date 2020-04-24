@@ -64,6 +64,7 @@ app.post('/title', (req, res) => {
 			}
 		});
 	} else {//creating an account
+		
 
 		//check if the username is already in use
 		User.find({username: req.body.username}, function(err, varToStoreResult, count) {
@@ -163,8 +164,6 @@ app.get('/user/newlist', function (req, res) {
 
 
 app.post('/user/:listname', function (req, res) {
-	//console.log(req.params);
-	//console.log(req.session.user.username);
 
 	if (help.itemCheck(req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars) === false) { //checks if name was entered
 		res.redirect('back');
@@ -178,7 +177,6 @@ app.post('/user/:listname', function (req, res) {
 			} else { //success
 				
 				const chList = user.lists.find((x) => {
-					console.log(x.name);
 					return x.name === req.params.listname;
 				});
 
@@ -239,31 +237,62 @@ app.get('/user/:listname', function (req, res) {
 			     })});
 
 			}
-		});
+	});
 });
+
+app.post('/user/edit/:listname', function (req, res) { //route handler for page after using form
+	if (req.body.newName === undefined || req.body.newName === "") { //checks if name was entered
+		res.redirect('back');
+	} else {
+	
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+
+			if (err) {console.log(err);}
+			
+			const nList = user.lists.find((x) => {
+				return x.name === req.params.listname;
+			});
+
+			nList.name = req.body.newName;
+				
+		    nList.save((err2, list) => {
+		        
+			    if(err2) {
+			        console.log('error saving nList for editing name'); 
+			    }
+
+			    //save changes
+			    user.save(function(err3, user2, count){
+			        req.session.user = user2; //update current user
+			        res.redirect('/user'); 
+			    });
+
+
+			});
+		});		
+
+	}
+});
+
+app.get('/user/edit/:listname', function (req, res) {
+
+	res.render('editList', {list: req.params.listname});
+
+});
+
+
 
 app.get('/user/remove/:listname', function(req, res) {
 
 	User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
 
-		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
-		// console.log(user.lists);
-
 		const chIndex = user.lists.findIndex((x) => {
 			return x.name === req.params.listname;
 		});
 
-		// console.log("HERE HERE HERE");
-
-		// console.log(user.lists);
-		// console.log(user.lists[chIndex]);
 
 		user.lists.splice(chIndex, 1);
 
-		// console.log(user.lists);
-
-		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		user.save(function(err2, user2, count) {
 			req.session.user = user2;
@@ -280,42 +309,21 @@ app.get('/user/:listname/remove/:vodname', function(req, res) {
 
 	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
-		// console.log(req.params.listname);
-		// console.log(req.params.vodname);
 
-		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		// console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
-		// console.log(user.lists);
-		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		const chList = user.lists.find((x) => {
 			return x.name === req.params.listname;
 		});
 
 
-		// console.log(chList.items);
-		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-		// console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		
 		const chIndex = chList.items.findIndex((y) => {
 			return y.name === req.params.vodname;
 		});
 
-		// console.log("HERE HERE HERE");
-
-		// console.log(user.lists);
-		// console.log(user.lists[chIndex]);
-		//console.log(chIndex);
 
 		chList.items.splice(chIndex, 1);
-		// console.log(chList.items);
-		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-		// console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
 
 		chList.save(function(err2, list) {
 
@@ -330,26 +338,90 @@ app.get('/user/:listname/remove/:vodname', function(req, res) {
 
 		});
 
-		// console.log(user.lists);
-
-		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-		// user.save(function(err2, user2, count) {
-		// 	req.session.user = user2;
-		// 	res.redirect('/user');
-		// })
-
 
 
 	});
 
 });
 
+app.post('/user/:listname/edit/:vodname', function (req, res) {
+
+	const checkArr = help.editCheck(req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars);
+
+	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+
+
+
+		const chList = user.lists.find((x) => {
+			return x.name === req.params.listname;
+		});
+
+
+		
+		const chItem = chList.items.find((y) => {
+			return y.name === req.params.vodname;
+		});
+
+		console.log(`before ${chItem}`);
+
+
+		help.makeEdits(checkArr, chItem, req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars);
+
+		console.log(`after ${chItem}`);
+
+		chItem.save((err2, item) => {
+					if (err2) {
+						console.log("error saving nItem");
+					}
+
+					chList.save(function (err3, list){
+
+						if(err3) {
+							console.log('error saving list');
+						}
+
+						user.save(function(err, user2, count) {
+							req.session.user = user2;
+							res.redirect(`/user/${req.params.listname}`);
+						});
+
+					});
+
+				});
+
+		
+
+	});
+
+	
+
+});
+
+app.get('/user/:listname/edit/:vodname', function (req, res) {
+
+	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+
+
+
+		const chList = user.lists.find((x) => {
+			return x.name === req.params.listname;
+		});
+
+
+		
+		const chItem = chList.items.find((y) => {
+			return y.name === req.params.vodname;
+		});
+
+		res.render('editItem', {vod: chItem, ln: req.params.listname});
+
+	});
+
+	
+
+});
+
 app.get('/user', function(req, res) {
-	// console.log("---------------------------------------------");
-	// console.log("---------------------------------------------");
-	// console.log("---------------------------------------------");
-	// console.log("---------------------------------------------");
 
 	//find and print User with User.find()
 	User.find({}, function(err, varToStoreResult, count) {

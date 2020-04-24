@@ -33,7 +33,9 @@
 						{{#each vod.chars as |char|}}{{char}}, {{/each}}
 					</td>
 
+					<td class="rmv"> <a class = "link text-info" href="/user/{{../list.name}}/edit/{{vod.name}}">Edit</a> </td>
 					<td class="rmv"> <a class = "link text-danger" href="/user/{{../list.name}}/remove/{{vod.name}}">Remove</a> </td>
+
 				</tr>
 			{{/each}}
 
