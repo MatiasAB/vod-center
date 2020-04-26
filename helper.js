@@ -27,7 +27,7 @@ const help = {
 
 	itemCheck: function(...param) {
 		for (let i = 0; i < param.length; i++) {
-			if (param[i] === undefined || param[i] === "") {
+			if (param[i] === undefined || param[i].replace(/,/g, "").trim() === "") {
 				return false;
 			}
 		}
@@ -35,39 +35,38 @@ const help = {
 		return  true;
 	},
 
-	arrCheck: function(...param) {
-		const rtArr = [];
-		for (let i = 0; i < param.length; i++) {
-			if (param[i] === undefined || param[i] === "") {
-				rtArr[i] = false;
-			} else {
-				rtArr[i] = true;
-			}
-		}
+	// arrCheck: function(...param) {
+	// 	const rtArr = [];
+	// 	for (let i = 0; i < param.length; i++) {
+	// 		if (param[i] === undefined || param[i].trim() === "") {
+	// 			rtArr[i] = false;
+	// 		} else {
+	// 			rtArr[i] = true;
+	// 		}
+	// 	}
 
-		return rtArr;
+	// 	return rtArr;
+	// },
+
+
+	arrCheck: function(array) {
+		return array.map((cVal) => {
+			if (cVal === undefined || cVal.replace(/,/g, "").trim() === "") {
+				cVal = false;
+			} else {
+				cVal = cVal.trim();
+			}
+			return cVal;
+		});
 	},
 
-	makeEdits: function(arr, vod, ...param) {
-		if (arr[0]) {
-			vod.name = param[0];
-		}
+	makeEdits: function(arr, vod) {
 
-		if (arr[1]) {
-			vod.url = param[1];
-		}
-
-		if (arr[2]) {
-			vod.game = param[2];
-		}
-
-		if (arr[3]) {
-			vod.players = param[3].split(",");
-		}
-
-		if (arr[4]) {
-			vod.chars = param[4].split(",");
-		}
+		vod.name = (arr[0] !== false) ? (arr[0]):(vod.name);
+		vod.url = (arr[1] !== false) ? (arr[1]):(vod.url);
+		vod.game = (arr[2] !== false) ? (arr[2]):(vod.game);
+		vod.players = (arr[3] !== false) ? (arr[3].split(",")):(vod.players);
+		vod.chars = (arr[4] !== false) ? (arr[4].split(",")):(vod.chars);
 	},
 
 	login: function(req, res) {
@@ -305,7 +304,7 @@ const help = {
 	},
 
 	editItem: function(req, res) {
-		const checkArr = help.arrCheck(req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars);
+		const checkArr = help.arrCheck([req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars]);
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
@@ -321,40 +320,86 @@ const help = {
 				return y.name === req.params.vodname;
 			});
 
-			//console.log(`before ${chItem}`);
 
+			help.makeEdits(checkArr, chItem);
 
-			help.makeEdits(checkArr, chItem, req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars);
-
-			//console.log(`after ${chItem}`);
+	
 
 			chItem.save((err2, item) => {
-						if (err2) {
-							console.log("error saving nItem");
-						}
+				if (err2) {
+					console.log("error saving nItem");
+				}
 
-						chList.save(function (err3, list){
+				chList.save(function (err3, list){
 
-							if(err3) {
-								console.log('error saving list');
-							}
+					if(err3) {
+						console.log('error saving list');
+					}
 
-							user.save(function(err, user2, count) {
-								req.session.user = user2;
-								res.redirect(`/user/${req.params.listname}`);
-							});
-
-						});
-
+					user.save(function(err, user2, count) {
+						req.session.user = user2;
+						res.redirect(`/user/${req.params.listname}`);
 					});
 
-			
+				});
 
+			});
 		});
 	},
 
-	filterList: function(req, res, ...param) {
-		const rtArr = help.arrCheck(...param);
+	bigFilter: function(array, query) {
+
+		let rtArr;
+
+		if (query.urlQuery !== undefined) {
+			rtArr = help.arrCheck([query.nameQuery, query.urlQuery, query.gameQuery, query.playsQuery, query.charsQuery]);
+
+				array = array.filter(item => {
+
+					const tName = (rtArr[0] === false) ? (true):(item.name.includes(rtArr[0]));
+					//(item.name.includes(param[0])) === rtArr[0];
+					const tURL = (rtArr[1] === false) ? (true):(item.url.includes(rtArr[1]));
+					const tGame = (rtArr[2] === false) ? (true):(item.game.includes(rtArr[2]));
+
+					let tPlay = true;
+					if (rtArr[3] !== false) {
+						const pArr = rtArr[3].split(",");
+						for (let i = 0; i < pArr.length; i++) {
+							if (!item.players.includes(pArr[i])) {
+								tPlay = false;
+							}
+						}
+					}
+
+					let tChar = true;
+					if (rtArr[4] !== false) {
+						const cArr = rtArr[4].split(",");
+						for (let i = 0; i < cArr.length; i++) {
+							if (!item.chars.includes(cArr[i])) {
+								tChar = false;
+							}
+						}
+					}
+
+
+					return (tName && tURL && tGame && tPlay && tChar);
+				});
+			
+
+		} else {
+
+			if (query.listQuery.trim() !== "") {
+
+				array = array.filter(list => {
+					return list.name.includes(query.listQuery);
+				});
+			}
+		}
+
+		return array;
+	},
+
+	loadList: function(req, res) {
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 			
@@ -363,54 +408,39 @@ const help = {
 				res.redirect('/title');
 			} else { //success
 
-				// console.log(user);
-				// console.log(user.lists[0]);
-
 				const tList = user.lists.find((x) => {
 					return x.name === req.params.listname;
 				});
 
-				if (rtArr.includes(true)) {
+				if (req.query.nameQuery !== undefined) {
 
-					tList.items = tList.items.filter(item => {
-
-						const tName = (item.name.includes(param[0]) && param[0] !== "") === rtArr[0];
-						const tURL = (param[1] === item.url && param[2] !== "") === rtArr[1];
-						const tGame = (item.game.includes(param[2]) && param[2] !== "") === rtArr[2];
-
-						let tPlay = true;
-						if (rtArr[3]) {
-							for (let i = 0; i < pArr.length; i++) {
-								if (!item.players.includes(pArr[i])) {
-									tPlay = false;
-								}
-							}
-						}
-						//(item.players.includes(param[3])) === (rtArr[3]);
-
-						let tChar = true;
-						if (rtArr[4]) {
-							for (let i = 0; i < cArr.length; i++) {
-								if (!item.chars.includes(cArr[i])) {
-									tChar = false;
-								}
-							}
-						}
-						//(item.chars.includes(param[4])) === (rtArr[4]);
-
-
-						return (tName && tURL && tGame && tPlay && tChar);
-					});
+					tList.items = help.bigFilter(tList.items, req.query);
 					
-					res.render('slist', {list: tList});
-				} else {
-					res.render('slist', {list: tList});
 				}
+
+				res.render('slist', {list: tList});
 
 			}
 		});
 
 		
+	},
+
+	loadUser: function(req, res) {
+		//call findOne
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+			
+			if (err) { // error check
+				console.log(err);
+				res.redirect('/title');
+			} else { //success
+
+				if (req.query.listQuery !== undefined) {
+					user.lists = help.bigFilter(user.lists, req.query);
+				}
+			    res.render('user', {theUser: user});
+			}
+		});
 	}
 
 

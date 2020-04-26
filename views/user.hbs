@@ -13,12 +13,8 @@
 	</div>
 
 	<div class = "row">
-		<div class = "col-4">
-			<h4 class="info text-info">Username:</h4>
-		</div>
-
-		<div class = "col-8">
-			<p style="font-size:24px">{{theUser.username}}</p>
+		<div class = "col-6">
+			<h4 class="info text-info">Username:</h4> <p style="font-size:24px">{{theUser.username}}</p>
 		</div>
 	</div>
 
@@ -28,24 +24,35 @@
 		</div>
 	</div>
 
-		<ul>
-		{{#each theUser.lists as |list|}}
-		<div class = "row">
-			<div class = "col-4">
-				<li><h3 class = "info"><a class="link text-secondary" href="/user/{{list.name}}">{{list.name}}</a></h3></li>
-			</div>
+		
+		<form style="padding-bottom: 15px" method="GET" action="/user" id="form2">
+					Filter by name: <input type="text" name="listQuery">
+					<button type="submit" form="form2" value="Filter">Filter</button>
+		
 
-			<div class = "col-4">
-				<h3 class = "info"><a class="link text-info" href="/user/edit/{{list.name}}">Edit Name</a></h3>
-			</div>
+		</form>
 
-			<div class = "col-4">
-				<h3 class = "info"><a class="link text-danger" href="/user/remove/{{list.name}}">Remove</a></h3>
-			</div>
-			
+
+	<ul>
+	{{#each theUser.lists as |list|}}
+	<div class = "row">
+		<div class = "col-4">
+			<li><h3 class = "info"><a class="link text-secondary" href="/user/{{list.name}}">{{list.name}}</a></h3></li>
 		</div>
-		{{/each}}
-		</ul>
+
+		<div class = "col-4">
+			<h3 class = "info"><a class="link text-info" href="/user/edit/{{list.name}}">Edit Name</a></h3>
+		</div>
+
+		<div class = "col-4">
+			<h3 class = "info"><a class="link text-danger" href="/user/remove/{{list.name}}">Remove</a></h3>
+		</div>
+			
+	</div>
+	{{/each}}
+	</ul>
+
+		
 
 	
 	

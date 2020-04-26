@@ -90,15 +90,7 @@ app.post('/user/:listname', function (req, res) {
 
 app.get('/user/:listname', function (req, res) {
 
-	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
-			
-			if (err) { // error check
-				console.log(err);
-				res.redirect('/title');
-			} else { //success
-				help.filterList(req, res, req.query.nameQuery, req.query.urlQuery, req.query.gameQuery, req.query.playsQuery, req.query.charsQuery);
-			}
-	});
+	help.loadList(req, res);
 });
 
 app.post('/user/edit/:listname', function (req, res) { //route handler for page after using form
@@ -160,23 +152,8 @@ app.get('/user/:listname/edit/:vodname', function (req, res) {
 });
 
 app.get('/user', function(req, res) {
-	//find and print User with User.find()
-	User.find({}, function(err, varToStoreResult, count) {
 		
-		//call findOne
-		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
-			
-			if (err) { // error check
-				console.log(err);
-				res.redirect('/title');
-			} else { //success
-				//console.log(user);
-			    res.render('user', {theUser: user});
-			}
-		});
-		
-	});
-
+		help.loadUser(req, res);
 });
 
 

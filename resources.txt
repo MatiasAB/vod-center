@@ -18,4 +18,4 @@ Resources Used
 
 8. https://stackoverflow.com/questions/13645084/access-a-variable-outside-the-scope-of-a-handlebars-js-each-loop - Accessing variables outside of the scope of a handlebars loop.
 
-9. https://www.w3schools.com/jsref/jsref_replace.asp - replacing all the whitespaces in a string
+9. https://www.w3schools.com/jsref/jsref_replace.asp - using replace()
