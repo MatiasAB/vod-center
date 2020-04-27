@@ -47,25 +47,25 @@ An Example List with Embedded Items:
 
 ## Wireframes
 
-/[site_title]/user/add_new - page for creating a new VOD item
+/user/listname - page for seeing List "listname" and adding items
 
-![add new](documentation/new_vod.png)
+![add new](documentation/list.png)
 
 /[site_title] - home page (page for creating / logging into account)
 
 ![list](documentation/login.png)
 
-/[site_title]/user - page for showing user's VOD lists
+/user - page for showing user's VOD lists
 
 ![list](documentation/user.png)
 
-/[site_title]/user/slist - page for showing a single list
+/user/edit/listname - page editing List "listname"
 
-![list](documentation/slist.png)
+![list](documentation/editList.png)
 
-/[site_title]/user/newlist - page for creating a new list
+/user/listname/edit/itemname - page editing Item "itemname" in List "listname"
 
-![list](documentation/newlist.png)
+![list](documentation/editItem.png)
 
 
 ## Site map

@@ -35,26 +35,13 @@ const help = {
 		return  true;
 	},
 
-	// arrCheck: function(...param) {
-	// 	const rtArr = [];
-	// 	for (let i = 0; i < param.length; i++) {
-	// 		if (param[i] === undefined || param[i].trim() === "") {
-	// 			rtArr[i] = false;
-	// 		} else {
-	// 			rtArr[i] = true;
-	// 		}
-	// 	}
-
-	// 	return rtArr;
-	// },
-
 
 	arrCheck: function(array) {
 		return array.map((cVal) => {
 			if (cVal === undefined || cVal.replace(/,/g, "").trim() === "") {
 				cVal = false;
 			} else {
-				cVal = cVal.trim();
+				cVal = cVal.trim().toLowerCase();
 			}
 			return cVal;
 		});
@@ -347,6 +334,16 @@ const help = {
 		});
 	},
 
+	filterArr: function(arr1, arr2) {
+		for (let i = 0; i < arr1.length; i++) {
+			if (arr2.includes(arr1[i])) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+
 	bigFilter: function(array, query) {
 
 		let rtArr;
@@ -356,29 +353,38 @@ const help = {
 
 				array = array.filter(item => {
 
-					const tName = (rtArr[0] === false) ? (true):(item.name.includes(rtArr[0]));
+					const tName = (rtArr[0] === false) ? (true):(item.name.toLowerCase().includes(rtArr[0]));
 					//(item.name.includes(param[0])) === rtArr[0];
-					const tURL = (rtArr[1] === false) ? (true):(item.url.includes(rtArr[1]));
-					const tGame = (rtArr[2] === false) ? (true):(item.game.includes(rtArr[2]));
+					const tURL = (rtArr[1] === false) ? (true):(item.url.toLowerCase().includes(rtArr[1]));
+					const tGame = (rtArr[2] === false) ? (true):(item.game.toLowerCase().includes(rtArr[2]));
 
 					let tPlay = true;
 					if (rtArr[3] !== false) {
-						const pArr = rtArr[3].split(",");
-						for (let i = 0; i < pArr.length; i++) {
-							if (!item.players.includes(pArr[i])) {
-								tPlay = false;
-							}
-						}
+						// const pArr = rtArr[3].split(",");
+						// for (let i = 0; i < pArr.length; i++) {
+						// 	if (!item.players.includes(pArr[i])) {
+						// 		tPlay = false;
+						// 	}
+						// }
+
+						tPlay = help.filterArr(rtArr[3].split(","), item.players.map(x => {
+							return x.toLowerCase();
+						}));
 					}
 
 					let tChar = true;
 					if (rtArr[4] !== false) {
-						const cArr = rtArr[4].split(",");
-						for (let i = 0; i < cArr.length; i++) {
-							if (!item.chars.includes(cArr[i])) {
-								tChar = false;
-							}
-						}
+						// const cArr = rtArr[4].split(",");
+						// for (let i = 0; i < cArr.length; i++) {
+						// 	if (!item.chars.includes(cArr[i])) {
+						// 		tChar = false;
+						// 	}
+						// }
+
+						tChar = help.filterArr(rtArr[4].split(","), item.chars.map(x => {
+							return x.toLowerCase();
+						}));
+
 					}
 
 
@@ -391,7 +397,7 @@ const help = {
 			if (query.listQuery.trim() !== "") {
 
 				array = array.filter(list => {
-					return list.name.includes(query.listQuery);
+					return list.name.toLowerCase().includes(query.listQuery.toLowerCase());
 				});
 			}
 		}

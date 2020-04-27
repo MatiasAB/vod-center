@@ -61,18 +61,12 @@ app.get('/', function (req, res) {
 
 
 //List related route handlers -----------------------------------------------------------
-app.post('/user/newlist', function (req, res) { //route handler for page after using form
+app.post('/user', function (req, res) { //route handler for page after using form
 	if (req.body.listname === undefined || req.body.listname === "") { //checks if name was entered
 		res.redirect('back');
 	} else {
 		help.newList(req, res);
 	}
-});
-
-app.get('/user/newlist', function (req, res) {
-
-	res.render('newlist');
-
 });
 
 
