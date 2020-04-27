@@ -76,10 +76,12 @@ An Example List with Embedded Items:
 
 1. as non-registered user, I can register a new account with the site.
 2. as a user, I can log in to the site.
-3. as a user, I can create a new VOD item.
-4. as a user, I can view all of the VOD items I've created in a single list
-5. as a user, I can create new VOD lists.
-6. as a user, I can view all of the lists I created in a single list.
+3. as a user, I can create and remove VOD lists.
+4. as a user, I can view all of the lists I created in a single list.
+5. as a user, I can edit the names of VOD lists and filter the lists of lists by name.
+6. as a user, I can create add and remove VOD items.
+7. as a user, I can filter a list by properties of VOD items.
+
 
 ## Research Topics
 
@@ -92,4 +94,4 @@ An Example List with Embedded Items:
 
 ## [Link to Initial Main Project File](app.js) 
 
-## Annotations / References Used
+## [Annotations / References Used](resources.txt)
