@@ -23,9 +23,12 @@ app.use(session(sessionOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//module for helper functions for app.js. 
 const help = {
 
-
+	//calls .map() on an array, arr, to modify all strings with function changeF and check if they pass the test in function testF, 
+	//replacing all array items that are not strings or do not pass the test items with false
 	arrCheck: function(array, changeF, testF) {
 		return array.map((cVal) => {
 			//cVal.replace(/,/g, "").trim() === ""
@@ -39,6 +42,7 @@ const help = {
 		});
 	},
 
+	//checks an array arr to determine if changes should be made to an Item object, vod
 	makeEdits: function(arr, vod) {
 
 		vod.name = (arr[0] !== false) ? (arr[0]):(vod.name);
@@ -50,6 +54,7 @@ const help = {
 		return vod;
 	},
 
+	//called from setUser if the visitor is signing into an exisiting account.
 	login: function(req, res) {
 		User.find({username: req.body.username}, function(err, varToStoreResult, count) {
 
@@ -80,6 +85,7 @@ const help = {
 		});
 	},
 
+	//called from setUser if the visitor is creating a new account.
 	makeUser: function(req, res) {
 
 			User.find({username: req.body.username}, function(err, varToStoreResult, count) {
@@ -123,10 +129,10 @@ const help = {
 		
 	},
 
-
+	//called from '/title' route handler in app.js to set session's user
 	setUser: function(req, res) {
 
-		const validVar = help.arrCheck([req.body.username, req.body.password], (x) => {return x}, (y) => {return (y.trim().length > 0)});
+		const validVar = help.arrCheck([req.body.username, req.body.password], (x) => {return x.trim()}, (y) => {return (y.length > 0)});
 
 		if (validVar) {
 
@@ -142,8 +148,9 @@ const help = {
 		}
 	},
 
+	//called from '/user' POST route handler in app.js to create a new list
 	newList: function(req, res) {
-		User.find({username:req.session.user.username}, function(err, varToStoreResult, count) {//something was entered, find session User in database
+		User.find({_id:req.session.user._id}, function(err, varToStoreResult, count) {//something was entered, find session User in database
 			if (varToStoreResult.length < 1) {//check for valid username
 				res.redirect('back');
 			} else {//found valid user
@@ -155,7 +162,9 @@ const help = {
 		            console.log('error saving nList'); 
 		          }
 		        
-		          varToStoreResult[0].lists.push(nList)
+		          varToStoreResult[0].lists.push(nList);
+
+		          
 
 		          //save changes
 		          varToStoreResult[0].save(function(err, user, count){
@@ -170,9 +179,10 @@ const help = {
 		});
 	},
 
+	//called from '/user/:listid' POST route handler in app.js to create a new item
 	newItem: function(req, res) {
 		const chArr = help.arrCheck([req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars], 
-			(x) => {return x}, (y) => {return (y.trim().replace(/,/g, "").length > 0)});
+			(x) => {return x.trim()}, (y) => {return (y.replace(/,/g, "").length > 0)});
 
 		if (chArr.includes(false)) { //checks if name was entered
 			res.redirect('back');
@@ -185,10 +195,10 @@ const help = {
 				} else { //success
 					
 					const chList = user.lists.find((x) => {
-						return x.name === req.params.listname;
+						return x._id == req.params.listid;
 					});
 
-					//console.log(chList);
+					
 
 					const nItem = new Item({
 						name: req.body.entryName,
@@ -226,9 +236,9 @@ const help = {
 			
 	},
 
-
+	//called from '/user/edit/:listid' POST route handler in app.js to edit the name of a list
 	editListName: function(req, res) {
-		const validVar = help.arrCheck([req.body.newName], (x) => {return x}, (y) => {return (y.trim().length > 0)});
+		const validVar = help.arrCheck([req.body.newName], (x) => {return x.trim()}, (y) => {return (y.length > 0)});
 
 		if (validVar) {
 			User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
@@ -236,7 +246,7 @@ const help = {
 				if (err) {console.log(err);}
 				
 				const nList = user.lists.find((x) => {
-					return x.name === req.params.listname;
+					return x._id == req.params.listid;
 				});
 
 				nList.name = req.body.newName;
@@ -262,11 +272,12 @@ const help = {
 		}
 	},
 
+	//called from '/user/remove/:listid' POST route handler in app.js to remove a list
 	removeList: function(req, res) {
 		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
 
 			const chIndex = user.lists.findIndex((x) => {
-				return x.name === req.params.listname;
+				return x._id == req.params.listid;
 			});
 
 
@@ -283,19 +294,20 @@ const help = {
 		});
 	},
 
+	//called from '/user/:listid/remove/:vodid' POST route handler in app.js to remove an item
 	removeItem: function(req, res) {
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
 
 
 			const chList = user.lists.find((x) => {
-				return x.name === req.params.listname;
+				return x._id == req.params.listid;
 			});
 
 
 			
 			const chIndex = chList.items.findIndex((y) => {
-				return y.name === req.params.vodname;
+				return y._id == req.params._id;
 			});
 
 
@@ -310,7 +322,7 @@ const help = {
 
 				user.save(function(err3, user2, count) {
 					req.session.user = user2;
-					res.redirect(`/user/${req.params.listname}`);
+					res.redirect(`/user/${req.params.listid}`);
 				})
 
 			});
@@ -320,22 +332,23 @@ const help = {
 		});
 	},
 
+	//called from '/user/:listid/edit/:vodid' POST route handler in app.js to edit an item
 	editItem: function(req, res) {
 		const checkArr = help.arrCheck([req.body.newName, req.body.newURL, req.body.newGame, req.body.newPlays, req.body.newChars], 
-			(x) => {return x}, (y) => {return (y.trim().replace(/,/g, "").length > 0)});
+			(x) => {return x.trim()}, (y) => {return (y.replace(/,/g, "").length > 0)});
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
 
 
 			const chList = user.lists.find((x) => {
-				return x.name === req.params.listname;
+				return x._id == req.params.listid;
 			});
 
 
 			
 			let chItem = chList.items.find((y) => {
-				return y.name === req.params.vodname;
+				return y._id == req.params.vodid;
 			});
 
 
@@ -356,7 +369,7 @@ const help = {
 
 					user.save(function(err, user2, count) {
 						req.session.user = user2;
-						res.redirect(`/user/${req.params.listname}`);
+						res.redirect(`/user/${req.params.listid}`);
 					});
 
 				});
@@ -365,9 +378,10 @@ const help = {
 		});
 	},
 
+	//returns true if any element in an array, arr1, is in a second array, arr2. 
 	filterArr: function(arr1, arr2) {
 		for (let i = 0; i < arr1.length; i++) {
-			if (arr2.includes(arr1[i])) {
+			if (arr2.includes(arr1[i].trim())) {
 				return true;
 			}
 		}
@@ -375,29 +389,24 @@ const help = {
 		return false;
 	},
 
+	//filters an array, arr, based on whether the array entries contain the appropriate information from a query object, query
+	//only works with an array of lists or an array of items
 	bigFilter: function(array, query) {
 
 		let rtArr;
 
 		if (query.urlQuery !== undefined) {
 			rtArr = help.arrCheck([query.nameQuery, query.urlQuery, query.gameQuery, query.playsQuery, query.charsQuery],
-				(x) => {return x.toLowerCase()}, (y) => {return (y.trim().replace(/,/g, "").length > 0)});
+				(x) => {return x.toLowerCase().trim()}, (y) => {return (y.replace(/,/g, "").length > 0)});
 
 				array = array.filter(item => {
 
 					const tName = (rtArr[0] === false) ? (true):(item.name.toLowerCase().includes(rtArr[0]));
-					//(item.name.includes(param[0])) === rtArr[0];
 					const tURL = (rtArr[1] === false) ? (true):(item.url.toLowerCase().includes(rtArr[1]));
 					const tGame = (rtArr[2] === false) ? (true):(item.game.toLowerCase().includes(rtArr[2]));
 
 					let tPlay = true;
 					if (rtArr[3] !== false) {
-						// const pArr = rtArr[3].split(",");
-						// for (let i = 0; i < pArr.length; i++) {
-						// 	if (!item.players.includes(pArr[i])) {
-						// 		tPlay = false;
-						// 	}
-						// }
 
 						tPlay = help.filterArr(rtArr[3].split(","), item.players.map(x => {
 							return x.toLowerCase();
@@ -406,12 +415,6 @@ const help = {
 
 					let tChar = true;
 					if (rtArr[4] !== false) {
-						// const cArr = rtArr[4].split(",");
-						// for (let i = 0; i < cArr.length; i++) {
-						// 	if (!item.chars.includes(cArr[i])) {
-						// 		tChar = false;
-						// 	}
-						// }
 
 						tChar = help.filterArr(rtArr[4].split(","), item.chars.map(x => {
 							return x.toLowerCase();
@@ -429,7 +432,7 @@ const help = {
 			if (query.listQuery.trim() !== "") {
 
 				array = array.filter(list => {
-					return list.name.toLowerCase().includes(query.listQuery.toLowerCase());
+					return list.name.toLowerCase().includes(query.listQuery.toLowerCase().trim());
 				});
 			}
 		}
@@ -437,6 +440,7 @@ const help = {
 		return array;
 	},
 
+	//called from the '/user/:listid' GET route handler to load a list and its contents.
 	loadList: function(req, res) {
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
@@ -447,7 +451,7 @@ const help = {
 			} else { //success
 
 				const tList = user.lists.find((x) => {
-					return x.name === req.params.listname;
+					return x._id == req.params.listid;
 				});
 
 				if (req.query.nameQuery !== undefined) {
@@ -464,6 +468,7 @@ const help = {
 		
 	},
 
+	//called from the '/user' GET route handler to load a user and its contents.
 	loadUser: function(req, res) {
 		//call findOne
 		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {

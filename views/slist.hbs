@@ -8,7 +8,7 @@
 		</div>
 	</div>
 
-	<form method="GET" action="/user/{{list.name}}" id="form2">
+	<form method="GET" action="/user/{{list._id}}" id="form2">
 		<div class = "row">
 			<div class = "col-12">
 			Filter Items by: Name: <input type="text" name="nameQuery">
@@ -53,8 +53,8 @@
 						{{#each vod.chars as |char|}}{{char}}, {{/each}}
 					</td>
 
-					<td class="rmv"> <a class = "link text-info" href="/user/{{../list.name}}/edit/{{vod.name}}">Edit</a> </td>
-					<td class="rmv"> <a class = "link text-danger" href="/user/{{../list.name}}/remove/{{vod.name}}">Remove</a> </td>
+					<td class="rmv"> <a class = "link text-info" href="/user/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
+					<td class="rmv"> <a class = "link text-danger" href="/user/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
 
 				</tr>
 			{{/each}}

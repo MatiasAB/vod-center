@@ -35,15 +35,6 @@ app.use((req, res, next) => {next();});
 app.post('/title', (req, res) => {
 
 	help.setUser(req, res);
-	// if (req.body.login !== undefined) {//logging in
-
-	// 	help.login(req, res);
-		
-	// } else {//creating an account
-
-	// 	help.makeUser(req, res);
-
-	// }
 });
 
 app.get('/title', function (req, res) {
@@ -71,26 +62,23 @@ app.post('/user', function (req, res) { //route handler for page after using for
 });
 
 
-app.post('/user/:listname', function (req, res) {
+app.post('/user/:listid', function (req, res) {
 
 	help.newItem(req, res);
-
-	// if (help.arrCheck([req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars]) === false) { //checks if name was entered
-	// 	res.redirect('back');
-	// } else {
-
-	// 	help.newItem(req, res);
-
-	// }
 	
 });
 
-app.get('/user/:listname', function (req, res) {
+app.get('/user/:listid', function (req, res) {
 
-	help.loadList(req, res);
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.loadList(req, res);
+	}
+	
 });
 
-app.post('/user/edit/:listname', function (req, res) { //route handler for page after using form
+app.post('/user/edit/:listid', function (req, res) { //route handler for page after using form
 	if (req.body.newName === undefined || req.body.newName === "") { //checks if name was entered
 		res.redirect('back');
 	} else {
@@ -100,17 +88,38 @@ app.post('/user/edit/:listname', function (req, res) { //route handler for page 
 	}
 });
 
-app.get('/user/edit/:listname', function (req, res) {
+app.get('/user/edit/:listid', function (req, res) {
 
-	res.render('editList', {list: req.params.listname});
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+			
+			if (err) { // error check
+				console.log(err);
+				res.redirect('/title');
+			} else { //success
+
+				const tList = user.lists.find((x) => {
+					return x._id == req.params.listid;
+				})
+				
+			    res.render('editList', {list: tList});
+			}
+		});
+	}
 
 });
 
 
 
-app.get('/user/remove/:listname', function(req, res) {
+app.get('/user/remove/:listid', function(req, res) {
 
-	help.removeList(req, res);
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.removeList(req, res);
+	}
 
 });
 
@@ -118,39 +127,51 @@ app.get('/user/remove/:listname', function(req, res) {
 
 
 //Item related route handlers -----------------------------------------------------------
-app.get('/user/:listname/remove/:vodname', function(req, res) {
+app.get('/user/:listid/remove/:vodid', function(req, res) {
 
-	help.removeItem(req, res);
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.removeItem(req, res);
+	}
 
 });
 
-app.post('/user/:listname/edit/:vodname', function (req, res) {
+app.post('/user/:listid/edit/:vodid', function (req, res) {
 
 	help.editItem(req, res);	
 
 });
 
-app.get('/user/:listname/edit/:vodname', function (req, res) {
+app.get('/user/:listid/edit/:vodid', function (req, res) {
 
-	User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
-		const chList = user.lists.find((x) => {
-			return x.name === req.params.listname;
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+			const chList = user.lists.find((x) => {
+				return x._id === req.params.listid;
+			});
+
+
+			
+			const chItem = chList.items.find((y) => {
+				return y._id === req.params.vodid;
+			});
+
+			res.render('editItem', {vod: chItem, ln: req.params.listid});
+
 		});
-
-
-		
-		const chItem = chList.items.find((y) => {
-			return y.name === req.params.vodname;
-		});
-
-		res.render('editItem', {vod: chItem, ln: req.params.listname});
-
-	});
+	}
 });
 
 app.get('/user', function(req, res) {
 		
-		help.loadUser(req, res);
+		if (req.session.user === undefined) {
+			res.redirect('/title');
+		} else {
+			help.loadUser(req, res);
+		}
 });
 
 
