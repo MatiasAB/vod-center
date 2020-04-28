@@ -149,14 +149,15 @@ app.get('/user/:listid/edit/:vodid', function (req, res) {
 		res.redirect('/title');
 	} else {
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+			
 			const chList = user.lists.find((x) => {
-				return x._id === req.params.listid;
+				return x._id == req.params.listid;
 			});
 
 
 			
 			const chItem = chList.items.find((y) => {
-				return y._id === req.params.vodid;
+				return y._id == req.params.vodid;
 			});
 
 			res.render('editItem', {vod: chItem, ln: req.params.listid});

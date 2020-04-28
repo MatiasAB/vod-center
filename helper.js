@@ -48,8 +48,8 @@ const help = {
 		vod.name = (arr[0] !== false) ? (arr[0]):(vod.name);
 		vod.url = (arr[1] !== false) ? (arr[1]):(vod.url);
 		vod.game = (arr[2] !== false) ? (arr[2]):(vod.game);
-		vod.players = (arr[3] !== false) ? (arr[3].split(",")):(vod.players);
-		vod.chars = (arr[4] !== false) ? (arr[4].split(",")):(vod.chars);
+		vod.players = (arr[3] !== false) ? (arr[3].split(",").map((x) => { return x.trim(); })):(vod.players);
+		vod.chars = (arr[4] !== false) ? (arr[4].split(",").map((x) => { return x.trim(); })):(vod.chars);
 
 		return vod;
 	},
@@ -199,13 +199,20 @@ const help = {
 					});
 
 					
+					const plArr = req.body.entryPlays.split(",").map((x) => {
+						return x.trim();
+					});	
+
+					const chArr = req.body.entryChars.split(",").map((x) => {
+						return x.trim();
+					});						
 
 					const nItem = new Item({
 						name: req.body.entryName,
 						url: req.body.entryURL,
 						game: req.body.entryGame,
-						players: req.body.entryPlays.split(","),
-						chars: req.body.entryChars.split(",")
+						players: plArr,
+						chars: chArr
 					});
 
 					nItem.save((err2, item) => {
