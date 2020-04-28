@@ -34,15 +34,16 @@ app.use((req, res, next) => {next();});
 
 app.post('/title', (req, res) => {
 
-	if (req.body.login !== undefined) {//logging in
+	help.setUser(req, res);
+	// if (req.body.login !== undefined) {//logging in
 
-		help.login(req, res);
+	// 	help.login(req, res);
 		
-	} else {//creating an account
+	// } else {//creating an account
 
-		help.makeUser(req, res);
+	// 	help.makeUser(req, res);
 
-	}
+	// }
 });
 
 app.get('/title', function (req, res) {
@@ -72,13 +73,15 @@ app.post('/user', function (req, res) { //route handler for page after using for
 
 app.post('/user/:listname', function (req, res) {
 
-	if (help.itemCheck(req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars) === false) { //checks if name was entered
-		res.redirect('back');
-	} else {
+	help.newItem(req, res);
 
-		help.newItem(req, res);
+	// if (help.arrCheck([req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars]) === false) { //checks if name was entered
+	// 	res.redirect('back');
+	// } else {
 
-	}
+	// 	help.newItem(req, res);
+
+	// }
 	
 });
 
