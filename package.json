@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/nyu-csci-ua-0480-008-spring-2020/MatiasAB-final-project#readme",
   "dependencies": {
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "hbs": "^4.1.0",
-    "mongoose": "^5.9.7"
+    "express-session": "^1.17.1",
+    "hbs": "^4.1.1",
+    "mongoose": "^5.9.16"
   },
   "devDependencies": {
     "bcrypt": "^4.0.1",
@@ -32,8 +32,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^7.1.2",
-    "mongoose-autopopulate": "^0.12.1",
+    "mocha": "^7.2.0",
+    "mongoose-autopopulate": "^0.12.2",
     "nconf": "^0.10.0"
   }
 }
