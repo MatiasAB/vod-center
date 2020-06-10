@@ -39,62 +39,6 @@ An Example List with Embedded Items:
 ```
 
 
-## [Link to Commented First Draft Schema](db.js) 
-
-## Wireframes
-
-/user/listname - page for seeing List "listname" and adding items
-
-![add new](documentation/list.png)
-
-/[site_title] - home page (page for creating / logging into account)
-
-![list](documentation/login.png)
-
-/user - page for showing user's VOD lists
-
-![list](documentation/user.png)
-
-/user/edit/listname - page editing List "listname"
-
-![list](documentation/editList.png)
-
-/user/listname/edit/itemname - page editing Item "itemname" in List "listname"
-
-![list](documentation/editItem.png)
-
-
-## Site map
-
-![image of sitemap](documentation/sitemap.png)
-
-## User Stories or Use Cases
-
-1. as non-registered user, I can register a new account with the site.
-2. as a user, I can log in to the site.
-3. as a user, I can create and remove VOD lists.
-4. as a user, I can view all of the lists I created in a single list.
-5. as a user, I can edit the names of VOD lists and filter the lists of lists by name.
-6. as a user, I can create add and remove VOD items.
-7. as a user, I can filter a list by properties of VOD items.
-8. as a user, I can edit VOD items in a list.
-
-
-## Research Topics
-
-* (3 points) Unit testing with JavaScript - Mocha
-  * Tested helper functions that don't require request or response objects
-  * see [tests/test.js](tests/test.js) for the unit tests
-  * see [tests/run.png](tests/run.png) for test results
-* (2 points) Use a CSS framework throughout the site - Bootstrap
-  * Customized a theme on top of stock Bootstrap
-  * see [main.scss](public/css/main.scss) 
-* (3 points) Configuration management - nconf
-  * Used nconf for configuration management
-
-* 8 points out of the required 8 points
-
-
 ## [Link to Initial Main Project File](app.js) 
 
 ## [Annotations / References Used](resources.txt)
