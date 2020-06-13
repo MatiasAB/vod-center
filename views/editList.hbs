@@ -1,8 +1,13 @@
 
-
-	<a class = "link text-secondary" href="/title">Back to home page</a>
-	<a class = "link text-secondary" href="/user"> Back to User's Page </a>
+<div class="container backg" id="navi">
+	<h2 id="navh2"> Navigation Bar </h2>
+	<ul>
+		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+	</ul>
+</div>
 	
+<div class="container backg">
 	<div style="padding-top:30px" class = "row">
 		<div class = "col-4">
 			<h3>Current Name: {{list.name}}</h3> 
@@ -12,5 +17,4 @@
 			<h3>New Name: </h3> <form method="POST" action="" id="form1">  <input type="text" name="newName"> </form> <button type="submit" form="form1"  name="editName">Change Name</button>
 		</div>
 	</div>
-	
-	
+</div>

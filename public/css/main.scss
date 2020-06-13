@@ -79,3 +79,32 @@ th, td {
 body {
     padding-bottom: 15px;
 }
+
+.head {
+    width: 300px; 
+    text-align: center; 
+    background-color: darkgrey; 
+    margin-left: 0.5em auto; 
+    margin-right: 0.5em auto; 
+    margin-bottom: 0.5em auto;
+}
+
+.backg {
+    background-color: darkgrey;
+    outline: 2px solid black;
+}
+
+#navi {
+    margin-bottom: 2%;
+}
+
+#navh2 {
+    text-decoration: underline;
+}
+
+.usr {
+    padding-top: 0.5%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 1%;
+}
