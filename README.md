@@ -40,5 +40,3 @@ An Example List with Embedded Items:
 
 
 ## [Link to Initial Main Project File](app.js) 
-
-## [Annotations / References Used](resources.txt)

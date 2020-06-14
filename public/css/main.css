@@ -10011,4 +10011,18 @@ body {
   padding-bottom: 1%;
 }
 
+.home {
+  background-color: darkgrey;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+}
+
+#home1 {
+  border-top: 2px solid black;
+}
+
+#home2 {
+  border-bottom: 2px solid black;
+}
+
 /*# sourceMappingURL=main.css.map */

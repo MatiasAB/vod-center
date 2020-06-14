@@ -17,9 +17,9 @@
 	<form method="GET" action="/user/{{list._id}}" id="form2">
 		<div class = "row">
 			<div class = "col-12">
-			Filter Items by: Name: <input type="text" name="nameQuery">
-				 URL: <input type="text" name="urlQuery">
-				 Game: <input type="text" name="gameQuery">
+			Filter Items by: Name: <input type="text" name="nameQuery"><br>
+				 URL: <input type="text" name="urlQuery"><br>
+				 Game: <input type="text" name="gameQuery"><br>
 				
 				
 			</div>
@@ -27,8 +27,8 @@
 
 		<div class = "row">
 			<div class = "col-12">
-				Players (comma separated): <input type="text" name="playsQuery">
-				 Characters (comma separated): <input type="text" name="charsQuery">
+				Players (comma separated): <input type="text" name="playsQuery"><br>
+				 Characters (comma separated): <input type="text" name="charsQuery"><br>
 				
 				<button type="submit" form="form2" value="Filter">Filter Items</button>
 			</div>
@@ -36,8 +36,8 @@
 
 	</form>
 	
-	<div class = "row">
-		<table class = "col-12">
+	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
+		<table class="col-12">
 			<tr>
 				<th class="text-info"> Entry Name </th>
 				<th class="text-info"> Entry URL </th>

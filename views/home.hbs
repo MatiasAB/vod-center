@@ -1,34 +1,71 @@
-<div class="container-fluid backg">
-	<h2 class ="text-info"> Create New User / Login </h2>
-	<form method="POST" action="" id="form1">
-	
-	<div class = "row">
-			<div class = "col-4 text-info">
-				Username:  
-			</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-2"></div>
 
-			<div class = "col-8">
-				<input type="text" name="username">
-			</div>
+		<div id="home1" class="col-8 home">
+			<h2 class ="text-info"> Create New User / Login </h2>
+
+			<form method="POST" action="" id="form1">
+			
+				<div class = "row">
+					<div class="col-12">
+						<div class="row">
+							<div class = "col-3 text-info">
+								Username:
+							</div>
+
+							<div class = "col-6">
+								 <input type="text" name="username">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class = "row">
+
+					<div class="col-12">
+						<div class="row">
+							<div class = "col-3 text-info">
+								Password:
+							</div>
+
+							<div class = "col-6">
+								<input type="text" name="password">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+		<div class="col-2"></div>
+
 	</div>
 
 	<div class = "row">
-			<div class = "col-4 text-info">
-				Password:  
-			</div>
-			<div class = "col-8">
-				<input type="text" name="password">
-			</div>
-	</div>
+		<div class="col-2"></div>
 
-	</form>
-	<div class = "row">
-		<div class = "col-4">
+		<div class = "col-8 home">
 			<button type="submit" form="form1"  name="addUser">Create New User</button>
 			<button type="submit" form="form1" name="login">Log In</button>
+			<p class="text-secondary" style="font-weight: bold;"> You must create or login into an account in order to use this site. </p>
 		</div>
+
+		<div class="col-2"></div>
 	</div>
 
-	<p class="text-secondary"> You must create or login into an account in order to use this site. </p>
+	<div class="row">
+		<div class = "col-2"></div>
+
+		<div id="home2" class="col-8 home">
+			<h2> About This Site </h2>
+			<p> As a competitor in a fighting game, one of the most useful tools for improvement is reviewing footage of your matches, or a VOD (side note: usually, players also study VODs they are not personally featured in). But more often than not, your VODs are not always in the same place, which can make it annoying to review multiple VODS in the same session. </p>
+
+			<p>VOD Review Center is a web app that will allow users to keep track of their VODs. As a user, you can create or view their VOD lists on your user page. This list of lists can be filtered by name. The names of lists can be edited. In every list, users can add and remove items. Items in a list can be edited and filtered by their properties (name,url, game, players, characters).</p>	
+		</div>
+
+		<div class="col-2"></div>
+	</div>
 
 </div>

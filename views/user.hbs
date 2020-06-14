@@ -10,7 +10,7 @@
 
 <div class="container backg">
 
-	<div style="padding-top:30px" class = "row">
+	<div style="padding-top:10px" class = "row">
 		<div class = "col-4">
 			<h3> User Info</h3>
 		</div>
@@ -40,16 +40,20 @@
 
 	<ul>
 	{{#each theUser.lists as |list|}}
-	<div class = "row">
-		<div class = "col-4">
+	<div class = "row" style="overflow-x: auto;">
+		<div class = "col-3">
 			<li><h3 class = "info"><a class="link text-secondary" href="/user/{{list._id}}">{{list.name}}</a></h3></li>
 		</div>
 
-		<div class = "col-4">
+		<div class = "col-3">
 			<h3 class = "info"><a class="link text-info" href="/user/edit/{{list._id}}">Edit Name</a></h3>
 		</div>
 
-		<div class = "col-4">
+		<div class = "col-3">
+			<h3 class = "info"><a class="link text-info" href="/user/merge/{{list._id}}">Merge</a></h3>
+		</div>
+
+		<div class = "col-3">
 			<h3 class = "info"><a class="link text-danger" href="/user/remove/{{list._id}}">Remove</a></h3>
 		</div>
 			
@@ -60,21 +64,23 @@
 	<h2> Create New List</h2>
 	<form method="POST" action="" id="form1">
 	
-	<div class = "row">
-			<div class = "col-4">
-				Name:  
-			</div>
+		<div class = "row">
+				<div class = "col-4">
+					Name:  
+				</div>
 
-			<div class = "col-8">
-				<input type="text" name="listname">
-			</div>
-	</div>
+				<div class = "col-8">
+					<input type="text" name="listname">
+				</div>
+		</div>
 	</form>
-	<div class = "row">
+
+	<div class = "row" style="padding-bottom: 5px;">
 		<div class = "col-1"></div>
 
 		<div class = "col-6">
 			<button type="submit" form="form1"  name="createNewList">Create New List</button>
 		</div>
 	</div>
+
 </div>

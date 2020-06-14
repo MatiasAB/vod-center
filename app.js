@@ -125,6 +125,34 @@ app.get('/user/remove/:listid', function(req, res) {
 
 
 
+app.get('/user/merge/:listid', function(req, res) {
+
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+			
+			const chList = user.lists.find((x) => {
+				return x._id == req.params.listid;
+			});
+
+			const bigList = user.lists;
+
+			const chIndex = user.lists.findIndex((x) => {
+				return x._id == chList._id;
+			});
+
+			bigList.splice(chIndex, 1);
+
+			res.render('merge', {chList: chList, bigList: bigList});
+
+		});
+	}
+
+});
+
+
+
 
 //Item related route handlers -----------------------------------------------------------
 app.get('/user/:listid/remove/:vodid', function(req, res) {
