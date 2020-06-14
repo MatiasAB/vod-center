@@ -145,9 +145,16 @@ app.get('/user/merge/:listid', function(req, res) {
 			bigList.splice(chIndex, 1);
 
 			res.render('merge', {chList: chList, bigList: bigList});
-
 		});
 	}
+
+});
+
+
+
+app.post('/user/merge/:listid', function(req, res) {
+
+	help.mergeLists(req, res);
 
 });
 

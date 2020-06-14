@@ -491,11 +491,69 @@ const help = {
 			    res.render('user', {theUser: user});
 			}
 		});
+	},
+
+
+
+	mergeHelp: function(chList, mList) {
+
+		for (list in mList) {
+			console.log(list["items"]);
+			console.log(JSON.stringify(list.items));
+		}
+
+	},
+
+
+
+	mergeLists: function(req, res) {
+
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+
+			if (err) {
+				console.log(err);
+				res.redirct('/title');
+			} else {
+
+				const chList = user.lists.find((x) => {
+					return x._id == req.params.listid;
+				});
+
+				const bigList = user.lists;
+
+				const chIndex = user.lists.findIndex((x) => {
+					return x._id == chList._id;
+				});
+
+				bigList.splice(chIndex, 1);
+
+				const mArr = req.body.mLists.trim().split(",");
+
+				mList = mArr.reduce((y, x) => {
+					const ind = parseInt(x)-1;
+			
+					x = bigList.find((z) => {
+						return 
+					});
+
+					y.push(x);
+					return y;
+				}, []);
+
+				console.log(chList);
+				console.log(chList.items);
+				console.log("------------------------------------------");
+				console.log(mList);
+				console.log(mList[0]);
+				console.log(mList[0].items);
+
+				help.mergeHelp(chList, mList);
+
+				res.render('user', {theUser: user});
+
+			}
+		});
 	}
-
-
-
-	
 
 
 };
