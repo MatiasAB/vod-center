@@ -78,6 +78,26 @@ app.get('/user/:listid', function (req, res) {
 	
 });
 
+app.get('/user/:listid/chars', function (req, res) {
+
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.loadList(req, res, 1);
+	}
+	
+});
+
+app.get('/user/:listid/games', function (req, res) {
+
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.loadList(req, res, 2);
+	}
+	
+});
+
 app.post('/user/edit/:listid', function (req, res) { //route handler for page after using form
 	if (req.body.newName === undefined || req.body.newName === "") { //checks if name was entered
 		res.redirect('back');

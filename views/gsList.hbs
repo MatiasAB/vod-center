@@ -9,7 +9,7 @@
 
 <div class="container backg usr">
 	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
+		<div class = "col-12">
 			<h3>{{list.name}}</h3>
 		</div>
 	</div>
@@ -39,42 +39,47 @@
 	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
 		<div class="col-12">
 			<h2> Items </h2> <br>
-			<a href="/user/{{list._id}}/chars"><button type="submit" value="gbChar">Group By Character</button></a>
-			<a href="/user/{{list._id}}/games"><button type="submit" value="gbGame">Group By Game</button></a>
+			<a href="/user/{{list._id}}/chars"><button type="submit" value="gbChar">Group by Character</button></a>
+			<a href="/user/{{list._id}}"><button type="submit" value="gbGame">Remove Grouping</button></a>
 		</div>
 	</div>
-	
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
-		<table class="col-12">
-			<tr>
-				<th class="text-info"> Entry Name </th>
-				<th class="text-info"> Entry URL </th>
-				<th class="text-info"> Game </th>
-				<th class="text-info"> Players </th>
-				<th class="text-info"> Characters </th>
-			</tr>
 
-			
-			{{#each list.items as |vod|}}
-				<tr>
-					<td> {{vod.name}} </td>
-					<td> <a href={{vod.url}}>{{vod.url}}</a></td>
-					<td> {{vod.game}} </td>
-					<td>
-						{{#each vod.players as |play|}}{{play}}, {{/each}}
-					</td>
-					<td>
-						{{#each vod.chars as |char|}}{{char}}, {{/each}}
-					</td>
+	{{#each list.items as |smList|}}
+		<div class = "row" style="overflow-x: auto; padding-top: 2%;">
+			<div class="col-12">
+				<h2> {{smList.name}} </h2>
+				<table>
+					<tr>
+						<th class="text-info"> Entry Name </th>
+						<th class="text-info"> Entry URL </th>
+						<th class="text-info"> Players </th>
+						<th class="text-info"> Characters </th>
+					</tr>
 
-					<td class="rmv"> <a class = "link text-info" href="/user/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
-					<td class="rmv"> <a class = "link text-danger" href="/user/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
+					
+					{{#each smList.items as |vod|}}
+						<tr>
+							<td> {{vod.name}} </td>
+							<td> <a href={{vod.url}}>{{vod.url}}</a></td>
+							<td>
+								{{#each vod.players as |play|}}{{play}}, {{/each}}
+							</td>
+							<td>
+								{{#each vod.chars as |char|}}{{char}}, {{/each}}
+							</td>
 
-				</tr>
-			{{/each}}
+							<td class="rmv"> <a class = "link text-info" href="/user/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
+							<td class="rmv"> <a class = "link text-danger" href="/user/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
 
-		</table>
+						</tr>
+					{{/each}}
+
+				</table>
+			</div>
 	</div>
+	{{/each}}
+	
+	
 
 </div>
 

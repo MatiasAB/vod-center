@@ -447,8 +447,43 @@ const help = {
 		return array;
 	},
 
+
+	groupInc: function(listA, str, num) {
+		for (let i=0; i < listA.length; i++) {
+			if (listA[i].name === str) {
+				return listA[i];
+			}
+		}
+
+		return undefined;
+		
+	},
+
+
+	groupBy: function(list, num) {
+		const str = (num === 1) ? (" grouped by characters"):(" grouped by games");
+		let bigArr = {name: list.name + str, items:[], _id: list._id};
+		
+		if (num === 2) {
+			list.items.map((x) => {
+				if (help.groupInc(bigArr.items, x.game, num) === undefined) {
+					bigArr.items.push({name:x.game, items:[x]});
+				} else {
+					const pList = bigArr.items.find((y) => {return y.name === x.game});
+					pList.items.push(x);
+				}
+			});
+		} else {
+			console.log("lol");
+		}
+		
+		
+
+		return bigArr;
+	},
+
 	//called from the '/user/:listid' GET route handler to load a list and its contents.
-	loadList: function(req, res) {
+	loadList: function(req, res, ...num) {
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 			
@@ -457,17 +492,28 @@ const help = {
 				res.redirect('/title');
 			} else { //success
 
-				const tList = user.lists.find((x) => {
+				let tList = user.lists.find((x) => {
 					return x._id == req.params.listid;
 				});
 
 				if (req.query.nameQuery !== undefined) {
+					tList.items = help.bigFilter(tList.items, req.query);	
+				}
 
-					tList.items = help.bigFilter(tList.items, req.query);
+				if (num[0] === undefined) {
+					res.render('slist', {list: tList});
+				} else {
+					tList = help.groupBy(tList, num[0]);
+
+					if (num[0] === 2) {
+						res.render('gsList', {list: tList});
+					} else {
+						res.render('csList', {list: tList});
+					}
 					
 				}
 
-				res.render('slist', {list: tList});
+				
 
 			}
 		});
