@@ -497,10 +497,19 @@ const help = {
 
 	mergeHelp: function(chList, mList) {
 
-		for (list in mList) {
-			console.log(list["items"]);
-			console.log(JSON.stringify(list.items));
+		// console.log("testing something");
+		// console.log(mList[0]);
+
+		for (let j = 0; j < mList.length; j++) {
+			// console.log("mergeHelp Loop");
+			// console.log(mList[j]);
+			// console.log(mList[j].items);
+			chList.items = chList.items.concat(mList[j].items);
 		}
+
+		//console.log("after mergeHelp");
+
+		return chList;
 
 	},
 
@@ -519,37 +528,55 @@ const help = {
 					return x._id == req.params.listid;
 				});
 
-				const bigList = user.lists;
-
 				const chIndex = user.lists.findIndex((x) => {
 					return x._id == chList._id;
 				});
 
-				bigList.splice(chIndex, 1);
+				user.lists.splice(chIndex, 1);
 
 				const mArr = req.body.mLists.trim().split(",");
 
-				mList = mArr.reduce((y, x) => {
-					const ind = parseInt(x)-1;
+				mList = mArr.map((x)  => {
 			
-					x = bigList.find((z) => {
-						return 
+					x = user.lists.find((z) => {
+						return z.name.trim() == x;
+					});;
+
+					//console.log(x);
+
+					const xInd = user.lists.findIndex((y) => {
+						return y._id == x._id;
 					});
 
-					y.push(x);
-					return y;
-				}, []);
+					user.lists.splice(xInd, 1);
 
-				console.log(chList);
-				console.log(chList.items);
-				console.log("------------------------------------------");
-				console.log(mList);
-				console.log(mList[0]);
-				console.log(mList[0].items);
+					return x;
+				});
 
-				help.mergeHelp(chList, mList);
+				const rtnVal = help.mergeHelp(chList, mList);
 
-				res.render('user', {theUser: user});
+				// console.log("printing rtnVal");
+				// console.log(rtnVal);
+
+				rtnVal.name = req.body.mName;
+
+				rtnVal.save((err, list) => {
+		        
+		          if(err) {
+		            console.log('error saving nList'); 
+		          }
+		        
+		          user.lists.push(rtnVal);
+
+		          
+
+		          //save changes
+		          user.save(function(err, user2, count){
+		            req.session.user = user2; //update current user
+		            res.redirect('/user'); 
+		          });
+		        
+		        });
 
 			}
 		});
