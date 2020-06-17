@@ -463,7 +463,7 @@ const help = {
 	groupBy: function(list, num) {
 		const str = (num === 1) ? (" grouped by characters"):(" grouped by games");
 		let bigArr = {name: list.name + str, items:[], _id: list._id};
-		
+
 		if (num === 2) {
 			list.items.map((x) => {
 				if (help.groupInc(bigArr.items, x.game, num) === undefined) {
@@ -474,8 +474,18 @@ const help = {
 				}
 			});
 		} else {
-			console.log("lol");
+			list.items.map((x) => {
+				x.chars.map((y) => {
+					if (help.groupInc(bigArr.items, y, num) === undefined) {
+						bigArr.items.push({name:y, items:[x]});
+					} else {
+						const pList = bigArr.items.find((z) => {return z.name === y});
+						pList.items.push(x);
+					}
+				});
+			});
 		}
+		
 		
 		
 
@@ -510,7 +520,6 @@ const help = {
 					} else {
 						res.render('csList', {list: tList});
 					}
-					
 				}
 
 				
