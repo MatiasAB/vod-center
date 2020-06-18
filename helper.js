@@ -311,10 +311,9 @@ const help = {
 				return x._id == req.params.listid;
 			});
 
-
 			
 			const chIndex = chList.items.findIndex((y) => {
-				return y._id == req.params._id;
+				return y._id == req.params.vodid;
 			});
 
 
