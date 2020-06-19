@@ -10025,4 +10025,8 @@ body {
   border-bottom: 2px solid black;
 }
 
+.split {
+  display: inline-block;
+}
+
 /*# sourceMappingURL=main.css.map */

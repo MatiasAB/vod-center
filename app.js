@@ -171,10 +171,34 @@ app.get('/user/merge/:listid', function(req, res) {
 });
 
 
-
 app.post('/user/merge/:listid', function(req, res) {
 
 	help.mergeLists(req, res);
+
+});
+
+
+app.get('/user/split/:listid', function(req, res) {
+
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
+			
+			const chList = user.lists.find((x) => {
+				return x._id == req.params.listid;
+			});
+
+			res.render('split', {chList: chList});
+		});
+	}
+
+});
+
+
+app.post('/user/split/:listid', function(req, res) {
+
+	help.splitList(req, res);
 
 });
 
