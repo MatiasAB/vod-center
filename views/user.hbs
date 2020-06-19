@@ -54,11 +54,11 @@
 		</div>
 
 		<div class = "col-2">
-			<h3 class = "info"><a class="link text-info" href="/user/split/{{list._id}}">Split</a></h3>
+			<h3 class = "info"><a class="link text-info" onclick="splitCheck(this, '{{list.items.length}}')" id="/user/split/{{list._id}}">Split</a></h3>
 		</div>
 
 		<div class = "col-2">
-			<h3 class = "info"><a class="link text-danger" onclick="testFunction(this)" id="/user/remove/{{list._id}}">Remove</a></h3>
+			<h3 class = "info"><a class="link text-danger" onclick="testFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a></h3>
 		</div>
 			
 	</div>

@@ -10,6 +10,7 @@ const path = require('path');
 const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const async = require('async');
 
 app.set('view engine', 'hbs');
 
@@ -543,7 +544,6 @@ const help = {
 					user.lists = help.bigFilter(user.lists, req.query);
 				}
 
-				console.log(user);
 			    res.render('user', {theUser: user});
 			}
 		});
@@ -553,17 +553,24 @@ const help = {
 
 	mergeHelp: function(chList, mList) {
 
-		// console.log("testing something");
-		// console.log(mList[0]);
 
 		for (let j = 0; j < mList.length; j++) {
-			// console.log("mergeHelp Loop");
-			// console.log(mList[j]);
-			// console.log(mList[j].items);
-			chList.items = chList.items.concat(mList[j].items);
+			for (let k = 0; k < mList[j].items.length; k++) {
+				const dupl = chList.items.find((x) => {
+					return x._id == mList[j].items[k]._id;
+				});
+
+				if (dupl !== undefined) {
+					mList[j].items.splice(k, 1);
+				}
+			}
+
+			if (mList[j].items.length > 0) {
+				chList.items = chList.items.concat(mList[j].items);
+			}
+			
 		}
 
-		//console.log("after mergeHelp");
 
 		return chList;
 
@@ -596,43 +603,53 @@ const help = {
 			
 					x = user.lists.find((z) => {
 						return z.name.trim() == x;
-					});;
-
-					//console.log(x);
-
-					const xInd = user.lists.findIndex((y) => {
-						return y._id == x._id;
 					});
 
-					user.lists.splice(xInd, 1);
+					if (x !== undefined) {
+						const xInd = user.lists.findIndex((y) => {
+							return y._id == x._id;
+						});
+
+						user.lists.splice(xInd, 1);
+					}
 
 					return x;
 				});
 
-				const rtnVal = help.mergeHelp(chList, mList);
 
-				// console.log("printing rtnVal");
-				// console.log(rtnVal);
+				if (mList.includes(undefined)) {
+					let invalStr = "";
+					for (let i = 0; i < mArr.length; i++) {
+						if (mList[i] == undefined) {
+							invalStr += mArr[i];
+						}
+					}
 
-				rtnVal.name = req.body.mName;
+					res.render('merge', {chList: chList, bigList: user.lists, errMsg: "Invalid list name(s) entered: " + invalStr});
+				} else {
+					const rtnVal = help.mergeHelp(chList, mList);
 
-				rtnVal.save((err, list) => {
-		        
-		          if(err) {
-		            console.log('error saving nList'); 
-		          }
-		        
-		          user.lists.push(rtnVal);
+					rtnVal.name = req.body.mName;
 
-		          
+					rtnVal.save((err, list) => {
+			        
+			          if(err) {
+			            console.log('error saving nList'); 
+			          }
+			        
+			          user.lists.push(rtnVal);
 
-		          //save changes
-		          user.save(function(err, user2, count){
-		            req.session.user = user2; //update current user
-		            res.redirect('/user'); 
-		          });
-		        
-		        });
+			          
+
+			          //save changes
+			          user.save(function(err, user2, count){
+			            req.session.user = user2; //update current user
+			            res.redirect('/user'); 
+			          });
+			        
+			        });
+				}
+				
 
 			}
 		});
@@ -656,9 +673,6 @@ const help = {
 				});
 
 				user.lists.splice(chIndex, 1);
-
-				console.log(req.body.sInd);
-				console.log(req.body.sInd == 0);
 
 				const spInd = (req.body.sInd == 0) ? (1):(req.body.sInd);
 
@@ -685,8 +699,6 @@ const help = {
 				}
 
 				list1.save((err, listA) => {
-
-					console.log(listA);
 		        
 		          if(err) {
 		            console.log('error saving listA'); 
@@ -716,6 +728,65 @@ const help = {
 			}
 		});
 
+	},
+
+	splitAuto: function(req, res) {
+
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(err, user) {
+
+			if (err) {
+				console.log(err);
+				res.redirct('/title');
+			} else {
+
+				const chList = user.lists.find((x) => {
+					return x._id == req.params.listid;
+				});
+
+				const chIndex = user.lists.findIndex((x) => {
+					return x._id == chList._id;
+				});
+
+				user.lists.splice(chIndex, 1);
+
+				const gNum = (req.body.splitBy.includes("Char")) ? (1):(2);
+
+				const bigList = help.groupBy(chList, gNum);
+
+				async.each(bigList.items, function(item, callback) {
+
+					const minList = new List({
+						user:req.session.user._id, 
+						name:chList.name + " - " + item.name,
+						items:[]
+					});
+
+					for (let j = 0; j < item.items.length; j++) {
+						minList.items.push(item.items[j]._id);
+					}
+
+					minList.save(function(err3, svList) {
+						if (err3) {
+							console.log(err3);
+						} else {
+							console.log("saved, no problem");
+							user.lists.push(svList);
+							callback();
+						}
+					});
+
+				}, function(err2) {
+					if (err2) {
+						console.log(err2);
+					} else {
+							user.save(function(err4, user2, count){
+					            req.session.user = user2; //update current user
+					            res.redirect('/user'); 
+				          });
+					}
+				});
+			}
+		});
 	}
 
 

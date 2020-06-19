@@ -203,6 +203,13 @@ app.post('/user/split/:listid', function(req, res) {
 });
 
 
+app.post('/user/split/:listid/auto', function(req, res) {
+
+	help.splitAuto(req, res);
+
+});
+
+
 
 
 //Item related route handlers -----------------------------------------------------------

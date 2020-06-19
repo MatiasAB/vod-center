@@ -1,7 +1,15 @@
 //script1
 
-function testFunction(ele) {
-	if (confirm('Are you sure you want to remove this?')) {
+function testFunction(ele, name) {
+	if (confirm(`Are you sure you want to remove '${name}'?`)) {
+		location.href = ele.id;
+	}
+}
+
+function splitCheck(ele, length) {
+	if (length <= 1) {
+		alert('This list needs at least two items in order to be split.');
+	} else {
 		location.href = ele.id;
 	}
 }
@@ -15,25 +23,20 @@ function createField(name, val) {
 }
 
 function splitF(ele, id, ...param) {
-	console.log(ele.name);
-	console.log(id);
-	let warnMsg = "Are you sure you want to split this list ";
+	let warnMsg = "Are you sure you want to split this list";
 
 	if (ele.name.includes("Char")) {
-		warnMsg += "by character";
+		warnMsg += " by character";
 	} else if (ele.name.includes("Game")) {
-		warnMsg += "by game";
+		warnMsg += " by game";
 	}
 
 	warnMsg += "?";
 
 	const conf = confirm(warnMsg);
-
 	
 
-	if (conf && param !== undefined) {
-		console.log(param);
-		console.log(document.getElementById("sInd").value);
+	if (conf && param.length > 0) {
 		const formData = [document.getElementById("sInd").value.trim(), 
 		document.getElementById("sN1").value.trim(), document.getElementById("sN2").value.trim()];
 
@@ -44,15 +47,11 @@ function splitF(ele, id, ...param) {
 			formData[0] = parseInt(formData[0])-1;
 			param[0] = parseInt(param[0]);
 
-			if (formData[0] >= param[0]) {
-				alert('Please enter a valid index to split the list by.');
+			if (formData[0] >= param[0] || formData[0] < 0) {
+				alert('Please enter a valid index to split the list by. Refer to the indexing of the items used on this page.');
 				return false;
 			}
 		}
-
-		console.log("print tests");
-		console.log(formData[1]);
-		console.log(formData[2]);
 
 		if ((formData[1] === "" || formData[1] === undefined) && (formData[2] === "" || formData[2] === undefined)) {
 			alert('You must give a unique name to at least one of the child lists.');
@@ -67,6 +66,14 @@ function splitF(ele, id, ...param) {
 		form.appendChild(createField("sN1", formData[1]));
 		form.appendChild(createField("sN2", formData[2]));
 
+		document.body.appendChild(form);
+		form.submit();
+	} else if (conf && param.length <= 0) {
+		const form = document.createElement('form');
+		form.method = 'post';
+		form.action = '/user/split/' + id + '/auto';
+
+		form.appendChild(createField("splitBy", ele.name));
 		document.body.appendChild(form);
 		form.submit();
 	}
