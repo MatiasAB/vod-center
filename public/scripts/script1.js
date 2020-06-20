@@ -22,6 +22,29 @@ function createField(name, val) {
 
 }
 
+function exportList(ele, name, length) {
+	length = parseInt(length);
+
+	let csvFile = `data:text/csv;charset=utf-8,\r\n` + name + `,\r\n`;
+
+	for (let i = 0; i < length; i++) {
+		const row = document.getElementById(i.toString());
+		csvFile += row.children[0].innerText + ",\r\n" + row.children[1].innerText + ",\r\n" +
+		row.children[2].innerText + ",\r\n" + row.children[3].innerText + "\r\n" +
+		row.children[4].innerText + "\r\n"; 
+	}
+
+	const encodedUri = encodeURI(csvFile);
+	const link = document.createElement("a");
+	link.setAttribute("href", encodedUri);
+	link.setAttribute("download", `${name}.csv`);
+
+	if (confirm(`Do you want to download ${name}.csv?`)) {
+		document.body.appendChild(link);
+		link.click();
+	}
+}
+
 function splitF(ele, id, ...param) {
 	let warnMsg = "Are you sure you want to split this list";
 

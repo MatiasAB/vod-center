@@ -55,8 +55,8 @@
 			</tr>
 
 			
-			{{#each list.items as |vod|}}
-				<tr>
+			{{#each list.items as |vod i|}}
+				<tr id="{{i}}">
 					<td> {{vod.name}} </td>
 					<td> <a href={{vod.url}}>{{vod.url}}</a></td>
 					<td> {{vod.game}} </td>
@@ -75,6 +75,14 @@
 
 		</table>
 	</div>
+
+	<div class = "row" style="padding-top: 3%">
+		<div class="col-5"></div>
+		<div class="col-2">
+			<button onclick="exportList(this, '{{list.name}}', '{{list.items.length}}')">Export List as CSV File</button>
+		</div>
+		<div class="col-5"></div>
+	</div> 
 
 </div>
 
@@ -141,3 +149,7 @@
 	</div>
 	
 </div>
+
+<script>
+
+</script>
