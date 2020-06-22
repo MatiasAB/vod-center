@@ -576,7 +576,16 @@ const help = {
 
 	},
 
+	mergeErr: function(mArr, mList, checkF) {
+		let invalStr = "";
+		for (let i = 0; i < mArr.length; i++) {
+			if (!checkF(mList[i])) {
+				invalStr += mArr[i] + ", ";
+			}
+		}
 
+		return invalStr;
+	},
 
 	mergeLists: function(req, res) {
 
@@ -618,36 +627,42 @@ const help = {
 
 
 				if (mList.includes(undefined)) {
-					let invalStr = "";
-					for (let i = 0; i < mArr.length; i++) {
-						if (mList[i] == undefined) {
-							invalStr += mArr[i];
-						}
-					}
+					let invalStr = help.mergeErr(mArr, mList, (x) => {return x !== undefined});
+					console.log(invalStr);
 
 					res.render('merge', {chList: chList, bigList: user.lists, errMsg: "Invalid list name(s) entered: " + invalStr});
 				} else {
-					const rtnVal = help.mergeHelp(chList, mList);
 
-					rtnVal.name = req.body.mName;
+					mList = help.arrCheck(mList, (x) => {return x}, (y) => {return y.items.length > 0});
 
-					rtnVal.save((err, list) => {
-			        
-			          if(err) {
-			            console.log('error saving nList'); 
-			          }
-			        
-			          user.lists.push(rtnVal);
+					if (mList.includes(false)) {
+						let invalStr = help.mergeErr(mArr, mList, (x) => {return x});
+						res.render('merge', {chList: chList, bigList:user.lists, errMsg: "The following lists are too short to merge: " + invalStr});
+					} else {
+						const rtnVal = help.mergeHelp(chList, mList);
 
-			          
+						rtnVal.name = req.body.mName;
 
-			          //save changes
-			          user.save(function(err, user2, count){
-			            req.session.user = user2; //update current user
-			            res.redirect('/user'); 
-			          });
-			        
-			        });
+						rtnVal.save((err, list) => {
+				        
+				          if(err) {
+				            console.log('error saving nList'); 
+				          }
+				        
+				          user.lists.push(rtnVal);
+
+				          
+
+				          //save changes
+				          user.save(function(err, user2, count){
+				            req.session.user = user2; //update current user
+				            res.redirect('/user'); 
+				          });
+				        
+				        });
+					}
+
+					
 				}
 				
 

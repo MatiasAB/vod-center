@@ -6,6 +6,14 @@ function testFunction(ele, name) {
 	}
 }
 
+function mergeCheck(ele, length) {
+	if (length < 1) {
+		alert('This list needs at least one item in order to merge with other lists.');
+	} else {
+		location.href = ele.id;
+	}
+}
+
 function splitCheck(ele, length) {
 	if (length <= 1) {
 		alert('This list needs at least two items in order to be split.');
