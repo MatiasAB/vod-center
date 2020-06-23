@@ -637,7 +637,7 @@ const help = {
 
 					if (mList.includes(false)) {
 						let invalStr = help.mergeErr(mArr, mList, (x) => {return x});
-						res.render('merge', {chList: chList, bigList:user.lists, errMsg: "The following lists are too short to merge: " + invalStr});
+						res.render('merge', {chList: chList, bigList:user.lists, errMsg: "The following lists need to have at least one item in order to merge: " + invalStr});
 					} else {
 						const rtnVal = help.mergeHelp(chList, mList);
 

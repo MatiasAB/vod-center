@@ -30,16 +30,34 @@ function createField(name, val) {
 
 }
 
-function exportList(ele, name, length) {
-	length = parseInt(length);
+function exportList(ele, name) {
 
 	let csvFile = `data:text/csv;charset=utf-8,\r\n` + name + `,\r\n`;
 
+	const tbody = document.querySelector('tbody');
+	const length = tbody.children.length;
+	let rowL = 0;
+
 	for (let i = 0; i < length; i++) {
-		const row = document.getElementById(i.toString());
-		csvFile += row.children[0].innerText + ",\r\n" + row.children[1].innerText + ",\r\n" +
-		row.children[2].innerText + ",\r\n" + row.children[3].innerText + "\r\n" +
-		row.children[4].innerText + "\r\n"; 
+		const row = tbody.children[i];
+
+		if (i == 0) {
+			rowL = row.children.length;
+		}
+
+		for (let j = 0; j < rowL; j++) {
+			let ele = row.children[j].innerText;
+
+			if (ele.includes(",")) {
+				ele = ele.replace(/,/g, "||");
+			}
+
+			if (j == (rowL - 1)) {
+				csvFile += `${ele}\r\n`;
+			} else {
+				csvFile += `${ele} ,`;
+			}
+		}
 	}
 
 	const encodedUri = encodeURI(csvFile);
