@@ -4,6 +4,7 @@ require('./db');
 const User = mongoose.model('User');
 const List = mongoose.model('List');
 const Item = mongoose.model('Item');
+const Message = mongoose.model('Message');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -329,7 +330,7 @@ const help = {
 
 				user.save(function(err3, user2, count) {
 					req.session.user = user2;
-					res.redirect(`/user/${req.params.listid}`);
+					res.redirect(`/user/lists/${req.params.listid}`);
 				})
 
 			});
@@ -376,7 +377,7 @@ const help = {
 
 					user.save(function(err, user2, count) {
 						req.session.user = user2;
-						res.redirect(`/user/${req.params.listid}`);
+						res.redirect(`/user/lists/${req.params.listid}`);
 					});
 
 				});
@@ -802,9 +803,75 @@ const help = {
 				});
 			}
 		});
+	},
+
+
+	loadInbox: function(req, res, ...conf) {
+		User.findOne({_id: req.session.user._id}).populate({path: 'mail.inbox'}).exec(function (err, user) {
+			res.render('inbox', {tUser: user, mConf: conf[0]});
+		});
+	},
+	
+
+	storeMsg: function(req, res, msg) {
+		User.findOne({_id: req.session.user._id}).populate({path: 'mail.sent'}).exec(function(err, user) {
+
+			msg.save(function(err2, msgA) {
+				if (err2) {
+					console.log(err2);
+				} else {
+					user.mail.sent.push(msgA);
+
+					user.save(function(err3, user2, count) {
+						if (err3) {
+							console.log(err3);
+						} else {
+							req.session.user = user2;
+							help.loadInbox(req, res, "Message sent!");
+						}
+					})
+				}
+
+
+			});
+		});
+	},
+
+	sendMsg: function(req, res) {
+		console.log(req.body.msgDest);
+		User.find({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
+
+				const uDest = user[0];
+
+				const msg = new Message({
+					from: req.session.user._id,
+					to: uDest._id,
+					subject:req.body.msgSubj,
+					content:{text: req.body.msgText, attach:""},
+					read:false
+				});
+
+				msg.save(function(err2, msgA) {
+					if (err2) {
+						console.log(err2);
+					} else {
+						console.log(uDest);
+						uDest.mail.inbox.push(msgA);
+
+						uDest.save(function(err3, user2, count) {
+							if (err3) {
+								console.log(err3);
+							} else {
+								req.session.user = user2;
+								help.storeMsg(req, res, msgA);
+							}
+						})
+					}
+				});
+		});
+		
 	}
 
-
-};
+}
 
 module.exports = help;

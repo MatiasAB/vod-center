@@ -30,6 +30,47 @@ function createField(name, val) {
 
 }
 
+function makeForm(method, action, keys, vals) {
+	const form = document.createElement('form');
+	form.method = method;
+	form.action = action;
+
+	for (let i = 0; i < keys.length; i++) {
+		form.appendChild(createField(keys[i], vals[i]));
+	}
+
+	return form;
+}
+
+function sendMsg() {
+
+	const vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
+	const atVal = document.getElementById("msgAttch").value;
+
+	if (vals.includes("")) {
+		let invalStr = "Error(s):\n";
+
+		if (vals[0] == "") {invalStr+="The message must be sent to another user (empty 'To:' field)\n";}
+
+		if (vals[1] == "") {invalStr+="The message needs a subject. (empty 'Subject:' field)\n";}
+
+		if (vals[2] == "" && atVal == "") {invalStr+="The message needs a subject if there are no attachments. (empty 'Message:' field)\n";}
+
+		alert(invalStr);
+	} else {
+		if (confirm('Are you sure you want to send this message?')) {
+			vals.push(atVal);
+			const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
+
+			const form = makeForm('post', '/user/inbox/newmsg', keys, vals);
+
+			document.body.appendChild(form);
+			form.submit();
+		}
+	}
+	
+}
+
 function exportList(ele, name) {
 
 	let csvFile = `data:text/csv;charset=utf-8,\r\n` + name + `,\r\n`;
@@ -107,22 +148,14 @@ function splitF(ele, id, ...param) {
 			return false;
 		}
 
-		const form = document.createElement('form');
-		form.method = 'post';
-		form.action = '/user/split/' + id;
-
-		form.appendChild(createField("sInd", formData[0]));
-		form.appendChild(createField("sN1", formData[1]));
-		form.appendChild(createField("sN2", formData[2]));
-
+		const keys = ["sInd", "sN1", "sN2"];
+		const form = makeForm('post', '/user/split/' + id, keys, formData);
 		document.body.appendChild(form);
 		form.submit();
-	} else if (conf && param.length <= 0) {
-		const form = document.createElement('form');
-		form.method = 'post';
-		form.action = '/user/split/' + id + '/auto';
 
-		form.appendChild(createField("splitBy", ele.name));
+	} else if (conf && param.length <= 0) {
+
+		const form = makeForm('post', '/user/split/' + id + '/auto', ["splitBy"], [ele.name]);
 		document.body.appendChild(form);
 		form.submit();
 	}

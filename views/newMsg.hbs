@@ -1,0 +1,60 @@
+<div class="container backg" id="navi">
+	<h2 id="navh2"> Navigation Bar </h2>
+	<ul>
+		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+		<li><a class = "link text-secondary" href="/user/inbox"> Back to User's Inbox </a></li>
+	</ul>
+</div>
+
+
+<div class="container backg usr" style="margin-top:2%;">
+	<h2 style="padding-top:30px">New Message</h2>
+
+	<div class = "row nMsg">
+			<div class = "col-4">
+				To:  
+			</div>
+
+			<div class = "col-8">
+				<input type="text" id="msgDest">
+			</div>
+	</div>
+	
+	<div class = "row nMsg">
+			<div class = "col-4">
+				Subject:  
+			</div>
+
+			<div class = "col-8">
+				<input type="text" id="msgSubj">
+			</div>
+	</div>
+
+	<div class = "row nMsg">
+			<div class = "col-4">
+				Message:  
+			</div>
+
+			<div class = "col-8">
+				<textarea id="msgText" rows="7" cols="50"></textarea>
+			</div>
+	</div>
+
+	<div class = "row nMsg">
+			<div class = "col-4">
+				Attachments:  
+			</div>
+
+			<div class = "col-8">
+				<input type="text" id="msgAttch">
+			</div>
+	</div>
+
+	<div class = "row nMsg">
+		<div class = "col-4">
+			<button name="sendMsg" onclick="sendMsg()">Send Message</button>
+		</div>
+	</div>
+	
+</div>

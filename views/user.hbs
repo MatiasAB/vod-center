@@ -4,6 +4,7 @@
 	<h2 id="navh2"> Navigation Bar </h2>
 	<ul>
 		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user/inbox">Inbox ({{theUser.mail.unread}})</a></li>
 	</ul>
 </div>
 
@@ -42,7 +43,7 @@
 	{{#each theUser.lists as |list|}}
 	<div class = "row" style="overflow-x: auto;">
 		<div class = "col-3">
-			<li><h3 class = "info"><a class="link text-secondary" href="/user/{{list._id}}">{{list.name}}</a></h3></li>
+			<li><h3 class = "info"><a class="link text-secondary" href="/user/lists/{{list._id}}">{{list.name}}</a></h3></li>
 		</div>
 
 		<div class = "col-2">
@@ -58,9 +59,17 @@
 		</div>
 
 		<div class = "col-2">
-			<h3 class = "info"><a class="link text-danger" onclick="testFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a></h3>
+			<h3 class = "info"><a class="link text-info" href="#">Share</a></h3>
 		</div>
 			
+	</div>
+	<div class = "row" style="margin-bottom: 20px;">
+		<div class="col-3">
+		</div>
+
+		<div class="col-2">
+			<h3 class = "info"><a class="link text-danger" onclick="testFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a></h3>
+		</div>
 	</div>
 	{{/each}}
 	</ul>

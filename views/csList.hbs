@@ -14,7 +14,7 @@
 		</div>
 	</div>
 
-	<form method="GET" action="/user/{{list._id}}" id="form2">
+	<form method="GET" action="/user/lists/{{list._id}}" id="form2">
 		<div class = "row">
 			<div class = "col-12">
 			Filter Items by: Name: <input type="text" name="nameQuery"><br>
@@ -39,8 +39,8 @@
 	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
 		<div class="col-12">
 			<h2> Items </h2> <br>
-			<a href="/user/{{list._id}}"><button type="submit" value="gbChar">Remove Grouping</button></a>
-			<a href="/user/{{list._id}}/games"><button type="submit" value="gbGame">Group by Game</button></a>
+			<a href="/user/lists/{{list._id}}"><button type="submit" value="gbChar">Remove Grouping</button></a>
+			<a href="/user/lists/{{list._id}}/games"><button type="submit" value="gbGame">Group by Game</button></a>
 		</div>
 	</div>
 
@@ -66,8 +66,8 @@
 								{{#each vod.players as |play|}}{{play}}, {{/each}}
 							</td>
 
-							<td class="rmv"> <a class = "link text-info" href="/user/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
-							<td class="rmv"> <a class = "link text-danger" onclick="testFunction(this, '{{vod.name}}')" id="/user/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
+							<td class="rmv"> <a class = "link text-info" href="/user/lists/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
+							<td class="rmv"> <a class = "link text-danger" onclick="testFunction(this, '{{vod.name}}')" id="/user/lists/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
 
 						</tr>
 					{{/each}}

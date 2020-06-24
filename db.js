@@ -11,7 +11,20 @@ nconf.file({ file: 'config.json' })
 const User = new mongoose.Schema({
   username: {type:String, required:true}, 
   password: {type:String, required:true},
-  lists:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'List'}]
+  lists:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'List'}],
+  mail: {
+  	inbox:[{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}], 
+  	sent:[{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}],
+  	unread: {type: Number, required: true}
+  }
+});
+
+const Message = new mongoose.Schema({
+	from: {type: mongoose.Types.ObjectId, ref: 'User'},
+	to: {type: mongoose.Types.ObjectId, ref: 'User'},
+	subject: {type:String, required: true},
+	content: {text: {type:String, required: true}, attach: {type:Array, required: false}},
+	read: {type: Boolean, required: false}
 });
 
 
@@ -49,5 +62,6 @@ if (nconf.get('NODE_ENV') === "PRODUCTION") {
 mongoose.model('User', User);
 mongoose.model('List', List);
 mongoose.model('Item', Item);
+mongoose.model('Message', Message);
 
 mongoose.connect(dbconf, {useUnifiedTopology: true, useNewUrlParser:true});

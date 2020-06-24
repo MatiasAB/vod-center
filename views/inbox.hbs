@@ -1,0 +1,63 @@
+<div class="container backg" id="navi">
+	<h2 id="navh2"> Navigation Bar </h2>
+	<ul>
+		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+	</ul>
+</div>
+
+<div class="container backg usr">
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-4">
+			<h3>{{tUser.username}}'s Inbox</h3>
+		</div>
+	</div>
+
+	<form method="GET" action="#" id="form2">
+		<div class = "row">
+			<div class = "col-12" style="padding-right: 150px;">
+				<h4>Search Inbox:</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				User: <input type="text" name="nameQuery"><br>
+				 Subject: <input type="text" name="urlQuery"><br>
+				 <button type="submit" form="form2" value="Search">Search Inbox</button>
+			</div>
+		</div>
+	</form>
+
+	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
+		<div class="col-12">
+			<h2> Messages </h2> <br>
+			<a href="/user/inbox/newmsg"><button type="submit" value="newMsg">New Message</button></a>
+			<a href="#"><button type="submit" value="gbSend">Group By Sender</button></a>
+			<a href="#"><button type="submit" value="gbSubj">Group By Subject</button></a> <br>
+			<h4 style="color:blue;"> {{mConf}} </h4>
+		</div>
+	</div>
+	
+	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
+		<table class="col-12">
+			<tr>
+				<th class="text-info"> Subject </th>
+				<th class="text-info"> From </th>
+				<th class="text-info"> Read </th>
+			</tr>
+
+			
+			{{#each tUser.mail.inbox as |msg|}}
+				<tr id="{{i}}">
+					<td> <a href="#"> {{msg.subject}}</a> </td>
+					<td> {{msg.from}}</a></td>
+					<td> {{msg.read}} </td>
+					<td class="rmv"> <a class = "link text-danger" href="#">Remove</a> </td>
+				</tr>
+			{{/each}}
+
+		</table>
+	</div>
+
+</div>

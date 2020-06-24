@@ -62,13 +62,13 @@ app.post('/user', function (req, res) { //route handler for page after using for
 });
 
 
-app.post('/user/:listid', function (req, res) {
+app.post('/user/lists/:listid', function (req, res) {
 
 	help.newItem(req, res);
 	
 });
 
-app.get('/user/:listid', function (req, res) {
+app.get('/user/lists/:listid', function (req, res) {
 
 	if (req.session.user === undefined) {
 		res.redirect('/title');
@@ -78,7 +78,7 @@ app.get('/user/:listid', function (req, res) {
 	
 });
 
-app.get('/user/:listid/chars', function (req, res) {
+app.get('/user/lists/:listid/chars', function (req, res) {
 
 	if (req.session.user === undefined) {
 		res.redirect('/title');
@@ -88,7 +88,7 @@ app.get('/user/:listid/chars', function (req, res) {
 	
 });
 
-app.get('/user/:listid/games', function (req, res) {
+app.get('/user/lists/:listid/games', function (req, res) {
 
 	if (req.session.user === undefined) {
 		res.redirect('/title');
@@ -213,7 +213,7 @@ app.post('/user/split/:listid/auto', function(req, res) {
 
 
 //Item related route handlers -----------------------------------------------------------
-app.get('/user/:listid/remove/:vodid', function(req, res) {
+app.get('/user/lists/:listid/remove/:vodid', function(req, res) {
 
 	if (req.session.user === undefined) {
 		res.redirect('/title');
@@ -223,13 +223,13 @@ app.get('/user/:listid/remove/:vodid', function(req, res) {
 
 });
 
-app.post('/user/:listid/edit/:vodid', function (req, res) {
+app.post('/user/lists/:listid/edit/:vodid', function (req, res) {
 
 	help.editItem(req, res);	
 
 });
 
-app.get('/user/:listid/edit/:vodid', function (req, res) {
+app.get('/user/lists/:listid/edit/:vodid', function (req, res) {
 
 	if (req.session.user === undefined) {
 		res.redirect('/title');
@@ -258,6 +258,30 @@ app.get('/user', function(req, res) {
 			res.redirect('/title');
 		} else {
 			help.loadUser(req, res);
+		}
+});
+
+
+app.get('/user/inbox/', function(req, res) {
+		
+		if (req.session.user === undefined) {
+			res.redirect('/title');
+		} else {
+			help.loadInbox(req, res);
+		}
+});
+
+app.post('/user/inbox/newmsg', function(req, res) {
+		
+		help.sendMsg(req, res);
+});
+
+app.get('/user/inbox/newmsg', function(req, res) {
+		
+		if (req.session.user === undefined) {
+			res.redirect('/title');
+		} else {
+			help.loadInbox(req, res);
 		}
 });
 
