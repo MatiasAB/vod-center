@@ -8,34 +8,29 @@
 </div>
 
 
-<div class="container backg usr" style="margin-top:2%;">
-	<h2 style="padding-top:30px">New Message</h2>
-
-	<div class="row">
-		<div class="col-12">
-			<h4 style="color:red"> {{wMsg}} </h4>
+<div class="container backg usr">
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-6">
+			<h3>From: {{msg.from}}</h3>
 		</div>
 	</div>
 
-	<div class = "row nMsg">
-			<div class = "col-4">
-				To:  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" id="msgDest">
-			</div>
+	<div class="row">
+		<div class="col-6">
+			<h3>Subject: {{msg.subject}}</h3>
+		</div>
 	</div>
 	
-	<div class = "row nMsg">
-			<div class = "col-4">
-				Subject:  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" id="msgSubj">
-			</div>
+	<div class = "row" style="border:2px solid black; background-color: white;">
+		<div class="col-12">
+			<p> {{msg.content.text}}</p>
+		</div>
 	</div>
+</div>
+
+
+<div class="container backg usr" style="margin-top:2%;">
+	<h2 style="padding-top:30px">Reply</h2>
 
 	<div class = "row nMsg">
 			<div class = "col-4">
@@ -63,4 +58,9 @@
 		</div>
 	</div>
 	
+</div>
+
+<div style="display:none;">
+	<p id="msgDest">{{msg.from}}</p>
+	<p id="msgSubj">Re:{{msg.subject}}</p>
 </div>

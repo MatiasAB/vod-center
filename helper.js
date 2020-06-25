@@ -838,12 +838,20 @@ const help = {
 		});
 	},
 
+	newMsg: function(req, res, ...wMsg) {
+		if (wMsg.length > 0) {
+			wMsg[1] = "Errors(s): " + wMsg[0]; 
+		}
+		res.render('newMsg', {wMsg:wMsg[1]});
+	},
+
 	sendMsg: function(req, res) {
 		console.log(req.body.msgDest);
 		User.find({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
 
-			//great place for error checking! (valid user)
-
+			if (user.length < 1) {
+				help.newMsg(req, res, "Invalid username entered for destination.");
+			} else {
 				const uDest = user[0];
 
 				const msg = new Message({
@@ -867,11 +875,13 @@ const help = {
 							} else {
 								help.storeMsg(req, res, msgA);
 							}
-						})
+						});
 					}
 				});
+			}
+
+			
 		});
-		
 	},
 
 	markR: function(req, res) {
@@ -890,7 +900,7 @@ const help = {
 					user.mail.unread--;
 
 					user.save(function(err3, user2, count) {
-						help.loadInbox(req, res, "", "mail.inbox");
+						res.redirect('/user/inbox');
 					});
 				}
 			});
@@ -910,7 +920,14 @@ const help = {
 				return x._id == req.params.num;
 			});
 
-			res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+			console.log(msg);
+
+			if (place[1] == undefined) {
+				res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+			} else {
+				res.render('writeR', {msg:msg});
+			}
+			
 
 			
 		});

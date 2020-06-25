@@ -42,9 +42,16 @@ function makeForm(method, action, keys, vals) {
 	return form;
 }
 
-function sendMsg() {
+function sendMsg(...reply) {
 
-	const vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
+	//button in writeR isn't working
+
+	if (reply.length > 1) {
+		const vals = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value];
+	} else {
+		const vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
+	}
+	
 	const atVal = document.getElementById("msgAttch").value;
 
 	if (vals.includes("")) {
@@ -61,6 +68,8 @@ function sendMsg() {
 		if (confirm('Are you sure you want to send this message?')) {
 			vals.push(atVal);
 			const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
+
+			console.log(vals);
 
 			const form = makeForm('post', '/user/inbox/newmsg', keys, vals);
 
