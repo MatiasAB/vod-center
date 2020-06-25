@@ -807,8 +807,8 @@ const help = {
 
 
 	loadInbox: function(req, res, ...conf) {
-		User.findOne({_id: req.session.user._id}).populate({path: 'mail.inbox'}).exec(function (err, user) {
-			res.render('inbox', {tUser: user, mConf: conf[0]});
+		User.findOne({_id: req.session.user._id}).populate({path: conf[1]}).exec(function (err, user) {
+			res.render(conf[1].substring(5), {tUser: user, mConf: conf[0]});
 		});
 	},
 	
@@ -826,8 +826,9 @@ const help = {
 						if (err3) {
 							console.log(err3);
 						} else {
+							console.log(user.mail.sent);
 							req.session.user = user2;
-							help.loadInbox(req, res, "Message sent!");
+							help.loadInbox(req, res, "Message sent!", "mail.inbox");
 						}
 					})
 				}
@@ -841,11 +842,13 @@ const help = {
 		console.log(req.body.msgDest);
 		User.find({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
 
+			//great place for error checking! (valid user)
+
 				const uDest = user[0];
 
 				const msg = new Message({
-					from: req.session.user._id,
-					to: uDest._id,
+					from: req.session.user.username,
+					to: uDest.username,
 					subject:req.body.msgSubj,
 					content:{text: req.body.msgText, attach:""},
 					read:false
@@ -855,14 +858,13 @@ const help = {
 					if (err2) {
 						console.log(err2);
 					} else {
-						console.log(uDest);
 						uDest.mail.inbox.push(msgA);
+						uDest.mail.unread+=1;
 
 						uDest.save(function(err3, user2, count) {
 							if (err3) {
 								console.log(err3);
 							} else {
-								req.session.user = user2;
 								help.storeMsg(req, res, msgA);
 							}
 						})
@@ -870,6 +872,74 @@ const help = {
 				});
 		});
 		
+	},
+
+	markR: function(req, res) {
+		User.findOne({_id:req.session.user._id}).populate({path: 'mail.inbox'}).exec(function(err, user) {
+
+			const chMsg = user.mail.inbox.find((x) => {
+				return x._id = req.params.mid;
+			});
+
+			chMsg.read = true;
+
+			chMsg.save(function(err2, msg) {
+				if (err2) {
+					console.log(err2);
+				} else {
+					user.mail.unread--;
+
+					user.save(function(err3, user2, count) {
+						help.loadInbox(req, res, "", "mail.inbox");
+					});
+				}
+			});
+		});
+	},
+
+	loadMsg: function(req, res, ...place) {
+
+		User.find({}).populate({path: place[0]}).exec(function(err, userL) {
+			req.session.user = userL.find((x) => {
+				return x._id == req.session.user._id;
+			});
+
+			const chBox = (place[0].includes("inbox")) ? (req.session.user.mail.inbox):(req.session.user.mail.sent);
+
+			const msg = chBox.find((x) => {
+				return x._id == req.params.num;
+			});
+
+			res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+
+			
+		});
+	},
+
+	removeMsg: function(req, res, ...place) {
+
+		User.findOne({_id: req.session.user._id}).populate({path: place[0]}).exec(function (err, user) {
+
+			const box = (place[0].includes("inbox")) ? (user.mail.inbox):(user.mail.sent);
+
+			const chMsg = box.find((x) => {
+				return x._id == req.params.num;
+			});
+
+			
+			const chIndex = box.findIndex((y) => {
+				return y._id == chMsg._id;
+			});
+
+
+			box.splice(chIndex, 1);
+
+			user.save(function(err3, user2, count) {
+				req.session.user = user2;
+				const pathA = (place[0].includes("inbox")) ? ('/user/inbox'):('/user/sent');
+				res.redirect(pathA);
+			});
+		});
 	}
 
 }

@@ -3,21 +3,21 @@
 	<ul>
 		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
 		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
-		<li><a class = "link text-secondary" href="/user/sent"> View Sent Messages </a></li>
+		<li><a class = "link text-secondary" href="/user/inbox"> View Inbox </a></li>
 	</ul>
 </div>
 
 <div class="container backg usr">
 	<div style="padding-top:30px" class = "row">
 		<div class = "col-4">
-			<h3>{{tUser.username}}'s Inbox</h3>
+			<h3>{{tUser.username}}'s Sent Messages</h3>
 		</div>
 	</div>
 
 	<form method="GET" action="#" id="form2">
 		<div class = "row">
 			<div class = "col-12" style="padding-right: 150px;">
-				<h4>Search Inbox:</h4>
+				<h4>Search Sent Messages:</h4>
 			</div>
 		</div>
 
@@ -25,7 +25,7 @@
 			<div class="col-12">
 				User: <input type="text" name="nameQuery"><br>
 				 Subject: <input type="text" name="urlQuery"><br>
-				 <button type="submit" form="form2" value="Search">Search Inbox</button>
+				 <button type="submit" form="form2" value="Search">Search Sent Messages</button>
 			</div>
 		</div>
 	</form>
@@ -33,7 +33,6 @@
 	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
 		<div class="col-12">
 			<h2> Messages </h2> <br>
-			<a href="/user/inbox/newmsg"><button type="submit" value="newMsg">New Message</button></a>
 			<a href="#"><button type="submit" value="gbSend">Group By Sender</button></a>
 			<a href="#"><button type="submit" value="gbSubj">Group By Subject</button></a> <br>
 			<h4 style="color:blue;"> {{mConf}} </h4>
@@ -44,18 +43,15 @@
 		<table class="col-12">
 			<tr>
 				<th class="text-info"> Subject </th>
-				<th class="text-info"> From </th>
-				<th class="text-info"> Read </th>
+				<th class="text-info"> To </th>
 			</tr>
 
 			
-			{{#each tUser.mail.inbox as |msg i|}}
+			{{#each tUser.mail.sent as |msg i|}}
 				<tr id="{{i}}">
-					<td> <a href="/user/inbox/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
-					<td> {{msg.from}}</a></td>
-					<td> {{msg.read}} </td>
-					<td class="rmv"><a class = "link text-info" href="/user/inbox/markR/{{msg._id}}">Mark as Read</a></td>
-					<td class="rmv"><a onclick="testFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/inbox/rmvMsg/{{msg._id}}">Delete Message</a></td>
+					<td> <a href="/user/sent/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
+					<td> {{msg.to}}</a></td>
+					<td class="rmv"><a onclick="testFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/sent/rmvMsg/{{msg._id}}">Delete Message</a></td>
 				</tr>
 			{{/each}}
 

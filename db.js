@@ -20,8 +20,8 @@ const User = new mongoose.Schema({
 });
 
 const Message = new mongoose.Schema({
-	from: {type: mongoose.Types.ObjectId, ref: 'User'},
-	to: {type: mongoose.Types.ObjectId, ref: 'User'},
+	from: {type:String, required: true},
+	to: {type:String, required: true},
 	subject: {type:String, required: true},
 	content: {text: {type:String, required: true}, attach: {type:Array, required: false}},
 	read: {type: Boolean, required: false}

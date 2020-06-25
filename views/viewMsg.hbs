@@ -1,0 +1,36 @@
+<div class="container backg" id="navi">
+	<h2 id="navh2"> Navigation Bar </h2>
+	<ul>
+		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user">Back to Your Page</a></li>
+		<li><a class = "link text-secondary" href="/user/inbox">Your Inbox</a></li>
+		<li><a class = "link text-secondary" href="/user/sent">Your Sent Messages</a></li>  
+	</ul>
+</div>
+
+<div class="container backg usr">
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-6">
+			<h3>From: {{msg.from}}</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-6">
+			<h3>Subject: {{msg.subject}}</h3>
+		</div>
+	</div>
+	
+	<div class = "row" style="border:2px solid black; background-color: white;">
+		<div class="col-12">
+			<p> {{msg.content.text}}</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<a onclick="testFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/{{place}}/rmvMsg/{{msg._id}}">Delete Message</a>
+		</div>
+	</div>
+
+</div>
