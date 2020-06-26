@@ -5,6 +5,7 @@ const User = mongoose.model('User');
 const List = mongoose.model('List');
 const Item = mongoose.model('Item');
 const Message = mongoose.model('Message');
+const ObjectID = mongoose.Types.ObjectId;
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -290,16 +291,34 @@ const help = {
 			});
 
 
-			user.lists.splice(chIndex, 1);
+			const chList = user.lists.splice(chIndex, 1);
 
+			async.each(chList.items, function(chItem, callback2) {
+				console.log("yup");
+				console.log(chItem);
+				Item.deleteOne({_id: chItem._id}, function (err6, result) {
+					if (err6) {console.log(err6);}
+					console.log("before result");
+					console.log(result);
+					console.log("after result");
+				    callback2();
+				});
+			}, function (err7) {
+				if (err7) {console.log(err7);}
 
-			user.save(function(err2, user2, count) {
-				req.session.user = user2;
-				res.redirect('/user');
-			})
-
-
-
+				List.deleteOne({_id: chList._id}, function (err3, result2) {
+					if (err3) {
+						console.log(err3);
+					}
+					console.log("before result2");
+					console.log(result2);
+					console.log("after result2");
+					user.save(function(err2, user2, count) {
+						req.session.user = user2;
+						res.redirect('/user');
+					});
+				});
+			});
 		});
 	},
 
@@ -319,24 +338,28 @@ const help = {
 			});
 
 
-			chList.items.splice(chIndex, 1);
+			const chItem = chList.items.splice(chIndex, 1);
 
 
-			chList.save(function(err2, list) {
+			const tId = new ObjectID(chItem._id);
 
-				if (err2) {
-					console.log(err2);
-				}
 
-				user.save(function(err3, user2, count) {
-					req.session.user = user2;
-					res.redirect(`/user/lists/${req.params.listid}`);
-				})
+			Item.deleteOne({_id: tId}).exec(function (err6, result) {
+				if (err6) {console.log(err6);}
 
+				console.log(result);
+				chList.save(function(err2, list) {
+
+					if (err2) {
+						console.log(err2);
+					}
+
+					user.save(function(err3, user2, count) {
+						req.session.user = user2;
+						res.redirect(`/user/lists/${req.params.listid}`);
+					});
+				});
 			});
-
-
-
 		});
 	},
 
@@ -629,7 +652,6 @@ const help = {
 
 				if (mList.includes(undefined)) {
 					let invalStr = help.mergeErr(mArr, mList, (x) => {return x !== undefined});
-					console.log(invalStr);
 
 					res.render('merge', {chList: chList, bigList: user.lists, errMsg: "Invalid list name(s) entered: " + invalStr});
 				} else {
@@ -644,29 +666,47 @@ const help = {
 
 						rtnVal.name = req.body.mName;
 
-						rtnVal.save((err, list) => {
+						rtnVal.save((err2, list) => {
 				        
-				          if(err) {
-				            console.log('error saving nList'); 
-				          }
+				        	if(err2) {
+				            	console.log('error saving nList'); 
+				          	}
 				        
-				          user.lists.push(rtnVal);
+				        	user.lists.push(rtnVal);
 
-				          
 
-				          //save changes
-				          user.save(function(err, user2, count){
-				            req.session.user = user2; //update current user
-				            res.redirect('/user'); 
-				          });
-				        
+				        	async.each(mList, function(chList, callback) {
+
+				        		async.each(chList.items, function(chItem, callback2) {
+				        			Item.deleteOne({_id: chItem._id}, function (err6) {
+				        				if (err6) {console.log(err6);}
+
+				        				callback2();
+				        			});
+				        		}, function (err7) {
+				        			if (err7) {console.log(err7);}
+
+				        			List.deleteOne({_id: chList._id}, function (err3) {
+										if (err3) {
+											console.log(err3);
+										}
+
+										callback();
+									});
+				        		});
+							}, function(err4) {
+								if (err4) {
+									console.log(err4);
+								} else {
+									user.save(function(err5, user2, count){
+								        req.session.user = user2; //update current user
+								        res.redirect('/user'); 
+							        });
+								}
+							});
 				        });
 					}
-
-					
-				}
-				
-
+				}				
 			}
 		});
 	},
@@ -714,36 +754,48 @@ const help = {
 					list1.items.push(chList.items[k]._id);
 				}
 
-				list1.save((err, listA) => {
+
+				async.each(chList.items, function(chItem, callback2) {
+				    Item.deleteOne({_id: chItem._id}, function (err6) {
+				        if (err6) {console.log(err6);}
+
+				        	callback2();
+				        });
+				}, function (err7) {
+				    if (err7) {console.log(err7);}
+				   	List.deleteOne({_id: chList._id}, function (err3) {
+						if (err3) {
+							console.log(err3);
+						}
+
+						list1.save((err9, listA) => {
 		        
-		          if(err) {
-		            console.log('error saving listA'); 
-		          }
-		        
-		          user.lists.push(listA);
+				        	if(err9) {
+				        		console.log('error saving listA'); 
+				        	}
+					        
+					       	user.lists.push(listA);
 
-		          
+					          
 
-		          //save changes
-		        	list2.save((err2, listB) => {
-		          		if(err2) {
-			            	console.log('error saving listB'); 
-			          	}
-			        
-			          	user.lists.push(listB);
+					       	//save changes
+					       	list2.save((err10, listB) => {
+				          		if(err10) {
+					            	console.log('error saving listB'); 
+					          	}
+						        
+					          	user.lists.push(listB);
 
-			          	user.save(function(err3, user2, count){
-				            req.session.user = user2; //update current user
-				            res.redirect('/user'); 
-			          });
-			            
-			    	});
-		        
-		        });
-
+					          	user.save(function(err11, user2, count){
+						            req.session.user = user2; //update current user
+						            res.redirect('/user'); 
+					          	});
+					    	});
+				        });
+					});
+				});
 			}
 		});
-
 	},
 
 	splitAuto: function(req, res) {
@@ -785,7 +837,6 @@ const help = {
 						if (err3) {
 							console.log(err3);
 						} else {
-							console.log("saved, no problem");
 							user.lists.push(svList);
 							callback();
 						}
@@ -826,7 +877,6 @@ const help = {
 						if (err3) {
 							console.log(err3);
 						} else {
-							console.log(user.mail.sent);
 							req.session.user = user2;
 							help.loadInbox(req, res, "Message sent!", "mail.inbox");
 						}
@@ -846,7 +896,6 @@ const help = {
 	},
 
 	sendMsg: function(req, res) {
-		console.log(req.body.msgDest);
 		User.find({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
 
 			if (user.length < 1) {
@@ -866,7 +915,7 @@ const help = {
 					if (err2) {
 						console.log(err2);
 					} else {
-						uDest.mail.inbox.push(msgA);
+						uDest.mail.inbox.unshift(msgA);
 						uDest.mail.unread+=1;
 
 						uDest.save(function(err3, user2, count) {
@@ -887,20 +936,25 @@ const help = {
 	markR: function(req, res) {
 		User.findOne({_id:req.session.user._id}).populate({path: 'mail.inbox'}).exec(function(err, user) {
 
-			const chMsg = user.mail.inbox.find((x) => {
-				return x._id = req.params.mid;
+			const chInd = user.mail.inbox.findIndex((x) => {
+				return req.params.mid == x._id;
 			});
 
-			chMsg.read = true;
+			user.mail.inbox[chInd].read = true;
 
-			chMsg.save(function(err2, msg) {
+			user.mail.inbox[chInd].save(function(err2, msg) {
 				if (err2) {
 					console.log(err2);
 				} else {
-					user.mail.unread--;
+					if (user.mail.unread <= 0) {
+						user.mail.unread = 0;
+					} else {
+						user.mail.unread--;
+					}
 
 					user.save(function(err3, user2, count) {
-						res.redirect('/user/inbox');
+						req.session.user = user2;
+						help.loadInbox(req, res, "", "mail.inbox");
 					});
 				}
 			});
@@ -919,8 +973,6 @@ const help = {
 			const msg = chBox.find((x) => {
 				return x._id == req.params.num;
 			});
-
-			console.log(msg);
 
 			if (place[1] == undefined) {
 				res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
@@ -951,11 +1003,25 @@ const help = {
 
 			box.splice(chIndex, 1);
 
-			user.save(function(err3, user2, count) {
-				req.session.user = user2;
-				const pathA = (place[0].includes("inbox")) ? ('/user/inbox'):('/user/sent');
-				res.redirect(pathA);
-			});
+			if (place[0].includes("sent")) {
+				Message.deleteOne({_id: chMsg._id}, function (err2) {
+					if (err2) {console.log(err2);}
+
+					user.save(function(err3, user2, count) {
+						req.session.user = user2;
+						res.redirect('/user/sent');
+					});
+				});
+
+				
+			} else {
+				user.save(function(err3, user2, count) {
+					req.session.user = user2;
+					res.redirect('/user/inbox');
+				});
+			}
+
+			
 		});
 	}
 

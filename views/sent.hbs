@@ -51,7 +51,7 @@
 				<tr id="{{i}}">
 					<td> <a href="/user/sent/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
 					<td> {{msg.to}}</a></td>
-					<td class="rmv"><a onclick="testFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/sent/rmvMsg/{{msg._id}}">Delete Message</a></td>
+					<td class="rmv"><a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/sent/rmvMsg/{{msg._id}}">Delete Message</a></td>
 				</tr>
 			{{/each}}
 

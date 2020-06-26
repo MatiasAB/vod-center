@@ -297,60 +297,51 @@ app.get('/user/inbox/newmsg', function(req, res) {
 
 app.get('/user/inbox/viewMsg/:num', function(req, res) {
 		
-		if (req.session.user === undefined) {
-			console.log("undefined");
-			res.redirect('/title');
-		} else {
-			help.loadMsg(req, res, "mail.inbox");
-		}
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.loadMsg(req, res, "mail.inbox");
+	}
 });
 
 app.get('/user/sent/viewMsg/:num', function(req, res) {
 		
-		if (req.session.user === undefined) {
-			console.log("undefined");
-			res.redirect('/title');
-		} else {
-			help.loadMsg(req, res, "mail.sent");
-		}
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.loadMsg(req, res, "mail.sent");
+	}
 });
 
 app.get('/user/inbox/rmvMsg/:num', function(req, res) {
 		
-		if (req.session.user === undefined) {
-			console.log("undefined");
-			res.redirect('/title');
-		} else {
-			help.removeMsg(req, res, "mail.inbox");
-		}
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.removeMsg(req, res, "mail.inbox");
+	}
 });
 
 app.get('/user/sent/rmvMsg/:num', function(req, res) {
 		
-		if (req.session.user === undefined) {
-			console.log("undefined");
-			res.redirect('/title');
-		} else {
-			help.removeMsg(req, res, "mail.sent");
-		}
+	if (req.session.user === undefined) {
+		
+		res.redirect('/title');
+	} else {
+		help.removeMsg(req, res, "mail.sent");
+	}
 });
 
 app.get('/user/inbox/markR/:mid', function (req, res) {
 	if (req.session.user === undefined) {
-		console.log("undefined");
 		res.redirect('/title');
 	} else {
 		help.markR(req, res);
 	}
 });
 
-app.post('/user/inbox/reply/:num', function (req, res) {
-	console.log("stuff here");
-});
-
 app.get('/user/inbox/reply/:num', function (req, res) {
 	if (req.session.user === undefined) {
-		console.log("undefined");
 		res.redirect('/title');
 	} else {
 		help.loadMsg(req, res, "mail.inbox", "reply");

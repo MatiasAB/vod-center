@@ -1,6 +1,6 @@
 //script1
 
-function testFunction(ele, name) {
+function rmvFunction(ele, name) {
 	if (confirm(`Are you sure you want to remove '${name}'?`)) {
 		location.href = ele.id;
 	}
@@ -46,10 +46,12 @@ function sendMsg(...reply) {
 
 	//button in writeR isn't working
 
-	if (reply.length > 1) {
-		const vals = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value];
+	let vals = [];
+
+	if (reply.length > 0) {
+		vals = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value];
 	} else {
-		const vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
+		vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
 	}
 	
 	const atVal = document.getElementById("msgAttch").value;
