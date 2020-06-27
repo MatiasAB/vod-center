@@ -284,35 +284,28 @@ const help = {
 
 	//called from '/user/remove/:listid' POST route handler in app.js to remove a list
 	removeList: function(req, res) {
-		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
 			const chIndex = user.lists.findIndex((x) => {
 				return x._id == req.params.listid;
 			});
 
-
-			const chList = user.lists.splice(chIndex, 1);
+			const chList = user.lists.splice(chIndex, 1)[0];
 
 			async.each(chList.items, function(chItem, callback2) {
-				console.log("yup");
-				console.log(chItem);
+				
 				Item.deleteOne({_id: chItem._id}, function (err6, result) {
 					if (err6) {console.log(err6);}
-					console.log("before result");
-					console.log(result);
-					console.log("after result");
 				    callback2();
 				});
 			}, function (err7) {
 				if (err7) {console.log(err7);}
 
-				List.deleteOne({_id: chList._id}, function (err3, result2) {
+				List.deleteOne({name: chList.name}, function (err3, result2) {
 					if (err3) {
 						console.log(err3);
 					}
-					console.log("before result2");
-					console.log(result2);
-					console.log("after result2");
+
 					user.save(function(err2, user2, count) {
 						req.session.user = user2;
 						res.redirect('/user');
@@ -326,38 +319,14 @@ const help = {
 	removeItem: function(req, res) {
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
 
-
-
-			const chList = user.lists.find((x) => {
-				return x._id == req.params.listid;
-			});
-
-			
-			const chIndex = chList.items.findIndex((y) => {
-				return y._id == req.params.vodid;
-			});
-
-
-			const chItem = chList.items.splice(chIndex, 1);
-
-
-			const tId = new ObjectID(chItem._id);
-
-
-			Item.deleteOne({_id: tId}).exec(function (err6, result) {
+			Item.deleteOne({_id: req.params.vodid}, function (err6, result) {
 				if (err6) {console.log(err6);}
 
 				console.log(result);
-				chList.save(function(err2, list) {
 
-					if (err2) {
-						console.log(err2);
-					}
-
-					user.save(function(err3, user2, count) {
-						req.session.user = user2;
-						res.redirect(`/user/lists/${req.params.listid}`);
-					});
+				user.save(function(err3, user2, count) {
+					req.session.user = user2;
+					res.redirect(`/user/lists/${req.params.listid}`);
 				});
 			});
 		});
@@ -674,7 +643,7 @@ const help = {
 				        
 				        	user.lists.push(rtnVal);
 
-
+				        	//maybe need to fix this and the other delete location, check rmv Messages as well
 				        	async.each(mList, function(chList, callback) {
 
 				        		async.each(chList.items, function(chItem, callback2) {
