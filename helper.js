@@ -537,10 +537,6 @@ const help = {
 					user.lists = help.bigFilter(user.lists, req.query);
 				}
 
-				console.log(user);
-
-				console.log(user.lists);
-
 			    res.render('user', {theUser: user});
 			}
 		});
@@ -1091,10 +1087,8 @@ const help = {
 
 				if (svt == undefined) {
 					const listName = req.params.op.substring(req.params.op.indexOf("^&")+2);
-					console.log(listName);
 
 					req.params.op = req.params.op.substring(0, req.params.op.indexOf("^&"));
-					console.log(req.params.op);
 
 					svt = msg.content.attach[1].find((x) => {
 						return x.name == req.params.op;
