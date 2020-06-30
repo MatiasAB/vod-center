@@ -874,7 +874,11 @@ const help = {
 			if (param[1] !== undefined) {
 				//items case
 				for (let j = 0; j < param[1].length; j++) {
-					const pItem = param[0].items[param[1][j]];
+					let count = -1;
+					const pItem = param[0].find((x) => {
+						count++;
+						return count == param[1][j];
+					});
 					iList.push(pItem);
 				}
 			} else {
@@ -911,7 +915,11 @@ const help = {
 			} else {
 				const spInd = atArr[i].indexOf("@#");
 				lName = atArr[i].substring(0, spInd);
-				indices = atArr[i].substring(spInd+1);
+				indices = atArr[i].substring(spInd+2).split(",");
+				
+				indices = indices.map((y) => {
+					return parseInt(y);
+				});
 			}
 
 			const chList = userF.lists.find((x) => {
@@ -933,9 +941,7 @@ const help = {
 				rtArr[1] = [...rtArr[1], ...nItems];
 			}
 		}
-			
-		
-		console.log("returning here!");
+
 		return rtArr;
 	},
 
@@ -949,7 +955,6 @@ const help = {
 
 				User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(errA, userB) {
 					const attch = help.findAttch(req.body.msgAttch, userB, uDest._id);
-					console.log(attch);
 
 					const msg = new Message({
 						from: userB.username,
@@ -1070,7 +1075,7 @@ const help = {
 
 	lM2: function(req, res) {
 		Message.findOne({_id: req.params.num}).exec(function (err, msg) {
-			res.render('manage', {msg:msg, listArr:msg.content.attach[0]});
+			res.render('manage', {msg:msg, listArr:msg.content.attach[0], itemArr:msg.content.attach[1]});
 		});
 	},
 
@@ -1085,9 +1090,42 @@ const help = {
 				});
 
 				if (svt == undefined) {
+					const listName = req.params.op.substring(req.params.op.indexOf("^&")+2);
+					console.log(listName);
+
+					req.params.op = req.params.op.substring(0, req.params.op.indexOf("^&"));
+					console.log(req.params.op);
+
 					svt = msg.content.attach[1].find((x) => {
 						return x.name == req.params.op;
 					});
+
+					const nItem = new Item({
+						name: svt.name,
+						url: svt.url,
+						game: svt.game,
+						players: svt.players,
+						chars: svt.chars
+					}).save(function (errD, itemB) {
+
+						User.findOne({_id:req.session.user._id}).populate({path: 'lists'}).exec(function (errF, userB) {
+
+							//error check to see if list exists (remember to delete item!)
+							const sList = userB.lists.find((x) => {
+								return x.name == listName;
+							});
+
+							sList.items.push(itemB);
+
+							sList.save(function(errE, listA) {
+								userB.save(function(errG, userC) {
+									req.session.user = userC;
+									res.redirect(`/user/lists/${listA._id}`);
+								});
+							});
+						});
+					});
+
 				} else {
 
 					const svt2 = [];

@@ -66,15 +66,49 @@
 	{{/each}}
 	</ul>
 
-	
 
-	<div class = "row edit" style="display: none;">
-		<div class = "col-4"></div>
-
-		<div class="col-2"></div>
-
+	<div style="padding-top:30px" class = "row">
 		<div class = "col-4">
-			<button type="submit" form="form1"  name="applyChg">Apply Changes</button>
+			<h2>Items</h2> 
 		</div>
 	</div>
+
+	<ul>
+	{{#each itemArr as |item|}}
+	<div class = "row" style="overflow-x: auto;">
+		<div class = "col-4">
+			<li><h3 class = "info">{{item.name}}</h3></li>
+		</div>
+
+		<div class = "col-2">
+			<button onclick="show('{{item.name}}')">Show Content</button>
+		</div>
+
+		<div class = "col-2">
+			<h3 class = "info"><a class="link text-info" id="/user/inbox/viewMsg/{{../msg._id}}/manage/save/{{item.name}}" onclick="saveAt(this, '{{item.name}}+item')">Save Item</a></h3>
+		</div>
+	</div>
+	<div class = "row" style="overflow-x: auto; padding-top: 2%; display: none" id="{{item.name}}">
+		<table class="col-12">
+			<tr>
+				<th class="text-info"> Entry URL </th>
+				<th class="text-info"> Game </th>
+				<th class="text-info"> Players </th>
+				<th class="text-info"> Characters </th>
+			</tr>
+			
+			<tr id="{{i}}">
+				<td> <a href={{vod.url}}>{{item.url}}</a></td>
+				<td> {{item.game}} </td>
+				<td>
+					{{#each item.players as |play|}}{{play}}, {{/each}}
+				</td>
+				<td>
+					{{#each item.chars as |char|}}{{char}}, {{/each}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	{{/each}}
+	</ul>
 </div>

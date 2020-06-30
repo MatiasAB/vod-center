@@ -16,9 +16,19 @@ function checkPl(ele, name) {
 }
 
 function saveAt(ele, name) {
+
 	if (confirm(`Do you want to save ${name} to your User?`)) {
-		location.href = ele.id;
+
+		if (name.includes("+item")) {
+			const lName = prompt(`What list should ${name} be saved to?`);
+			location.href = ele.id + "^&" +lName;
+		} else {
+			location.href = ele.id;
+		}
+		
 	}
+	
+	
 }
 
 function mergeCheck(ele, length) {
@@ -70,15 +80,15 @@ function makeForm(method, action, keys, vals) {
 function share(...param) {
 	let shareArr = [];
 	const prompt1 = prompt('Who do you want to send this to? (Required)');
-	if (prompt1 !== null || prompt1 !== "") {
+	if (prompt1 !== null && prompt1 !== "") {
 		shareArr.push(prompt1);
 		let prompt2 = prompt('What should the subject of the message be? (Optional)');
-		prompt2 = (prompt2 == "" || prompt2 == null) ? (`Share - ${param[1]}`):(prompt2);	
+		prompt2 = (prompt2 == "" || prompt2 == null) ? (`Share - ${param[0]}`):(prompt2);	
 		shareArr.push(prompt2);
 		let prompt3 = prompt('What should the message read? (Optional)');
 		prompt3 = (prompt3 == null) ? (""):(prompt3);
 		shareArr.push(prompt3);
-		shareArr.push(param[1]);
+		shareArr.push(param[0]);
 
 		sendMsg(...shareArr);	
 	}
