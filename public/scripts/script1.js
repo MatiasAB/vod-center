@@ -1,7 +1,22 @@
 //script1
 
 function rmvFunction(ele, name) {
+	//merge rmv and save functions?
 	if (confirm(`Are you sure you want to remove '${name}'?`)) {
+		location.href = ele.id;
+	}
+}
+
+function checkPl(ele, name) {
+	if (name.includes("sent")) {
+		alert('You cannot manage attachments from sent mail.');
+	} else {
+		location.href = ele.id;
+	}
+}
+
+function saveAt(ele, name) {
+	if (confirm(`Do you want to save ${name} to your User?`)) {
 		location.href = ele.id;
 	}
 }

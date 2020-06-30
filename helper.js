@@ -173,7 +173,7 @@ const help = {
 		          varToStoreResult[0].save(function(err, user, count){
 		            req.session.user = user //update current user
 		            res.redirect('/user'); 
-		          })
+		          });
 		        
 		        });
 				
@@ -537,6 +537,10 @@ const help = {
 					user.lists = help.bigFilter(user.lists, req.query);
 				}
 
+				console.log(user);
+
+				console.log(user.lists);
+
 			    res.render('user', {theUser: user});
 			}
 		});
@@ -880,13 +884,13 @@ const help = {
 			const ggList = [];
 
 			for (let k = 0; k < iList.length; k++) {
-				const ggItem = new Item({
+				const ggItem = {
 					name: iList[k].name,
 					url:iList[k].url,
 					game:iList[k].game,
 					players:iList[k].players,
-					characters:iList[k].characters
-				});
+					chars:iList[k].chars
+				};
 				ggList.push(ggItem);
 			}
 
@@ -919,11 +923,11 @@ const help = {
 
 
 			if (indices == undefined) {
-				const nList = new List({
+				const nList = {
 					user: userD,
 					name: chList.name,
 					items: nItems
-				});
+				};
 				rtArr[0].push(nList);
 			} else {
 				rtArr[1] = [...rtArr[1], ...nItems];
@@ -1060,6 +1064,69 @@ const help = {
 						res.redirect('/user/sent');
 					});
 				});
+			}
+		});
+	},
+
+	lM2: function(req, res) {
+		Message.findOne({_id: req.params.num}).exec(function (err, msg) {
+			res.render('manage', {msg:msg, listArr:msg.content.attach[0]});
+		});
+	},
+
+	saveAH: function(req, res) {
+		Message.findOne({_id:req.params.num}).exec(function (err, msg) {
+			if (req.params.op == "saveAll") {
+
+			} else {
+
+				let svt = msg.content.attach[0].find((x) => {
+					return x.name == req.params.op;
+				});
+
+				if (svt == undefined) {
+					svt = msg.content.attach[1].find((x) => {
+						return x.name == req.params.op;
+					});
+				} else {
+
+					const svt2 = [];
+					async.each(svt.items, function(item, callback) {
+						console.log(item);
+						item = new Item({
+							name: item.name,
+							url: item.url,
+							game: item.game,
+							players: item.players,
+							chars: item.chars
+						});
+
+						item.save(function (err3, itemA) {
+							svt2.push(itemA);
+							callback();
+						});
+					}, function (err2) {
+
+						User.findOne({_id: req.session.user._id}, function(errB, user) {
+							const nList = new List({
+								name: svt.name,
+								user: user._id,
+								items: [...svt2]
+							});
+
+							nList.save((err, list) => {
+								console.log(nList)
+
+								user.lists.push(nList);
+
+								user.save(function(errC, userB, count){
+					            	req.session.user = userB; //update current user
+					            	res.redirect('/user');
+					          	});
+					        });
+						});
+					});
+				}
 			}
 		});
 	}

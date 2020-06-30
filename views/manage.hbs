@@ -1,0 +1,80 @@
+<div class="container backg" id="navi">
+	<h2 id="navh2"> Navigation Bar </h2>
+	<ul>
+		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+		<li><a class = "link text-secondary" href="/user/inbox/"> Back to User's Inbox </a></li>
+		<li><a class = "link text-secondary" href="/user/inbox/viewMsg/{{msg._id}}"> Back to View Message </a></li>
+	</ul>
+</div>
+
+	
+<div class="container backg">	
+
+	<div style="padding-top:30px" class = "row">
+		<div class = "col-4">
+			<h2>Lists</h2> 
+		</div>
+	</div>
+
+	<ul>
+	{{#each listArr as |list|}}
+	<div class = "row" style="overflow-x: auto;">
+		<div class = "col-4">
+			<li><h3 class = "info">{{list.name}}</h3></li>
+		</div>
+
+		<div class = "col-3">
+			<h3 class = "info">List Length: {{list.items.length}}</h3>
+		</div>
+
+		<div class = "col-2">
+			<button onclick="show('{{list.name}}')">Show Items</button>
+		</div>
+
+		<div class = "col-2">
+			<h3 class = "info"><a class="link text-info" id="/user/inbox/viewMsg/{{../msg._id}}/manage/save/{{list.name}}" onclick="saveAt(this, '{{list.name}}')">Save List</a></h3>
+		</div>
+	</div>
+	<div class = "row" style="overflow-x: auto; padding-top: 2%; display: none" id="{{list.name}}">
+		<table class="col-12">
+			<tr>
+				<th class="text-info"> Entry Name </th>
+				<th class="text-info"> Entry URL </th>
+				<th class="text-info"> Game </th>
+				<th class="text-info"> Players </th>
+				<th class="text-info"> Characters </th>
+			</tr>
+
+			
+			{{#each list.items as |vod i|}}
+				<tr id="{{i}}">
+					<td> {{vod.name}} </td>
+					<td> <a href={{vod.url}}>{{vod.url}}</a></td>
+					<td> {{vod.game}} </td>
+					<td>
+						{{#each vod.players as |play|}}{{play}}, {{/each}}
+					</td>
+					<td>
+						{{#each vod.chars as |char|}}{{char}}, {{/each}}
+					</td>
+				</tr>
+			{{/each}}
+
+		</table>
+	</div>
+	{{/each}}
+	</ul>
+
+	
+
+	<div class = "row edit" style="display: none;">
+		<div class = "col-4"></div>
+
+		<div class="col-2"></div>
+
+		<div class = "col-4">
+			<button type="submit" form="form1"  name="applyChg">Apply Changes</button>
+		</div>
+	</div>
+</div>

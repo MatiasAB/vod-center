@@ -29,7 +29,7 @@
 
 	<div class="row" style="padding-top:15px;">
 		<div class="col-12">
-			<button href="#">Manage Attachments</button>
+			<button onclick="checkPl(this, '{{place}}')" id="/user/{{place}}/viewMsg/{{msg._id}}/manage">Manage Attachments</button>
 			<a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/{{place}}/rmvMsg/{{msg._id}}">Delete Message</a>
 		</div>
 	</div>

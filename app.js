@@ -295,6 +295,15 @@ app.get('/user/inbox/newmsg', function(req, res) {
 		}
 });
 
+app.get('/user/inbox/viewMsg/:num/manage', function(req, res) {
+		
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.lM2(req, res);
+	}
+});
+
 app.get('/user/inbox/viewMsg/:num', function(req, res) {
 		
 	if (req.session.user === undefined) {
@@ -345,6 +354,14 @@ app.get('/user/inbox/reply/:num', function (req, res) {
 		res.redirect('/title');
 	} else {
 		help.loadMsg(req, res, "mail.inbox", "reply");
+	}
+});
+
+app.get('/user/inbox/viewMsg/:num/manage/save/:op', function(req, res) {
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.saveAH(req, res);
 	}
 });
 
