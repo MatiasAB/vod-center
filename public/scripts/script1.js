@@ -14,6 +14,16 @@ function mergeCheck(ele, length) {
 	}
 }
 
+function show(id) {
+	const div = document.getElementById(id);
+
+	if (div.style.display == "inline") {
+		div.style.display = "none";
+	} else {
+		div.style.display = "inline";
+	}
+}
+
 function splitCheck(ele, length) {
 	if (length <= 1) {
 		alert('This list needs at least two items in order to be split.');
@@ -42,19 +52,42 @@ function makeForm(method, action, keys, vals) {
 	return form;
 }
 
-function sendMsg(...reply) {
+function share(...param) {
+	let shareArr = [];
+	const prompt1 = prompt('Who do you want to send this to? (Required)');
+	if (prompt1 !== null || prompt1 !== "") {
+		shareArr.push(prompt1);
+		let prompt2 = prompt('What should the subject of the message be? (Optional)');
+		prompt2 = (prompt2 == "" || prompt2 == null) ? (`Share - ${param[1]}`):(prompt2);	
+		shareArr.push(prompt2);
+		let prompt3 = prompt('What should the message read? (Optional)');
+		prompt3 = (prompt3 == null) ? (""):(prompt3);
+		shareArr.push(prompt3);
+		shareArr.push(param[1]);
 
-	//button in writeR isn't working
+		sendMsg(...shareArr);	
+	}
+}
+
+
+function writeR() {
+
+	const replyF = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value, document.getElementById("msgAttch").value];
+
+	sendMsg(...replyF);
+}
+
+function sendMsg(...reply) {
 
 	let vals = [];
 
 	if (reply.length > 0) {
-		vals = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value];
+		vals = reply;
 	} else {
-		vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value];
+		vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value, document.getElementById("msgAttch").value];
 	}
 	
-	const atVal = document.getElementById("msgAttch").value;
+	
 
 	if (vals.includes("")) {
 		let invalStr = "Error(s):\n";
@@ -68,7 +101,6 @@ function sendMsg(...reply) {
 		alert(invalStr);
 	} else {
 		if (confirm('Are you sure you want to send this message?')) {
-			vals.push(atVal);
 			const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
 
 			console.log(vals);

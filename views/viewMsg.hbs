@@ -27,9 +27,10 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" style="padding-top:15px;">
 		<div class="col-12">
-			<a onclick="testFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/{{place}}/rmvMsg/{{msg._id}}">Delete Message</a>
+			<button href="#">Manage Attachments</button>
+			<a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/{{place}}/rmvMsg/{{msg._id}}">Delete Message</a>
 		</div>
 	</div>
 </div>

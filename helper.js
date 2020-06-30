@@ -722,46 +722,37 @@ const help = {
 				for (let k = 0; k < chList.items.length; k++) {
 					list1.items.push(chList.items[k]._id);
 				}
+				
+				
+				List.deleteOne({_id: chList._id}, function (err3) {
+					if (err3) {
+						console.log(err3);
+					}
 
-
-				async.each(chList.items, function(chItem, callback2) {
-				    Item.deleteOne({_id: chItem._id}, function (err6) {
-				        if (err6) {console.log(err6);}
-
-				        	callback2();
-				        });
-				}, function (err7) {
-				    if (err7) {console.log(err7);}
-				   	List.deleteOne({_id: chList._id}, function (err3) {
-						if (err3) {
-							console.log(err3);
-						}
-
-						list1.save((err9, listA) => {
+					list1.save((err9, listA) => {
 		        
-				        	if(err9) {
-				        		console.log('error saving listA'); 
-				        	}
+				    	if(err9) {
+				        	console.log('error saving listA'); 
+				        }
 					        
-					       	user.lists.push(listA);
+					    user.lists.push(listA);
 
 					          
 
-					       	//save changes
-					       	list2.save((err10, listB) => {
-				          		if(err10) {
-					            	console.log('error saving listB'); 
-					          	}
+					    //save changes
+					    list2.save((err10, listB) => {
+				          	if(err10) {
+					            console.log('error saving listB'); 
+					        }
 						        
-					          	user.lists.push(listB);
+					        user.lists.push(listB);
 
-					          	user.save(function(err11, user2, count){
-						            req.session.user = user2; //update current user
-						            res.redirect('/user'); 
-					          	});
-					    	});
-				        });
-					});
+					        user.save(function(err11, user2, count){
+						        req.session.user = user2; //update current user
+						        res.redirect('/user'); 
+					        });
+					   	});
+				    });
 				});
 			}
 		});
@@ -815,10 +806,16 @@ const help = {
 					if (err2) {
 						console.log(err2);
 					} else {
-							user.save(function(err4, user2, count){
-					            req.session.user = user2; //update current user
-					            res.redirect('/user'); 
-				          });
+						List.deleteOne({_id: chList._id}, function (err3) {
+							if (err3) {
+								console.log(err3);
+							} else {
+								user.save(function(err4, user2, count){
+					            	req.session.user = user2; //update current user
+					            	res.redirect('/user'); 
+				          		});
+							}
+						});
 					}
 				});
 			}
@@ -847,7 +844,7 @@ const help = {
 							console.log(err3);
 						} else {
 							req.session.user = user2;
-							help.loadInbox(req, res, "Message sent!", "mail.inbox");
+							help.loadInbox(req, res, "Message sent!", "mail.sent");
 						}
 					})
 				}
@@ -864,41 +861,118 @@ const help = {
 		res.render('newMsg', {wMsg:wMsg[1]});
 	},
 
+	findAttch(aStr, userF, userD) {
+		//split error checking
+
+		const itemHelp = function(...param) {
+			let iList = [];
+			
+			if (param[1] !== undefined) {
+				//items case
+				for (let j = 0; j < param[1].length; j++) {
+					const pItem = param[0].items[param[1][j]];
+					iList.push(pItem);
+				}
+			} else {
+				iList = param[0];
+			}
+
+			const ggList = [];
+
+			for (let k = 0; k < iList.length; k++) {
+				const ggItem = new Item({
+					name: iList[k].name,
+					url:iList[k].url,
+					game:iList[k].game,
+					players:iList[k].players,
+					characters:iList[k].characters
+				});
+				ggList.push(ggItem);
+			}
+
+			return ggList;
+		};
+
+		const rtArr = [[],[]];
+
+		const atArr = aStr.split("&&");
+
+
+		for (let i = 0; i < atArr.length; i++) {
+			let lName, indices;
+
+			if (!atArr[i].includes("@#")) {
+				lName = atArr[i];
+				indices = undefined;
+			} else {
+				const spInd = atArr[i].indexOf("@#");
+				lName = atArr[i].substring(0, spInd);
+				indices = atArr[i].substring(spInd+1);
+			}
+
+			const chList = userF.lists.find((x) => {
+				return x.name == lName;
+			});
+
+			
+			const nItems = itemHelp(chList.items, indices);
+
+
+			if (indices == undefined) {
+				const nList = new List({
+					user: userD,
+					name: chList.name,
+					items: nItems
+				});
+				rtArr[0].push(nList);
+			} else {
+				rtArr[1] = [...rtArr[1], ...nItems];
+			}
+		}
+			
+		
+		console.log("returning here!");
+		return rtArr;
+	},
+
 	sendMsg: function(req, res) {
-		User.find({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
+		User.findOne({ "username":req.body.msgDest }).populate({path: 'mail.inbox'}).exec(function(err, user) {
 
 			if (user.length < 1) {
 				help.newMsg(req, res, "Invalid username entered for destination.");
 			} else {
-				const uDest = user[0];
+				const uDest = user;
 
-				const msg = new Message({
-					from: req.session.user.username,
-					to: uDest.username,
-					subject:req.body.msgSubj,
-					content:{text: req.body.msgText, attach:""},
-					read:false
-				});
+				User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(errA, userB) {
+					const attch = help.findAttch(req.body.msgAttch, userB, uDest._id);
+					console.log(attch);
 
-				msg.save(function(err2, msgA) {
-					if (err2) {
-						console.log(err2);
-					} else {
-						uDest.mail.inbox.unshift(msgA);
-						uDest.mail.unread+=1;
+					const msg = new Message({
+						from: userB.username,
+						to: uDest.username,
+						subject:req.body.msgSubj,
+						content:{text: req.body.msgText, attach:attch},
+						read:false
+					});
 
-						uDest.save(function(err3, user2, count) {
-							if (err3) {
-								console.log(err3);
-							} else {
-								help.storeMsg(req, res, msgA);
-							}
-						});
-					}
+					msg.save(function(err2, msgA) {
+						if (err2) {
+							console.log(err2);
+						} else {
+							uDest.mail.inbox.unshift(msgA);
+							uDest.mail.unread+=1;
+
+							uDest.save(function(err3, user2, count) {
+								if (err3) {
+									console.log(err3);
+								} else {
+									help.storeMsg(req, res, msgA);
+								}
+							});
+						}
+					});
 				});
 			}
-
-			
 		});
 	},
 
@@ -944,6 +1018,7 @@ const help = {
 			});
 
 			if (place[1] == undefined) {
+				console.log(msg);
 				res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
 			} else {
 				res.render('writeR', {msg:msg});
@@ -955,7 +1030,6 @@ const help = {
 	},
 
 	removeMsg: function(req, res, ...place) {
-
 		User.findOne({_id: req.session.user._id}).populate({path: place[0]}).exec(function (err, user) {
 
 			const box = (place[0].includes("inbox")) ? (user.mail.inbox):(user.mail.sent);
@@ -964,7 +1038,7 @@ const help = {
 				return x._id == req.params.num;
 			});
 
-			
+				
 			const chIndex = box.findIndex((y) => {
 				return y._id == chMsg._id;
 			});
@@ -972,8 +1046,13 @@ const help = {
 
 			box.splice(chIndex, 1);
 
-			if (place[0].includes("sent")) {
-				Message.deleteOne({_id: chMsg._id}, function (err2) {
+			if (place[0].includes("inbox")) {
+				user.save(function(err3, user2, count) {
+					req.session.user = user2;
+					res.redirect('/user/inbox');
+				});	
+			} else {
+				Message.deleteOne({_id: req.params.num}, function (err2) {
 					if (err2) {console.log(err2);}
 
 					user.save(function(err3, user2, count) {
@@ -981,19 +1060,9 @@ const help = {
 						res.redirect('/user/sent');
 					});
 				});
-
-				
-			} else {
-				user.save(function(err3, user2, count) {
-					req.session.user = user2;
-					res.redirect('/user/inbox');
-				});
 			}
-
-			
 		});
 	}
-
 }
 
 module.exports = help;
