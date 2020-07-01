@@ -39,13 +39,19 @@ function mergeCheck(ele, length) {
 	}
 }
 
-function show(id) {
+function show(id, ...xtra) {
 	const div = document.getElementById(id);
 
 	if (div.style.display == "inline") {
 		div.style.display = "none";
+		if (xtra.length > 0) {
+			xtra[0].innerText = xtra[1];
+		}
 	} else {
 		div.style.display = "inline";
+		if (xtra.length > 0) {
+			xtra[0].innerText = "Hide";
+		}
 	}
 }
 
