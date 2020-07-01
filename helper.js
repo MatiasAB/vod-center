@@ -35,13 +35,8 @@ const help = {
 	arrCheck: function(array, changeF, testF) {
 		return array.map((cVal) => {
 			//cVal.replace(/,/g, "").trim() === ""
-			if (typeof cVal == "string") {
 				cVal = changeF(cVal);
 				return (testF(cVal)) ? (cVal):(false);
-			} else {
-				return false;
-			}
-			return cVal;
 		});
 	},
 
@@ -106,9 +101,15 @@ const help = {
 						new User({
 							username: req.body.username,
 							password: hash,
-							lists: []
+							lists: [],
+							mail: {
+								inbox: [],
+								sent: [],
+								unread: 0
+							}
 						}).save(function(err3, user, count){
 							if (err3) {
+								//need a way to show user thatthis error ocurred
 								console.log(`err3 saving User after creation ${err3}`);
 							}
 							//Log User Creation
@@ -124,7 +125,7 @@ const help = {
 					
 				} else {//username taken
 					console.log("Username taken!");
-
+					//need a way to show user thatthis error ocurred
 					//refresh
 					res.redirect('back');
 				}
@@ -223,7 +224,7 @@ const help = {
 							console.log("error saving nItem");
 						}
 
-						chList.items.push(nItem);
+						chList.items.push(item);
 
 						chList.save(function (err3, list){
 
@@ -504,6 +505,7 @@ const help = {
 				}
 
 				if (num[0] === undefined) {
+					console.log(tList);
 					res.render('slist', {list: tList});
 				} else {
 					tList = help.groupBy(tList, num[0]);
@@ -544,28 +546,23 @@ const help = {
 
 
 
-	mergeHelp: function(chList, mList) {
+	mergeHelp: function(listA, listB) {
 
 
-		for (let j = 0; j < mList.length; j++) {
-			for (let k = 0; k < mList[j].items.length; k++) {
-				const dupl = chList.items.find((x) => {
-					return x._id == mList[j].items[k]._id;
+		for (let j = 0; j < listB.length; j++) {
+			for (let k = 0; k < listB[j].items.length; k++) {
+				const dupl = listA.items.find((x) => {
+					return x._id == listB[j].items[k]._id;
 				});
 
-				if (dupl !== undefined) {
-					mList[j].items.splice(k, 1);
+				if (dupl == undefined) {
+					const abItem = listB[j].items.splice(k,1)[0];
+					listA.items.push(abItem);
 				}
-			}
-
-			if (mList[j].items.length > 0) {
-				chList.items = chList.items.concat(mList[j].items);
 			}
 			
 		}
-
-
-		return chList;
+		return listA;
 
 	},
 
@@ -589,19 +586,15 @@ const help = {
 				res.redirct('/title');
 			} else {
 
-				const chList = user.lists.find((x) => {
+				const chIndex = user.lists.findIndex((x) => {
 					return x._id == req.params.listid;
 				});
 
-				const chIndex = user.lists.findIndex((x) => {
-					return x._id == chList._id;
-				});
-
-				user.lists.splice(chIndex, 1);
+				const chList = user.lists.splice(chIndex, 1)[0];
 
 				const mArr = req.body.mLists.trim().split(",");
 
-				mList = mArr.map((x)  => {
+				let mList = mArr.map((x)  => {
 			
 					x = user.lists.find((z) => {
 						return z.name.trim() == x;
@@ -612,7 +605,7 @@ const help = {
 							return y._id == x._id;
 						});
 
-						user.lists.splice(xInd, 1);
+						x = user.lists.splice(xInd, 1)[0];
 					}
 
 					return x;
@@ -644,10 +637,10 @@ const help = {
 				        	user.lists.push(rtnVal);
 
 				        	//maybe need to fix this and the other delete location, check rmv Messages as well
-				        	async.each(mList, function(chList, callback) {
+				        	async.each(mList, function(dList, callback) {
 
-				        		async.each(chList.items, function(chItem, callback2) {
-				        			Item.deleteOne({_id: chItem._id}, function (err6) {
+				        		async.each(dList.items, function(dItem, callback2) {
+				        			Item.deleteOne({_id: dItem._id}, function (err6) {
 				        				if (err6) {console.log(err6);}
 
 				        				callback2();
@@ -655,7 +648,7 @@ const help = {
 				        		}, function (err7) {
 				        			if (err7) {console.log(err7);}
 
-				        			List.deleteOne({_id: chList._id}, function (err3) {
+				        			List.deleteOne({_id: dList._id}, function (err3) {
 										if (err3) {
 											console.log(err3);
 										}
