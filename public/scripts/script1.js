@@ -112,9 +112,9 @@ function sendMsg(...reply) {
 		vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value, document.getElementById("msgAttch").value];
 	}
 	
-	
+	const vals2 = vals.slice(0, 3);
 
-	if (vals.includes("")) {
+	if (vals2.includes("")) {
 		let invalStr = "Error(s):\n";
 
 		if (vals[0] == "") {invalStr+="The message must be sent to another user (empty 'To:' field)\n";}

@@ -365,6 +365,14 @@ app.get('/user/inbox/viewMsg/:num/manage/save/:op', function(req, res) {
 	}
 });
 
+app.get('/user/inbox/sortBy/:sort', function(req, res) {
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.mailG(req, res, 'mail.inbox');
+	}
+});
+
 const port = nconf.get('PORT') || 3000;
 app.listen(port);
 console.log(`server started on port ${port}`);

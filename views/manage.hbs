@@ -36,8 +36,8 @@
 			<h3 class = "info"><a class="link text-info" id="/user/inbox/viewMsg/{{../msg._id}}/manage/save/{{list.name}}" onclick="saveAt(this, '{{list.name}}')">Save List</a></h3>
 		</div>
 	</div>
-	<div class = "row" style="overflow-x: auto; padding-top: 2%; display: none" id="{{list.name}}">
-		<table class="col-12">
+	<div class = "row" style="padding-top: 2%; display: none" id="{{list.name}}">
+		<table class="col-12" style="overflow-x: auto;">
 			<tr>
 				<th class="text-info"> Entry Name </th>
 				<th class="text-info"> Entry URL </th>
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<div class = "row" style="overflow-x: auto; padding-top: 2%; display: none" id="{{item.name}}">
-		<table class="col-12">
+		<table class="col-12" style="overflow-x: auto;">
 			<tr>
 				<th class="text-info"> Entry URL </th>
 				<th class="text-info"> Game </th>

@@ -9,39 +9,25 @@
 
 <div class="container backg usr">
 	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h3>{{tUser.username}}'s Inbox</h3>
+		<div class = "col-8">
+			<h2>{{un}}</h2>
 		</div>
 	</div>
-
-	<form method="GET" action="#" id="form2">
-		<div class = "row">
-			<div class = "col-12" style="padding-right: 150px;">
-				<h4>Search Inbox:</h4>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-12">
-				User: <input type="text" name="nameQuery"><br>
-				 Subject: <input type="text" name="urlQuery"><br>
-				 <button type="submit" form="form2" value="Search">Search Inbox</button>
-			</div>
-		</div>
-	</form>
 
 	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
 		<div class="col-12">
 			<h2> Messages </h2> <br>
 			<a href="/user/inbox/newmsg"><button type="submit" value="newMsg">New Message</button></a>
+			<a href='/user/inbox/'><button value="gbSend">Remove Current Grouping</button></a>
 			<a href='/user/inbox/sortBy/from'><button value="gbSend">Group By Sender</button></a>
 			<a href='/user/inbox/sortBy/subj'><button value="gbSubj">Group By Subject</button></a> <br>
-			<h4 style="color:blue;"> {{mConf}} </h4>
 		</div>
 	</div>
 	
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
-		<table class="col-12">
+	{{#each tbox.items as |group|}}
+	<div class = "row" style="padding-top: 2%;">
+		<div class="col-12"> <h3> {{group.name}} </h3> </div>
+		<table style="overflow-x: auto;" class="col-12">
 			<tr>
 				<th class="text-info"> Subject </th>
 				<th class="text-info"> From </th>
@@ -49,7 +35,7 @@
 			</tr>
 
 			
-			{{#each tUser.mail.inbox as |msg i|}}
+			{{#each group.items as |msg i|}}
 				<tr id="{{i}}">
 					<td> <a href="/user/inbox/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
 					<td> {{msg.from}}</a></td>
@@ -62,5 +48,6 @@
 
 		</table>
 	</div>
+	{{/each}}
 
 </div>

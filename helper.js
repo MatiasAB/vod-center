@@ -323,8 +323,6 @@ const help = {
 			Item.deleteOne({_id: req.params.vodid}, function (err6, result) {
 				if (err6) {console.log(err6);}
 
-				console.log(result);
-
 				user.save(function(err3, user2, count) {
 					req.session.user = user2;
 					res.redirect(`/user/lists/${req.params.listid}`);
@@ -444,7 +442,17 @@ const help = {
 
 	groupInc: function(listA, str, num) {
 		for (let i=0; i < listA.length; i++) {
-			if (listA[i].name === str) {
+			let name;
+
+			if (num <= 2) {
+				name = listA[i].name;
+			} else if (num == 3) {
+				name = (listA[i].subject);
+			} else {
+				name = (num === 4) ? (listA[i].from):(listA[i].to);
+			}
+			
+			if (name === str) {
 				return listA[i];
 			}
 		}
@@ -455,34 +463,64 @@ const help = {
 
 
 	groupBy: function(list, num) {
-		const str = (num === 1) ? (" grouped by characters"):(" grouped by games");
-		let bigArr = {name: list.name + str, items:[], _id: list._id};
 
-		if (num === 2) {
-			list.items.map((x) => {
-				if (help.groupInc(bigArr.items, x.game, num) === undefined) {
-					bigArr.items.push({name:x.game, items:[x]});
-				} else {
-					const pList = bigArr.items.find((y) => {return y.name === x.game});
-					pList.items.push(x);
-				}
-			});
-		} else {
-			list.items.map((x) => {
-				x.chars.map((y) => {
-					if (help.groupInc(bigArr.items, y, num) === undefined) {
-						bigArr.items.push({name:y, items:[x]});
-					} else {
-						const pList = bigArr.items.find((z) => {return z.name === y});
-						pList.items.push(x);
-					}
+		let bigArr;
+
+		const mapG = function(arrB, curr, field) {
+			if (help.groupInc(arrB, field, num) === undefined) {
+				arrB.items.push({name: field, items:[curr]});
+			} else {
+				const pList = arrB.items.find((z) => {z.name === field});
+				pList.items.push(curr);
+			}
+		};
+
+		if (num <= 2) {
+			const str = (num === 1) ? (" grouped by characters"):(" grouped by games");
+			bigArr = {name: list.name + str, items:[], _id: list._id};
+
+			if (num === 2) {
+				//note: some way to unify these functions? Keep outer loop same, conditional in loop to differ the two cases
+
+				list.items.map((x) => {
+					mapG(bigArr, x, x.game);
+					// if (help.groupInc(bigArr.items, x.game, num) === undefined) {
+					// 	bigArr.items.push({name:x.game, items:[x]});
+					// } else {
+					// 	const pList = bigArr.items.find((y) => {return y.name === x.game});
+					// 	pList.items.push(x);
+					// }
 				});
-			});
-		}
-		
-		
-		
+			} else {
+				list.items.map((x) => {
+					x.chars.map((y) => {
+						mapgG(bigArr, x, y);
+						// if (help.groupInc(bigArr.items, y, num) === undefined) {
+						// 	bigArr.items.push({name:y, items:[x]});
+						// } else {
+						// 	const pList = bigArr.items.find((z) => {return z.name === y});
+						// 	pList.items.push(x);
+						// }
+					});
+				});
+			}
+		} else {
+			bigArr = {items:[]};
 
+			if (num === 3) {
+				list.map((x) => {
+					mapG(bigArr, x, x.subject);
+				});
+			} else if (num === 4) {
+				list.map((x) => {
+					mapG(bigArr, x, x.from);
+				});
+			} else {
+				list.map((x) => {
+					mapG(bigArr, x, x.to);
+				});
+			}
+		}
 		return bigArr;
 	},
 
@@ -505,7 +543,6 @@ const help = {
 				}
 
 				if (num[0] === undefined) {
-					console.log(tList);
 					res.render('slist', {list: tList});
 				} else {
 					tList = help.groupBy(tList, num[0]);
@@ -943,7 +980,11 @@ const help = {
 				const uDest = user;
 
 				User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(errA, userB) {
-					const attch = help.findAttch(req.body.msgAttch, userB, uDest._id);
+					let attch = [];
+					if (req.body.msgAttch !== "") {
+						attch = help.findAttch(req.body.msgAttch, userB, uDest._id);
+					}
+					
 
 					const msg = new Message({
 						from: userB.username,
@@ -1015,8 +1056,9 @@ const help = {
 				return x._id == req.params.num;
 			});
 
+			//mark message unread if you, you know, read it
+
 			if (place[1] == undefined) {
-				console.log(msg);
 				res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
 			} else {
 				res.render('writeR', {msg:msg});
@@ -1117,7 +1159,6 @@ const help = {
 
 					const svt2 = [];
 					async.each(svt.items, function(item, callback) {
-						console.log(item);
 						item = new Item({
 							name: item.name,
 							url: item.url,
@@ -1140,7 +1181,6 @@ const help = {
 							});
 
 							nList.save((err, list) => {
-								console.log(nList)
 
 								user.lists.push(nList);
 
@@ -1153,6 +1193,32 @@ const help = {
 					});
 				}
 			}
+		});
+	},
+
+	mailG: function(req, res, pPath) {
+		User.findOne({_id: req.session.user._id}).populate({path: pPath}).exec(function (errA, userA) {
+			let box;
+			let num;
+
+			if (pPath.includes("inbox")) {
+				box = userA.mail.inbox;
+				num = (req.params.sort.includes("subj")) ? (3):(4);
+				const str = (num == 3) ? (`${userA.username}'s Inbox Grouped By Subject`):(`${userA.username}'s Inbox Grouped By Sender`);
+				const box2 = help.groupBy(box, num);
+
+				res.render('inboxG', {un: str, tbox: box2});
+			} else {
+				box = userA.mail.sent;
+				num = (req.params.sort.includes("subj")) ? (3):(5);
+				const str = (num == 3) ? (`${userA.username}'s Sent Messages Grouped By Subject`):(`${userA.username}'s Inbox Sent Messages By Receiver`);
+				const box2 = help.groupBy(box, num);
+
+				res.render('sentG', {un: str, tbox: box2});
+			}
+			
+
+
 		});
 	}
 }
