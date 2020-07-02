@@ -867,7 +867,7 @@ const help = {
 				if (err2) {
 					console.log(err2);
 				} else {
-					user.mail.sent.push(msgA);
+					user.mail.sent.unshift(msgA);
 
 					user.save(function(err3, user2, count) {
 						if (err3) {
