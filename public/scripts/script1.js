@@ -87,12 +87,10 @@ function share(...param) {
 	let shareArr = [];
 	const prompt1 = prompt('Who do you want to send this to? (Required)');
 	if (prompt1 !== null && prompt1 !== "") {
-		shareArr.push(prompt1);
-		let prompt2 = prompt('What should the subject of the message be? (Optional)');
-		prompt2 = (prompt2 == "" || prompt2 == null) ? (`Share - ${param[0]}`):(prompt2);	
-		shareArr.push(prompt2);
-		let prompt3 = prompt('What should the message read? (Optional)');
-		prompt3 = (prompt3 == null) ? (""):(prompt3);
+		shareArr.push(prompt1);	
+		shareArr.push(`Share - ${param[0]}`);
+		let prompt3 = prompt('Type a message (Optional)');
+		prompt3 = (prompt3 == "" || prompt3 == null) ? (`Share - ${param[0]}`):(prompt3);
 		shareArr.push(prompt3);
 		shareArr.push(param[0]);
 
@@ -119,6 +117,7 @@ function sendMsg(...reply) {
 	}
 	
 	const vals2 = vals.slice(0, 3);
+	console.log(vals);
 
 	if (vals2.includes("")) {
 		let invalStr = "Error(s):\n";
@@ -127,7 +126,7 @@ function sendMsg(...reply) {
 
 		if (vals[1] == "") {invalStr+="The message needs a subject. (empty 'Subject:' field)\n";}
 
-		if (vals[2] == "" && atVal == "") {invalStr+="The message needs a subject if there are no attachments. (empty 'Message:' field)\n";}
+		if (vals[2] == "" && vals[3] == "") {invalStr+="The message needs a subject if there are no attachments. (empty 'Message:' field)\n";}
 
 		alert(invalStr);
 	} else {

@@ -9,31 +9,33 @@
 
 <div class="container backg usr">
 	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h3>{{tUser.username}}'s Sent Messages</h3>
+		<div class = "col-8">
+			<h2>{{un}}</h2>
 		</div>
 	</div>
 
 	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
 		<div class="col-12">
 			<h2> Messages </h2> <br>
-			<a href="/user/sent/sortBy/to"><button type="submit" value="gbSend">Group By Receiver</button></a>
-			<a href="/user/sent/sortBy/subj"><button type="submit" value="gbSubj">Group By Subject</button></a> <br>
-			<h4 style="color:blue;"> {{mConf}} </h4>
+			<a href='/user/sent'><button value="gbSend">Remove Current Grouping</button></a>
+			<a href='/user/sent/sortBy/from'><button value="gbSend">Group By Receiver</button></a>
+			<a href='/user/sent/sortBy/subj'><button value="gbSubj">Group By Subject</button></a> <br>
 		</div>
 	</div>
 	
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
-		<table class="col-12">
+	{{#each tbox.items as |group|}}
+	<div class = "row" style="padding-top: 2%;">
+		<div class="col-12"> <h3> {{group.name}} </h3> </div>
+		<table style="overflow-x: auto;" class="col-12">
 			<tr>
 				<th class="text-info"> Subject </th>
 				<th class="text-info"> To </th>
 			</tr>
 
 			
-			{{#each tUser.mail.sent as |msg i|}}
+			{{#each group.items as |msg i|}}
 				<tr id="{{i}}">
-					<td> <a href="/user/sent/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
+					<td> <a href="/user/inbox/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
 					<td> {{msg.to}}</a></td>
 					<td class="rmv"><a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/sent/rmvMsg/{{msg._id}}">Delete Message</a></td>
 				</tr>
@@ -41,5 +43,6 @@
 
 		</table>
 	</div>
+	{{/each}}
 
 </div>

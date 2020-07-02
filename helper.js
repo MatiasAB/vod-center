@@ -441,23 +441,18 @@ const help = {
 
 
 	groupInc: function(listA, str, num) {
-		for (let i=0; i < listA.length; i++) {
-			let name;
 
-			if (num <= 2) {
-				name = listA[i].name;
-			} else if (num == 3) {
-				name = (listA[i].subject);
-			} else {
-				name = (num === 4) ? (listA[i].from):(listA[i].to);
+		if (listA === undefined) {
+			return undefined;
+		} else {
+			for (let i=0; i < listA.length; i++) {
+				if (listA[i].name === str) {
+					return listA[i];
+				}
 			}
-			
-			if (name === str) {
-				return listA[i];
-			}
+			return undefined;
 		}
-
-		return undefined;
+		
 		
 	},
 
@@ -467,11 +462,13 @@ const help = {
 		let bigArr;
 
 		const mapG = function(arrB, curr, field) {
-			if (help.groupInc(arrB, field, num) === undefined) {
+			if (help.groupInc(arrB.items, field, num) === undefined) {
 				arrB.items.push({name: field, items:[curr]});
 			} else {
-				const pList = arrB.items.find((z) => {z.name === field});
+				const pList = arrB.items.find((z) => {
+					return z.name == field});
 				pList.items.push(curr);
+				bigArr = arrB;
 			}
 		};
 
@@ -480,27 +477,14 @@ const help = {
 			bigArr = {name: list.name + str, items:[], _id: list._id};
 
 			if (num === 2) {
-				//note: some way to unify these functions? Keep outer loop same, conditional in loop to differ the two cases
 
 				list.items.map((x) => {
 					mapG(bigArr, x, x.game);
-					// if (help.groupInc(bigArr.items, x.game, num) === undefined) {
-					// 	bigArr.items.push({name:x.game, items:[x]});
-					// } else {
-					// 	const pList = bigArr.items.find((y) => {return y.name === x.game});
-					// 	pList.items.push(x);
-					// }
 				});
 			} else {
 				list.items.map((x) => {
 					x.chars.map((y) => {
 						mapgG(bigArr, x, y);
-						// if (help.groupInc(bigArr.items, y, num) === undefined) {
-						// 	bigArr.items.push({name:y, items:[x]});
-						// } else {
-						// 	const pList = bigArr.items.find((z) => {return z.name === y});
-						// 	pList.items.push(x);
-						// }
 					});
 				});
 			}
@@ -1045,27 +1029,43 @@ const help = {
 
 	loadMsg: function(req, res, ...place) {
 
-		User.find({}).populate({path: place[0]}).exec(function(err, userL) {
-			req.session.user = userL.find((x) => {
-				return x._id == req.session.user._id;
-			});
+		User.findOne({_id: req.session.user._id}).populate({path: place[0]}).exec(function(err, userL) {
+			
 
-			const chBox = (place[0].includes("inbox")) ? (req.session.user.mail.inbox):(req.session.user.mail.sent);
+			const chBox = (place[0].includes("inbox")) ? (userL.mail.inbox):(userL.mail.sent);
 
 			const msg = chBox.find((x) => {
 				return x._id == req.params.num;
 			});
 
-			//mark message unread if you, you know, read it
-
 			if (place[1] == undefined) {
-				res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+
+				if (place[0].includes("sent") || msg.read == true) {
+					res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+				} else {
+
+					msg.read = true;
+
+					msg.save(function(err2, msgA) {
+						if (err2) {
+							console.log(err2);
+						} else {
+							if (userL.mail.unread <= 0) {
+								userL.mail.unread = 0;
+							} else {
+								userL.mail.unread--;
+							}
+
+							userL.save(function(err3, user2, count) {
+								req.session.user = user2;
+								res.render('viewMsg', {msg:msgA, place:place[0].substring(5)}); 
+							});
+						}
+					});
+				}
 			} else {
 				res.render('writeR', {msg:msg});
-			}
-			
-
-			
+			}	
 		});
 	},
 
@@ -1106,7 +1106,12 @@ const help = {
 
 	lM2: function(req, res) {
 		Message.findOne({_id: req.params.num}).exec(function (err, msg) {
-			res.render('manage', {msg:msg, listArr:msg.content.attach[0], itemArr:msg.content.attach[1]});
+			if (msg.content.attach[0].length < 1 && msg.content.attach[1].length < 1) {
+				help.loadMsg(req, res, "mail.inbox");
+			} else {
+				res.render('manage', {msg:msg, listArr:msg.content.attach[0], itemArr:msg.content.attach[1]}); 
+			}
+			
 		});
 	},
 
@@ -1211,7 +1216,7 @@ const help = {
 			} else {
 				box = userA.mail.sent;
 				num = (req.params.sort.includes("subj")) ? (3):(5);
-				const str = (num == 3) ? (`${userA.username}'s Sent Messages Grouped By Subject`):(`${userA.username}'s Inbox Sent Messages By Receiver`);
+				const str = (num == 3) ? (`${userA.username}'s Sent Messages Grouped By Subject`):(`${userA.username}'s Sent Messages By Receiver`);
 				const box2 = help.groupBy(box, num);
 
 				res.render('sentG', {un: str, tbox: box2});

@@ -373,6 +373,14 @@ app.get('/user/inbox/sortBy/:sort', function(req, res) {
 	}
 });
 
+app.get('/user/sent/sortBy/:sort', function(req, res) {
+	if (req.session.user === undefined) {
+		res.redirect('/title');
+	} else {
+		help.mailG(req, res, 'mail.sent');
+	}
+});
+
 const port = nconf.get('PORT') || 3000;
 app.listen(port);
 console.log(`server started on port ${port}`);
