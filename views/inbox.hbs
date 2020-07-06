@@ -1,10 +1,14 @@
-<div class="container backg" id="navi">
-	<h2 id="navh2"> Navigation Bar </h2>
-	<ul>
-		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
-		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
-		<li><a class = "link text-secondary" href="/user/sent"> View Sent Messages </a></li>
-	</ul>
+<div class="container">
+	<div class="row">
+		<div id="navi">
+			<h2 id="navh2"> Navigation Bar </h2>
+			<ul>
+				<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+				<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+				<li><a class = "link text-secondary" href="/user/sent"> View Sent Messages </a></li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <div class="container backg usr">
@@ -38,9 +42,16 @@
 					<td> <a href="/user/inbox/viewMsg/{{msg._id}}"> {{msg.subject}}</a> </td>
 					<td> {{msg.from}}</a></td>
 					<td> {{msg.read}} </td>
-					<td class="rmv"><a class = "link text-info" href="/user/inbox/reply/{{msg._id}}">Reply</a></td>
-					<td class="rmv"><a class = "link text-info" href="/user/inbox/markR/{{msg._id}}">Mark as Read</a></td>
-					<td class="rmv"><a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/inbox/rmvMsg/{{msg._id}}">Delete Message</a></td>
+					<td class="rmv">
+						<div class="dropdown">
+							<button class="dropbtn">Choose an Action</button>
+							<div class="dropdown-content">
+								<a class = "link text-info" href="/user/inbox/reply/{{msg._id}}">Reply</a>
+								<a class = "link text-info" href="/user/inbox/markR/{{msg._id}}">Mark as Read</a>
+								<a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/inbox/rmvMsg/{{msg._id}}">Delete Message</a><
+							</div>
+						</div>
+					</td>
 				</tr>
 			{{/each}}
 

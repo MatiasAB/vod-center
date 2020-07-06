@@ -1,16 +1,17 @@
 $theme-colors: (
 	"primary": grey,
-	"secondary": darkviolet,
+	"secondary": rgb(204, 0, 204),
 	"info": darkblue,
     "danger": darkred
 );
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-html {
-    background: grey;
-    color: #000000;
-    font-family: Roboto, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
+}
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -43,7 +44,6 @@ td {
 
 .search {
     text-align: center;
-    
 }
 
 form {
@@ -83,7 +83,7 @@ body {
 .head {
     width: 300px; 
     text-align: center; 
-    background-color: darkgrey; 
+    background-color: black; 
     margin-left: 0.5em auto; 
     margin-right: 0.5em auto; 
     margin-bottom: 0.5em auto;
@@ -91,12 +91,24 @@ body {
 
 
 .backg {
-    background-color: darkgrey;
-    outline: 2px solid black;
+    backdrop-filter: blur(5px);
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(153, 204, 255, 0.8);
+    outline: 3.5px solid black;
 }
 
 #navi {
+    backdrop-filter: blur(5px);
+    outline: 3.5px solid black;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(224, 224, 235, 0.7);
     margin-bottom: 2%;
+    width: auto;
+    display: inline-block;
+    padding-top: auto;
+    padding-bottom: auto;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 #navh2 {
@@ -111,23 +123,69 @@ body {
 }
 
 .home {
-    background-color: darkgrey;
+    backdrop-filter: blur(5px);
     border-right: 2px solid black;
     border-left: 2px solid black;
 }
 
 #home1 {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(240, 240, 245, 0.6);
     border-top: 2px solid black;
 }
 
 #home2 {
+    background-color: lightblue;
     border-bottom: 2px solid black;
 }
 
 .split {
+    background-color: darkgrey;
     display: inline-block;
 }
 
 .nMsg {
     margin-bottom: 30px;
+}
+
+.bgfil {
+    backdrop-filter: blur(5px);
+}
+
+.dropbtn {
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(15, 15, 15, 0.6);
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
 }

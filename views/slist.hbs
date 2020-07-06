@@ -1,10 +1,13 @@
-
-<div class="container backg" id="navi">
-	<h2 id="navh2"> Navigation Bar </h2>
-	<ul>
-		<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
-		<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
-	</ul>
+<div class="container">
+	<div class="row">
+		<div id="navi">
+			<h2 id="navh2"> Navigation Bar </h2>
+			<ul>
+				<li><a class = "link text-secondary" href="/title">Back to home page</a></li>
+				<li><a class = "link text-secondary" href="/user"> Back to User's Page </a></li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <div class="container backg usr">
@@ -67,10 +70,16 @@
 						{{#each vod.chars as |char|}}{{char}}, {{/each}}
 					</td>
 
-					<td class="rmv"> <a class = "link text-info" href="/user/lists/{{../list._id}}/edit/{{vod._id}}">Edit</a> </td>
-					<td class="rmv"> <a class="link text-info" onclick="share('{{../list.name}}@#{{i}}')">Share</a></td>
-					<td class="rmv"> <a onclick="rmvFunction(this, `{{vod.name}}`)" class = "link text-danger" id="/user/lists/{{../list._id}}/remove/{{vod._id}}">Remove</a> </td>
-
+					<td class="rmv">
+						<div class="dropdown">
+							<button class="dropbtn">Choose an Action</button>
+							<div class="dropdown-content">
+								<a class = "link text-info" href="/user/lists/{{../list._id}}/edit/{{vod._id}}">Edit</a>
+								<a class="link text-info" onclick="share('{{../list.name}}@#{{i}}')">Share</a>
+								<a onclick="rmvFunction(this, `{{vod.name}}`)" class = "link text-danger" id="/user/lists/{{../list._id}}/remove/{{vod._id}}">Remove</a>
+							</div>
+						</div>
+					</td>
 				</tr>
 			{{/each}}
 
