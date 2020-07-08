@@ -11,16 +11,24 @@
 	</div>
 </div>
 
+<div class="container">
+	<div style="padding-top:10px;" class = "row">
+		<div class = "w-60 titleR mx-auto">
+			<h2 class="backg titleT">{{tUser.username}}'s Inbox</h2>
+		</div>
+	</div>
+</div>
+
 <div class="container backg usr">
-	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h3>{{tUser.username}}'s Inbox</h3>
+
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 titleR mx-auto">
+			<h2 class="titleT" style="font-weight: none;"> Messages </h2> <br>
 		</div>
 	</div>
 
-	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
-		<div class="col-12">
-			<h2> Messages </h2> <br>
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 mx-auto">
 			<a href="/user/inbox/newmsg"><button type="submit" value="newMsg">New Message</button></a>
 			<a href='/user/inbox/sortBy/from'><button value="gbSend">Group By Sender</button></a>
 			<a href='/user/inbox/sortBy/subj'><button value="gbSubj">Group By Subject</button></a> <br>
@@ -28,7 +36,7 @@
 		</div>
 	</div>
 	
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
+	<div class = "row" style="overflow-x: auto; padding-top: 2%; padding-left: 15%;">
 		<table class="col-12">
 			<tr>
 				<th class="text-info"> Subject </th>
@@ -48,7 +56,7 @@
 							<div class="dropdown-content">
 								<a class = "link text-info" href="/user/inbox/reply/{{msg._id}}">Reply</a>
 								<a class = "link text-info" href="/user/inbox/markR/{{msg._id}}">Mark as Read</a>
-								<a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/inbox/rmvMsg/{{msg._id}}">Delete Message</a><
+								<a onclick="rmvFunction(this, `{{msg.subject}}`)" class = "link text-danger" id="/user/inbox/rmvMsg/{{msg._id}}">Delete Message</a>
 							</div>
 						</div>
 					</td>

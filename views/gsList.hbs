@@ -10,17 +10,25 @@
 	</div>
 </div>
 
-<div class="container backg usr">
-	<div style="padding-top:30px" class = "row">
-		<div class = "col-12">
-			<h3>{{list.name}}</h3>
+<div class="container">
+	<div style="padding-top:30px;" class = "row">
+		<div class = "w-60 titleR mx-auto">
+			<h2 class="backg usr titleT">List Name: {{list.name}}</h2>
 		</div>
 	</div>
+</div>
 
-	<form method="GET" action="/user/lists/{{list._id}}" id="form2">
+<div class="container backg usr" style="overflow-x: auto; margin-top: 1%; margin-bottom: 1%;">
+
+	<form method="GET" action="/user/lists/{{list._id}}" id="form2" style="display:inline-flex;">
+		<div class="row">
+			<div class="col-12">
+				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
+			</div>
+		</div>
 		<div class = "row">
 			<div class = "col-12">
-			Filter Items by: Name: <input type="text" name="nameQuery"><br>
+			Name: <input type="text" name="nameQuery"><br>
 				 URL: <input type="text" name="urlQuery"><br>
 				 Game: <input type="text" name="gameQuery"><br>
 				
@@ -28,7 +36,7 @@
 			</div>
 		</div>
 
-		<div class = "row">
+		<div class = "row" style="padding-left: 15px;">
 			<div class = "col-12">
 				Players (comma separated): <input type="text" name="playsQuery"><br>
 				 Characters (comma separated): <input type="text" name="charsQuery"><br>
@@ -38,10 +46,18 @@
 		</div>
 
 	</form>
+</div>
 
-	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
-		<div class="col-12">
-			<h2> Items </h2> <br>
+<div class="container backg usr">
+
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 titleR mx-auto">
+			<h2 class="titleT" style="font-weight: none;"> List Items </h2> <br>
+		</div>
+	</div>
+
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 mx-auto">
 			<a href="/user/lists/{{list._id}}/chars"><button type="submit" value="gbChar">Group by Character</button></a>
 			<a href="/user/lists/{{list._id}}"><button type="submit" value="gbGame">Remove Grouping</button></a>
 		</div>
@@ -86,66 +102,50 @@
 
 </div>
 
-<div class="container backg usr" style="margin-top:2%;">
-	<h2 style="padding-top:30px"> Add Entry</h2>
+<div class="container usr" style="margin-top:2%; display: inline-flex;">
 
-	<form method="POST" action="" id="form1">
-	
-	<div class = "row">
-			<div class = "col-4">
-				Name:  
+	<form method="POST" class="backg" action="" id="form1" style="margin-left: 43%; padding: 5px;">
+
+		<div class="row">
+			<div class="col-6">
+				<h2 style="text-decoration: underline;"> Add Entry</h2>
 			</div>
-
-			<div class = "col-8">
-				<input type="text" name="entryName">
-			</div>
-	</div>
-
-	<div class = "row">
-			<div class = "col-4">
-				URL:  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" name="entryURL">
-			</div>
-	</div>
-
-	<div class = "row">
-			<div class = "col-4">
-				Game:  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" name="entryGame">
-			</div>
-	</div>
-
-	<div class = "row">
-			<div class = "col-4">
-				Players (comma separated):  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" name="entryPlays">
-			</div>
-	</div>
-
-	<div class = "row">
-			<div class = "col-4">
-				Characters (comma separated):  
-			</div>
-
-			<div class = "col-8">
-				<input type="text" name="entryChars">
-			</div>
-	</div>
-
-	</form>
-	<div class = "row">
-		<div class = "col-4">
-			<button type="submit" form="form1"  name="createNewEntry">Add Entry</button>
 		</div>
-	</div>
-	
+		
+		<div class = "row addF">
+			<div class = "col-12" style="display:inline;">
+				Name:  <input type="text" name="entryName"><br>
+			</div>
+		</div>
+
+		<div class = "row addF">
+			<div class = "col-12">
+					URL:  <input type="text" name="entryURL">
+			</div>			
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Game:  <input type="text" name="entryGame">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Players (comma separated):  <input type="text" name="entryPlays">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Characters (comma separated):  <input type="text" name="entryChars">
+				</div>
+		</div>
+
+		<div class = "row addF">
+			<div class = "col-12">
+				<button type="submit" form="form1"  name="createNewEntry">Add Entry</button>
+			</div>
+		</div>
+	</form>
 </div>

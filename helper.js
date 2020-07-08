@@ -484,7 +484,7 @@ const help = {
 			} else {
 				list.items.map((x) => {
 					x.chars.map((y) => {
-						mapgG(bigArr, x, y);
+						mapG(bigArr, x, y);
 					});
 				});
 			}

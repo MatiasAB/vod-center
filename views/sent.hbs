@@ -11,23 +11,31 @@
 	</div>
 </div>
 
+<div class="container">
+	<div style="padding-top:10px;" class = "row">
+		<div class = "w-60 titleR mx-auto">
+			<h2 class="backg titleT">{{tUser.username}}'s Sent Box</h2>
+		</div>
+	</div>
+</div>
+
 <div class="container backg usr">
-	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h3>{{tUser.username}}'s Sent Messages</h3>
+
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 titleR mx-auto">
+			<h2 class="titleT" style="font-weight: none;"> Messages </h2> <br>
 		</div>
 	</div>
 
-	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
-		<div class="col-12">
-			<h2> Messages </h2> <br>
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 mx-auto">
 			<a href="/user/sent/sortBy/to"><button type="submit" value="gbSend">Group By Receiver</button></a>
 			<a href="/user/sent/sortBy/subj"><button type="submit" value="gbSubj">Group By Subject</button></a> <br>
 			<h4 style="color:blue;"> {{mConf}} </h4>
 		</div>
 	</div>
 	
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
+	<div class = "row" style="overflow-x: auto; padding-top: 2%; padding-left: 15%;">
 		<table class="col-12">
 			<tr>
 				<th class="text-info"> Subject </th>

@@ -11,16 +11,24 @@
 	</div>
 </div>
 
+<div class="container">
+	<div style="padding-top:10px;" class = "row">
+		<div class = "w-60 titleR mx-auto">
+			<h2 class="backg titleT">{{un}}</h2>
+		</div>
+	</div>
+</div>
+
 <div class="container backg usr">
-	<div style="padding-top:30px" class = "row">
-		<div class = "col-8">
-			<h2>{{un}}</h2>
+
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 titleR mx-auto">
+			<h2 class="titleT" style="font-weight: none;"> Messages </h2> <br>
 		</div>
 	</div>
 
-	<div class="row" style="border-top: 2px solid black; padding-top: 2%;">
-		<div class="col-12">
-			<h2> Messages </h2> <br>
+	<div class="row" style="padding-top: 2%;">
+		<div class="w-60 mx-auto">
 			<a href='/user/sent'><button value="gbSend">Remove Current Grouping</button></a>
 			<a href='/user/sent/sortBy/from'><button value="gbSend">Group By Receiver</button></a>
 			<a href='/user/sent/sortBy/subj'><button value="gbSubj">Group By Subject</button></a> <br>
@@ -28,7 +36,7 @@
 	</div>
 	
 	{{#each tbox.items as |group|}}
-	<div class = "row" style="padding-top: 2%;">
+	<div class = "row" style="padding-top: 2%; padding-left: 15%;">
 		<div class="col-12"> <h3> {{group.name}} </h3> </div>
 		<table style="overflow-x: auto;" class="col-12">
 			<tr>
