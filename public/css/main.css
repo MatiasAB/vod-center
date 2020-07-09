@@ -10057,12 +10057,21 @@ body {
 }
 
 .split {
-  background-color: darkgrey;
+  background-color: rgba(217, 217, 217, 0.6);
   display: inline-block;
+}
+
+input.split {
+  background-color: white;
+  border: 1px solid black;
 }
 
 .nMsg {
   margin-bottom: 30px;
+}
+
+.nMsg2 {
+  font-weight: bold;
 }
 
 .bgfil {
@@ -10134,6 +10143,14 @@ body {
   padding-top: 20px;
   padding-bottom: 10px;
   border-top: 3px dashed black;
+}
+
+.undT {
+  text-decoration: underline;
+}
+
+.boldT {
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=main.css.map */

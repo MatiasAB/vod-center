@@ -17,73 +17,69 @@
 
 	<div style="padding-top:30px" class = "row">
 		<div class = "col-4">
-			<h3>Current Name: {{vod.name}}</h3> 
+			<h3 class="undT">Current Name: </h3> <h3>{{vod.name}}</h3> 
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class = "col-4">
-			<h3>New Name: </h3>   <input type="text" name="newName">  
+			<h3 class="undT">New Name: </h3>   <input type="text" name="newName">  
 		</div>
 	</div>
 
 	<div class = "row edit">
 		<div class = "col-4">
-			<h3>Current URL: {{vod.url}}</h3> 
+			<h3 class="undT">Current URL: </h3> <h3>{{vod.url}}</h3> 
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class = "col-4">
-			<h3>New URL: </h3>   <input type="text" name="newURL">  
+			<h3 class="undT">New URL: </h3>   <input type="text" name="newURL">  
 		</div>
 	</div>
 
 	<div class = "row edit">
 		<div class = "col-4">
-			<h3>Current Game: {{vod.game}}</h3> 
+			<h3 class="undT">Current Game:</h3> <h3>{{vod.game}}</h3> 
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class = "col-4">
-			<h3>New Game: </h3>   <input type="text" name="newGame">  
+			<h3 class="undT">New Game: </h3>   <input type="text" name="newGame">  
 		</div>
 	</div>
 
 	<div class = "row edit">
 		<div class = "col-4">
-			<h3>Current Players: {{vod.players}}</h3> 
+			<h3 class="undT">Current Players:</h3> <h3>{{vod.players}}</h3> 
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class = "col-4">
-			<h3>New Players (comma separated): </h3>   <input type="text" name="newPlays">  
+			<h3 class="undT">New Players (comma separated): </h3>   <input type="text" name="newPlays">  
 		</div>
 	</div>
 	
 	<div class = "row edit">
 		<div class = "col-4">
-			<h3>Current Characters: {{vod.chars}}</h3> 
+			<h3 class="undT">Current Characters:</h3> <h3>{{vod.chars}}</h3> 
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class = "col-4">
-			<h3>New Characters (comma separated): </h3>   <input type="text" name="newChars">  
+			<h3 class="undT">New Characters (comma separated): </h3>   <input type="text" name="newChars">  
 		</div>
 	</div>
 
 	</form>
 
 	<div class = "row edit">
-		<div class = "col-4"></div>
-
-		<div class="col-2"></div>
-
-		<div class = "col-4">
-			<button type="submit" form="form1"  name="applyChg">Apply Changes</button>
+		<div class = "w-60 mx-auto" style="padding: 10px;">
+			<button type="submit" form="form1" style="padding: 10px;" name="applyChg">Apply Changes</button>
 		</div>
 	</div>
 </div>

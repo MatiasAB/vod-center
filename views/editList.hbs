@@ -10,14 +10,30 @@
 	</div>
 </div>
 	
-<div class="container backg">
+<div class="container backg" style="display: inline-block; margin-left: 11.3%">
 	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h3>Current Name: {{list.name}}</h3> 
-		</div>
-
-		<div class = "col-8">
-			<h3>New Name: </h3> <form method="POST" action="" id="form1">  <input type="text" name="newName"> </form> <button type="submit" form="form1"  name="editName">Change Name</button>
+		<div class = "w-60 mx-auto">
+			<h3 class="undT">Current Name: </h3><h3>{{list.name}}</h3> 
 		</div>
 	</div>
+
+	<div style="padding-top:30px" class = "row">
+		<div class = "w-60 mx-auto">
+			<h3 class="undT">New Name: </h3>
+		</div>
+	</div>
+
+	<div style="padding-bottom:10px" class = "row">
+		<div class = "w-60 mx-auto">
+			<form method="POST" action="" id="form1">  <input type="text" name="newName"> </form>
+		</div>
+	</div>
+
+	<div style="padding-bottom:30px" class = "row">
+		<div class = "w-60 mx-auto">
+			<button type="submit" form="form1"  name="editName">Change Name</button>
+		</div>
+	</div>
+
+
 </div>

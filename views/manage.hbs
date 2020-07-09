@@ -16,27 +16,27 @@
 <div class="container backg">	
 
 	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h2>Lists</h2> 
+		<div class = "w-60 mx-auto">
+			<h2 class="undT">Lists</h2> 
 		</div>
 	</div>
 
 	<ul>
 	{{#each listArr as |list|}}
 	<div class = "row" style="overflow-x: auto;">
-		<div class = "col-4">
-			<li><h3 class = "info">{{list.name}}</h3></li>
+		<div class = "col-3">
+			<li><h3>{{list.name}}</h3></li>
 		</div>
 
 		<div class = "col-3">
-			<h3 class = "info">List Length: {{list.items.length}}</h3>
+			<h3>List Length: {{list.items.length}}</h3>
 		</div>
 
-		<div class = "col-2">
+		<div class = "col-3">
 			<button onclick="show('{{list.name}}', this, 'Show Items')">Show Items</button>
 		</div>
 
-		<div class = "col-2">
+		<div class = "col-3">
 			<h3 class = "info"><a class="link text-info" id="/user/inbox/viewMsg/{{../msg._id}}/manage/save/{{list.name}}" onclick="saveAt(this, '{{list.name}}')">Save List</a></h3>
 		</div>
 	</div>
@@ -71,24 +71,24 @@
 	</ul>
 
 
-	<div style="padding-top:30px" class = "row">
-		<div class = "col-4">
-			<h2>Items</h2> 
+	<div style="padding-top:30px;" class = "row">
+		<div class = "w-60 mx-auto" style="padding-bottom: 35px;">
+			<h2 class="undT">Items</h2> 
 		</div>
 	</div>
 
 	<ul>
 	{{#each itemArr as |item|}}
-	<div class = "row" style="overflow-x: auto;">
+	<div class = "row" style="overflow-x: auto; display: inline-flex;">
 		<div class = "col-4">
-			<li><h3 class = "info">{{item.name}}</h3></li>
+			<li><h3>{{item.name}}</h3></li>
 		</div>
 
-		<div class = "col-2">
+		<div class = "col-2" style="margin-right: 46px; margin-left: 45px;">
 			<button onclick="show('{{item.name}}', this, 'Show Content')">Show Content</button>
 		</div>
 
-		<div class = "col-2">
+		<div class = "col-5">
 			<h3 class = "info"><a class="link text-info" id="/user/inbox/viewMsg/{{../msg._id}}/manage/save/{{item.name}}" onclick="saveAt(this, '{{item.name}}+item')">Save Item</a></h3>
 		</div>
 	</div>

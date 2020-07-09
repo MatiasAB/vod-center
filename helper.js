@@ -1041,7 +1041,7 @@ const help = {
 			if (place[1] == undefined) {
 
 				if (place[0].includes("sent") || msg.read == true) {
-					res.render('viewMsg', {msg:msg, place:place[0].substring(5)}); 
+					res.render('viewMsg', {msg:msg, place:place[0].substring(5), tell:place[2]}); 
 				} else {
 
 					msg.read = true;
@@ -1058,7 +1058,7 @@ const help = {
 
 							userL.save(function(err3, user2, count) {
 								req.session.user = user2;
-								res.render('viewMsg', {msg:msgA, place:place[0].substring(5)}); 
+								res.render('viewMsg', {msg:msgA, place:place[0].substring(5), tell:place[2]}); 
 							});
 						}
 					});
@@ -1106,8 +1106,8 @@ const help = {
 
 	lM2: function(req, res) {
 		Message.findOne({_id: req.params.num}).exec(function (err, msg) {
-			if (msg.content.attach[0].length < 1 && msg.content.attach[1].length < 1) {
-				help.loadMsg(req, res, "mail.inbox");
+			if (msg.content.attach[0] == undefined && msg.content.attach[1] == undefined) {
+				help.loadMsg(req, res, "mail.inbox", undefined, "Message has no attachments to view.");
 			} else {
 				res.render('manage', {msg:msg, listArr:msg.content.attach[0], itemArr:msg.content.attach[1]}); 
 			}

@@ -15,30 +15,20 @@
 <div class="container backg">
 
 	<div class="row">
-		<div class="col-2"></div>
-
-		<div class="col-8" style="text-align: center;">
-			<h2> Spliting </h2>
-			<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+		<div class="w-60 mx-auto" style="text-align: center; padding: 10px;">
+			<h2 class="undT"> Spliting </h2>
+			<p style="font-size: 18px;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 		</div>
-
-		<div class="col-2"></div>
 	</div>
 
 	<div class="row" style="padding-top: 2%; border-top: 2px solid black;">
-		<div class="col-2"></div>
-
-		<div class="col-6">
-			<h3> List: {{chList.name}} </h3>
+		<div class="w-60 mx-auto">
+			<h2 class="undT split"> List: {{chList.name}} </h2>
 		</div>
-
-		<div class="col-2"></div>
 	</div>
 
-	<div class = "row" style="overflow-x: auto; padding-top: 2%;">
-		<div class="col-1"></div>
-		
-		<div class="col-10">
+	<div class = "row" style="overflow-x: auto; padding-top: 2%; padding-bottom: 20px; border-bottom: 4px dashed black;">
+		<div class="w-60 mx-auto split">
 			<ol>
 			{{#each chList.items as |vod|}}
 				<li>
@@ -55,20 +45,19 @@
 			{{/each}}
 			</ol>
 		</div>
-		<div class="col-1"></div>
 	</div>
 
-	<div class="row">
-		<div class="col-12" style="text-align: center;">
-			<h3 class="split"> Split List at index: </h3> <input class="split" type="text" id="sInd"><br>
+	<div class="row" style="padding-top: 15px;">
+		<div class="w-60 mx-auto" style="text-align: center;">
+			<h3 class="undT"> Split List at index: </h3> <input class="split" type="text" id="sInd"><br>
 						<form method="POST" action="" id="form1">
 				
-				<br><h4 class="split"> Name for First List:</h4> <input type="text" id="sN1" class="split"><br>
-				<h4 class="split"> Name for Second List: </h4> <input type="text" id="sN2" class="split">
+				<br><h4 class="undT"> Name for First List:</h4> <input type="text" id="sN1" class="split" style="margin-bottom: 10px;"><br>
+				<h4 class="undT"> Name for Second List: </h4> <input type="text" id="sN2" class="split" style="margin-bottom: 20px;">
 			</form><br>
 			<button onclick="splitF(this, '{{chList._id}}', '{{chList.items.length}}')" name="splitList">Split List</button><br><br>
-			<button onclick="splitF(this, '{{chList._id}}')" name="splitByChar">Split List by Characters</button><br>
-			<button onclick="splitF(this, '{{chList._id}}')" name="splitByGame">Split List by Game</button>
+			<button onclick="splitF(this, '{{chList._id}}')" name="splitByChar" style="margin-bottom: 5px;">Split List by Characters</button><br>
+			<button onclick="splitF(this, '{{chList._id}}')" name="splitByGame" style="margin-bottom: 25px;">Split List by Game</button>
 		</div>
 	</div>
 </div>
