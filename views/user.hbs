@@ -35,37 +35,43 @@
 				</div>
 
 					
-				<form method="GET" action="/user" id="form2" style="padding-bottom: 5px;">
+				<form method="GET" action="/user" id="formB" style="padding-bottom: 5px;">
 					<h4 style="display: flex;">Filter by name:</h4><input type="text" name="listQuery">
-					<button type="submit" form="form2" value="Filter">Filter</button>
+					<button class="rBtn" type="submit" form="formB" value="Filter">Filter</button>
 				</form>
 
 
 				<ul style="padding-left: 15px; display: inline;">
-				{{#each theUser.lists as |list|}}
-				<div class = "row listR">
-					<div class = "w-60 mx-auto">
-						<li>
-							<h3 class = "info"><a class="link text-secondary" href="/user/lists/{{list._id}}">{{list.name}}</a></h3>
-							<div class="dropdown">
-							<button class="dropbtn">Choose an Action</button>
-							<div class="dropdown-content">
-								<a class="link text-info" href="/user/edit/{{list._id}}">Edit Name</a>
-								<a class="link text-info" onclick="mergeCheck(this, '{{list.items.length}}')" id="/user/merge/{{list._id}}">Merge</a>
-								<a class="link text-info" onclick="splitCheck(this, '{{list.items.length}}')" id="/user/split/{{list._id}}">Split</a>
-								<a class="link text-info" onclick="share('{{list.name}}')">Share</a>
-								<a class="link text-danger" onclick="rmvFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a>
-							</div>
+				{{#each theUser.lists as |list i|}}
+					<div class = "row listR">
+						<div class = "w-60 mx-auto">
+							<li>
+								<h3 class = "info"><a class="link text-secondary" href="/user/lists/{{list._id}}">{{list.name}}</a></h3>
+								<div class="dropdown">
+									<button class="dropbtn">Choose an Action</button>
+									<div class="dropdown-content">
+										<a class="link text-info" onclick="show('{{i}}', this, 'Edit Name', 'Cancel Edit', 2)">Edit Name</a>
+										<a class="link text-info" onclick="mergeCheck(this, '{{list.items.length}}')" id="/user/merge/{{list._id}}">Merge</a>
+										<a class="link text-info" onclick="splitCheck(this, '{{list.items.length}}')" id="/user/split/{{list._id}}">Split</a>
+										<a class="link text-info" onclick="share('{{list.name}}')">Share</a>
+										<a class="link text-danger" onclick="rmvFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a>
+									</div>
+								</div>
+							</li>
+							
 						</div>
-						</li>
-						
 					</div>
-				</div>
-				<div class="row">
-					<div class="w-60 mx-auto">
-						
+					<div class="row" id="{{i}}" style="display: none;">
+						<div class="w-60 mx-auto">
+							<h4 class="undT">Edit List Name</h4>
+						</div>
 					</div>
-				</div>
+					<div class="row" id="{{i}}b" style="display: none;">
+						<div class="w-60 mx-auto">
+							<h5 class="undT">New Name: </h5><form method="POST" action="/user/edit/{{list._id}}" id="form{{i}}"><input type="text" name="newName"></form>
+							<button class="tBtn" type="submit" form="form{{i}}" name="editName">Change Name</button>
+						</div>
+					</div>
 				{{/each}}
 				</ul>
 			</div>
@@ -81,7 +87,7 @@
 
 	<div class="backg" style="padding-left: 5px; display: inline-block;">
 		<h2 style="text-decoration: underline;"> Create New List</h2>
-		<form method="POST" action="" id="form1">
+		<form method="POST" action="/user" id="formA">
 		
 			<div class = "row" style="padding-right: 25px;">
 					<div style="font-weight:bold;" class = "col-4">
@@ -96,7 +102,7 @@
 
 		<div class = "row" style="padding-top: 10px; padding-bottom: 5px;">
 			<div class = "col-2">
-				<button style="margin-left: 105px;" type="submit" form="form1"  name="createNewList">Create New List</button>
+				<button style="margin-left: 105px;" type="submit" form="formA"  name="createNewList">Create New List</button>
 			</div>
 		</div>
 	</div>

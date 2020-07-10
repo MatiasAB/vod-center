@@ -40,19 +40,35 @@ function mergeCheck(ele, length) {
 }
 
 function show(id, ...xtra) {
-	const div = document.getElementById(id);
 
-	if (div.style.display == "inline") {
-		div.style.display = "none";
-		if (xtra.length > 0) {
-			xtra[0].innerText = xtra[1];
-		}
-	} else {
-		div.style.display = "inline";
-		if (xtra.length > 0) {
-			xtra[0].innerText = "Hide";
+	console.log("Entry log");
+	console.log(id);
+	console.log(xtra);
+
+	const count = (xtra[3] !== undefined) ? (xtra[3]):(1);
+
+	for (let i = 0; i < count; i++) {
+		console.log(`id: ${id}`);
+		console.log(i > 0);
+		id += (i > 0) ? (String.fromCharCode(97+i)):("");
+		console.log(`modified id: ${id}`);
+
+		const div = document.getElementById(id);
+		console.log(`div: ${div}`);
+
+		if (div.style.display == "inline") {
+			div.style.display = "none";
+			if (xtra.length > 0) {
+				xtra[0].innerText = (xtra[1] !== undefined) ? (xtra[1]):('Show');
+			}
+		} else {
+			div.style.display = "inline";
+			if (xtra.length > 0) {
+				xtra[0].innerText = (xtra[2] !== undefined) ? (xtra[2]):("Hide");
+			}
 		}
 	}
+	
 }
 
 function splitCheck(ele, length) {

@@ -10153,4 +10153,22 @@ input.split {
   font-weight: bold;
 }
 
+.rBtn {
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  font-size: 16px;
+  border: 1px black solid;
+  border-radius: 50px;
+}
+
+.tBtn {
+  background-color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px black solid;
+  border-radius: 50px;
+}
+
 /*# sourceMappingURL=main.css.map */

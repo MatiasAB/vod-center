@@ -42,7 +42,7 @@
 				Players (comma separated): <input type="text" name="playsQuery"><br>
 				 Characters (comma separated): <input type="text" name="charsQuery"><br>
 				
-				<button type="submit" form="form2" value="Filter">Filter Items</button>
+				<button class="tBtn" type="submit" form="form2" value="Filter">Filter Items</button>
 			</div>
 		</div>
 
@@ -61,8 +61,8 @@
 
 	<div class="row" style="padding-top: 2%;">
 		<div class="w-60 mx-auto">
-			<a href="/user/lists/{{list._id}}/chars"><button type="submit" value="gbChar">Group By Character</button></a>
-			<a href="/user/lists/{{list._id}}/games"><button type="submit" value="gbGame">Group By Game</button></a>
+			<a href="/user/lists/{{list._id}}/chars"><button class="rBtn" type="submit" value="gbChar">Group By Character</button></a>
+			<a href="/user/lists/{{list._id}}/games"><button class="rBtn" type="submit" value="gbGame">Group By Game</button></a>
 		</div>
 	</div>
 	
@@ -108,7 +108,7 @@
 	<div class = "row" style="padding-top: 3%">
 		<div class="col-5"></div>
 		<div class="col-2">
-			<button onclick="exportList(this, '{{list.name}}')">Export List as CSV File</button>
+			<button  class="tBtn" onclick="exportList(this, '{{list.name}}')">Export List as CSV File</button>
 		</div>
 		<div class="col-5"></div>
 	</div> 

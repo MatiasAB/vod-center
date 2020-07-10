@@ -108,30 +108,6 @@ app.post('/user/edit/:listid', function (req, res) { //route handler for page af
 	}
 });
 
-app.get('/user/edit/:listid', function (req, res) {
-
-	if (req.session.user === undefined) {
-		res.redirect('/title');
-	} else {
-		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
-			
-			if (err) { // error check
-				console.log(err);
-				res.redirect('/title');
-			} else { //success
-
-				const tList = user.lists.find((x) => {
-					return x._id == req.params.listid;
-				})
-				
-			    res.render('editList', {list: tList});
-			}
-		});
-	}
-
-});
-
-
 
 app.get('/user/remove/:listid', function(req, res) {
 

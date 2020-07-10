@@ -158,14 +158,12 @@ const help = {
 			if (varToStoreResult.length < 1) {//check for valid username
 				res.redirect('back');
 			} else {//found valid user
-
 				const nList = new List({user: req.session.user._id, name: req.body.listname, items:[]})
 		    	nList.save((err, list) => {
 		        
 		          if(err) {
 		            console.log('error saving nList'); 
 		          }
-		        
 		          varToStoreResult[0].lists.push(nList);
 
 		          
@@ -256,6 +254,7 @@ const help = {
 
 				if (err) {console.log(err);}
 				
+
 				const nList = user.lists.find((x) => {
 					return x._id == req.params.listid;
 				});
@@ -1033,6 +1032,7 @@ const help = {
 			
 
 			const chBox = (place[0].includes("inbox")) ? (userL.mail.inbox):(userL.mail.sent);
+
 
 			const msg = chBox.find((x) => {
 				return x._id == req.params.num;

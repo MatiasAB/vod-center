@@ -55,9 +55,9 @@
 				<br><h4 class="undT"> Name for First List:</h4> <input type="text" id="sN1" class="split" style="margin-bottom: 10px;"><br>
 				<h4 class="undT"> Name for Second List: </h4> <input type="text" id="sN2" class="split" style="margin-bottom: 20px;">
 			</form><br>
-			<button onclick="splitF(this, '{{chList._id}}', '{{chList.items.length}}')" name="splitList">Split List</button><br><br>
-			<button onclick="splitF(this, '{{chList._id}}')" name="splitByChar" style="margin-bottom: 5px;">Split List by Characters</button><br>
-			<button onclick="splitF(this, '{{chList._id}}')" name="splitByGame" style="margin-bottom: 25px;">Split List by Game</button>
+			<button class="tBtn" onclick="splitF(this, '{{chList._id}}', '{{chList.items.length}}')" name="splitList">Split List</button><br><br>
+			<button class="tBtn" onclick="splitF(this, '{{chList._id}}')" name="splitByChar" style="margin-bottom: 5px;">Split List by Characters</button><br>
+			<button class="tBtn" onclick="splitF(this, '{{chList._id}}')" name="splitByGame" style="margin-bottom: 25px;">Split List by Game</button>
 		</div>
 	</div>
 </div>
