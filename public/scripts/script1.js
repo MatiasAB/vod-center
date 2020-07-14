@@ -45,25 +45,26 @@ function show(id, ...xtra) {
 	console.log(id);
 	console.log(xtra);
 
-	const count = (xtra[3] !== undefined) ? (xtra[3]):(1);
+	const count = (xtra[3] !== undefined) ? (parseInt(xtra[3])):(1);
 
 	for (let i = 0; i < count; i++) {
 		console.log(`id: ${id}`);
 		console.log(i > 0);
-		id += (i > 0) ? (String.fromCharCode(97+i)):("");
-		console.log(`modified id: ${id}`);
+		let id2 =  (count > 1) ? (`${id}%${i}`):(id);
+		console.log(`modified id: ${id2}`);
 
-		const div = document.getElementById(id);
+		const div = document.getElementById(id2);
 		console.log(`div: ${div}`);
+		console.log(`div.style.display = ${div.style.display}`);
 
-		if (div.style.display == "inline") {
+		if (div.style.display == "inline" || div.style.display == "") {
 			div.style.display = "none";
-			if (xtra.length > 0) {
+			if (xtra[0] !== undefined) {
 				xtra[0].innerText = (xtra[1] !== undefined) ? (xtra[1]):('Show');
 			}
 		} else {
 			div.style.display = "inline";
-			if (xtra.length > 0) {
+			if (xtra[0] !== undefined) {
 				xtra[0].innerText = (xtra[2] !== undefined) ? (xtra[2]):("Hide");
 			}
 		}

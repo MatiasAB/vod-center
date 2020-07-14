@@ -65,13 +65,54 @@
 
 	<div class = "row nMsg">
 			<div class = "w-60 mx-auto nMsg2">
-				Attachments:  <input type="text" id="msgAttch">
+				<button onclick="show('showAt', this, 'Add Attachments')">Add Attachments</button>
 			</div>
 	</div>
 
-	<div class = "row nMsg">
+	<div id="showAt" style="display: none;">
+		{{#each atList as |list|}}
+		<div class = "row nMsg" style="padding-top: 10px;">
 			<div class = "w-60 mx-auto">
-				<button onclick="show('attchG')">Attachments Help</button><br>
+				<h4>{{list.name}} <input onclick="show(`{{list.name}}`, undefined, '', '', '{{list.items.length}}')" type="checkbox" id="{{list.name}}" name="{{list.name}}{{j}}" value="{{list.name}}"></h4> 
+			</div>
+		</div>
+		<div class = "row" style="overflow-x: auto; padding-bottom: 2%; border-bottom: 2px dashed black;">
+			<table class="col-12">
+				<tr>
+					<th class="text-info"> Entry Name </th>
+					<th class="text-info"> Entry URL </th>
+					<th class="text-info"> Game </th>
+					<th class="text-info"> Players </th>
+					<th class="text-info"> Characters </th>
+				</tr>
+
+				
+				{{#each list.items as |vod i|}}
+					<tr id="{{i}}">
+						<td> {{vod.name}} </td>
+						<td> <a href={{vod.url}}>{{vod.url}}</a></td>
+						<td> {{vod.game}} </td>
+						<td>
+							{{#each vod.players as |play|}}{{play}}, {{/each}}
+						</td>
+						<td>
+							{{#each vod.chars as |char|}}{{char}}, {{/each}}
+						</td>
+
+						<td class="rmv">
+							<input type="checkbox" id="{{list.name}}%{{i}}" name="{{list.name}}%{{i}}" value="{{list.name}}@#{{i}}">
+						</td>
+					</tr>
+				{{/each}}
+
+			</table>
+		</div>
+		{{/each}}
+	</div>
+
+	<div class = "row nMsg" style="padding-top: 10px;">
+			<div class = "w-60 mx-auto">
+				<button onclick="show('attchG', this, 'Attachments Help')">Attachments Help</button><br>
 				<div id="attchG" style="display:none;">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 				</div>

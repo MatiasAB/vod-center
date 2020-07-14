@@ -879,10 +879,14 @@ const help = {
 	},
 
 	newMsg: function(req, res, ...wMsg) {
-		if (wMsg.length > 0) {
-			wMsg[1] = "Errors(s): " + wMsg[0]; 
-		}
-		res.render('newMsg', {wMsg:wMsg[1]});
+
+		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(err, user) {
+			if (wMsg.length > 0) {
+				wMsg[1] = "Errors(s): " + wMsg[0]; 
+			}
+			res.render('newMsg', {wMsg:wMsg[1], atList: user.lists});
+		});
+		
 	},
 
 	findAttch(aStr, userF, userD) {
