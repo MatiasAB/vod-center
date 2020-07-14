@@ -27,40 +27,36 @@
 		<div class="col-2"></div>
 
 		<div class="col-3" style="display:inline; background-color: rgba(224, 224, 235, 0.7);">
-			<h3 class="undT"> List 1:</h3> <h3>{{chList.name}} </h3>
+			<h3 class="undT"> Chosen List:</h3> <h3>{{chList.name}} </h3>
 		</div>
 
 		<div class="col-2"></div>
 
 		<div class="col-3" style="display:inline; background-color: rgba(224, 224, 235, 0.7);">
 			<h3 class="undT"> Other Lists </h3>
-			<ul>
-				{{#each bigList as |list|}}
-					<li>{{list.name}}</li>
+			<form method="POST" action="" id="form1">
+			<ul style="display: inline;">
+				{{#each bigList as |list i|}}
+					<li><label for="list{{i}}"> {{list.name}}</label>  <input type="checkbox" id="list{{i}}" name="list{{i}}" value="{{list.name}}"></li>
 				{{/each}}
-			</ol>
+			</ul>
 		</div>
 
-		<div class="col-2"></div>
+		<div class="col-1"></div>
 	</div>
 
 	<div class="row" style="border-top: 4px dotted black; padding-top: 15px; padding-bottom: 5px;">
 		<div class="col-12" style="text-align: center;">
-			<h3 class="undT"> Lists to merge with List 1 </h3>
-			<h4> (comma separated) </h4>
 			<h5 class="text-danger" style="font-weight: bold;"> {{errMsg}} </h5>
-			<form method="POST" action="" id="form1">
-				<input type="text" name="mLists">
-				<h3 class="undT">Name for New List </h3>
-				<input type="text" name="mName">
+			<h3 class="undT">Name for New List </h3>
+			<input type="text" name="mName">
 			</form>
-			
 		</div>
 	</div>
 
 	<div class="row" style="padding-bottom: 20px;">
 		<div class="w-60 mx-auto">
-			<button class="tBtn" type="submit" form="form1" name="mergeLists">Merge Lists</button>
+			<button class="tBtn" type="submit" form="form1" name="mergeLists">Merge Chosen List with Selected Lists</button>
 		</div>
 	</div>
 </div>

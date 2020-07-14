@@ -99,13 +99,8 @@ app.get('/user/lists/:listid/games', function (req, res) {
 });
 
 app.post('/user/edit/:listid', function (req, res) { //route handler for page after using form
-	if (req.body.newName === undefined || req.body.newName === "") { //checks if name was entered
-		res.redirect('back');
-	} else {
 	
-		help.editListName(req, res);		
-
-	}
+	help.editListName(req, res);		
 });
 
 

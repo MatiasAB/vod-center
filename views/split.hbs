@@ -49,11 +49,18 @@
 
 	<div class="row" style="padding-top: 15px;">
 		<div class="w-60 mx-auto" style="text-align: center;">
-			<h3 class="undT"> Split List at index: </h3> <input class="split" type="text" id="sInd"><br>
-						<form method="POST" action="" id="form1">
-				
-				<br><h4 class="undT"> Name for First List:</h4> <input type="text" id="sN1" class="split" style="margin-bottom: 10px;"><br>
-				<h4 class="undT"> Name for Second List: </h4> <input type="text" id="sN2" class="split" style="margin-bottom: 20px;">
+			<h3 class="undT"> Split List At: </h3>
+		</form>
+		<div class="w-60 mx-auto" style="text-align: center;"><form method="POST" action="" id="form1">
+			<select id="sInd">
+			{{#each chList.items as |vod i|}} 
+				<option value="{{i}}">{{vod.name}}</option>
+			{{/each}}<br></select>
+		</form></div>
+			
+		<div class="w-60 mx-auto" style="text-align: center;">
+			<br><h4 class="undT"> Name for First List:</h4> <input type="text" id="sN1" class="split" style="margin-bottom: 10px;"><br>
+			<h4 class="undT"> Name for Second List: </h4> <input type="text" id="sN2" class="split" style="margin-bottom: 20px;">
 			</form><br>
 			<button class="tBtn" onclick="splitF(this, '{{chList._id}}', '{{chList.items.length}}')" name="splitList">Split List</button><br><br>
 			<button class="tBtn" onclick="splitF(this, '{{chList._id}}')" name="splitByChar" style="margin-bottom: 5px;">Split List by Characters</button><br>

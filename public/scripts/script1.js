@@ -223,7 +223,7 @@ function splitF(ele, id, ...param) {
 			alert('You must specify an index at which to split the list.');
 			return false;
 		} else {
-			formData[0] = parseInt(formData[0])-1;
+			formData[0] = parseInt(formData[0]);
 			param[0] = parseInt(param[0]);
 
 			if (formData[0] >= param[0] || formData[0] < 0) {

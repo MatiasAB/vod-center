@@ -38,9 +38,6 @@
 
 			</form>
 		</div>
-
-		<div class="col-2"></div>
-
 	</div>
 
 	<div class = "row">
@@ -49,7 +46,8 @@
 		<div class = "col-8 home" style="background-color: rgb(0,0,0); /* Fallback color */background-color: rgba(240, 240, 245, 0.6); padding-top: 10px;">
 			<button class="rBtn" type="submit" form="form1"  name="addUser">Create New User</button>
 			<button class="rBtn" type="submit" form="form1" name="login">Log In</button><br>
-			<p style="display:inline; font-weight: bold;"> You must create or login into an account in order to use this site. </p> <br>
+			<p class="text-danger info boldT" style="display: inline;">{{warn}}</p> <br> 
+			<p class="boldT" style="display:inline;"> You must create or login into an account in order to use this site. </p> <br>
 			<p style="display:inline;"> This site works best on a desktop or tablet. </p>
 		</div>
 

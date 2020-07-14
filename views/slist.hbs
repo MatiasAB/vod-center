@@ -63,6 +63,7 @@
 		<div class="w-60 mx-auto">
 			<a href="/user/lists/{{list._id}}/chars"><button class="rBtn" type="submit" value="gbChar">Group By Character</button></a>
 			<a href="/user/lists/{{list._id}}/games"><button class="rBtn" type="submit" value="gbGame">Group By Game</button></a>
+			<p class="text-danger info boldT">{{warn2}}</p>
 		</div>
 	</div>
 	
@@ -122,6 +123,12 @@
 		<div class="row">
 			<div class="col-6">
 				<h2 style="text-decoration: underline;"> Add Entry</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<p class="text-danger info boldT">{{warn}}</p>
 			</div>
 		</div>
 		

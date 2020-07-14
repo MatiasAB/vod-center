@@ -40,6 +40,17 @@ const help = {
 		});
 	},
 
+	caStr: function(arr1, arr2) {
+		let str = "";
+		for (let j = 0; j < arr1.length; j++) {
+			if (arr1[j] == false) {
+				str += arr2[j];
+			}
+		}
+
+		return str;
+	},
+
 	//checks an array arr to determine if changes should be made to an Item object, vod
 	makeEdits: function(arr, vod) {
 
@@ -58,7 +69,8 @@ const help = {
 
 			if (varToStoreResult.length < 1) {//no match found
 				console.log("User not found!");
-				res.redirect('back');
+
+				res.render('home', {warn:"User not found!"});
 			} else {// match found
 
 				//compare hash
@@ -75,7 +87,7 @@ const help = {
 					} else {
 						console.log("Incorrect password!");
 
-						res.redirect('back');
+						res.render('home', {warn:"Incorrect password!"});
 					}
 				});
 				
@@ -124,10 +136,7 @@ const help = {
 					});
 					
 				} else {//username taken
-					console.log("Username taken!");
-					//need a way to show user thatthis error ocurred
-					//refresh
-					res.redirect('back');
+					res.render('home', {warn:"Username taken!"});
 				}
 			});
 		
@@ -138,7 +147,7 @@ const help = {
 
 		const validVar = help.arrCheck([req.body.username, req.body.password], (x) => {return x.trim()}, (y) => {return (y.length > 0)});
 
-		if (validVar) {
+		if (!validVar.includes(false)) {
 
 			if (req.body.login === undefined) {
 				help.makeUser(req, res);
@@ -147,8 +156,7 @@ const help = {
 			}
 			
 		} else {
-			console.log("Invalid credentials entered.");
-			res.redirect('back');
+			res.render('home', {warn:"Invalid credentials entered."});
 		}
 	},
 
@@ -182,25 +190,23 @@ const help = {
 	},
 
 	//called from '/user/:listid' POST route handler in app.js to create a new item
+	//list page - warn 1
 	newItem: function(req, res) {
 		const chArr = help.arrCheck([req.body.entryName, req.body.entryURL, req.body.entryGame, req.body.entryPlays, req.body.entryChars], 
 			(x) => {return x.trim()}, (y) => {return (y.replace(/,/g, "").length > 0)});
 
-		if (chArr.includes(false)) { //checks if name was entered
-			res.redirect('back');
-		} else {
-			User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
 				
-				if (err) { // error check
-					console.log(err);
-					res.redirect('/title');
-				} else { //success
+			if (err) { // error check
+				console.log(err);
+				res.redirect('/title');
+			} else { //success
 					
-					const chList = user.lists.find((x) => {
-						return x._id == req.params.listid;
-					});
+				const chList = user.lists.find((x) => {
+					return x._id == req.params.listid;
+				});
 
-					
+				if (!chArr.includes(false)) {
 					const plArr = req.body.entryPlays.split(",").map((x) => {
 						return x.trim();
 					});	
@@ -239,47 +245,49 @@ const help = {
 
 					});
 
-				}
-			});
-		}
-			
+				} else {
+					const invalStr = help.caStr(chArr, ["'Name', ","'URL', ","'Game', ","'Players', ","'Characters', "]);
+					res.render('slist', {list:chList, warn:"One or more fields missing or invalid: " + invalStr});
+				} 
+			}
+		});
 	},
 
 	//called from '/user/edit/:listid' POST route handler in app.js to edit the name of a list
+	//user page - warn 1
 	editListName: function(req, res) {
 		const validVar = help.arrCheck([req.body.newName], (x) => {return x.trim()}, (y) => {return (y.length > 0)});
 
-		if (validVar) {
-			User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
+		User.findOne({_id: req.session.user._id}).populate('lists').exec(function (err, user) {
 
-				if (err) {console.log(err);}
+			if (err) {console.log(err);}
 				
 
-				const nList = user.lists.find((x) => {
-					return x._id == req.params.listid;
-				});
-
-				nList.name = req.body.newName;
-					
-			    nList.save((err2, list) => {
-			        
-				    if(err2) {
-				        console.log('error saving nList for editing name'); 
-				    }
-
-				    //save changes
-				    user.save(function(err3, user2, count){
-				        req.session.user = user2; //update current user
-				        res.redirect('/user'); 
-				    });
-
-
-				});
+			const nList = user.lists.find((x) => {
+				return x._id == req.params.listid;
 			});
-		} else {
-			console.log("Invalid name entered");
-			res.redirect('back');
-		}
+
+			if (!validVar.includes((false))) {
+				nList.name = req.body.newName;
+						
+			    nList.save((err2, list) => {
+				        
+					if(err2) {
+						console.log('error saving nList for editing name'); 
+					}
+
+					//save changes
+					user.save(function(err3, user2, count){
+						req.session.user = user2; //update current user
+						res.redirect('/user'); 
+					});
+
+
+				});
+			} else {
+				res.render('user', {theUser: user, warn:`Invalid new name entered for list ${nList.name}.`});
+			}
+		});
 	},
 
 	//called from '/user/remove/:listid' POST route handler in app.js to remove a list
@@ -336,15 +344,10 @@ const help = {
 			(x) => {return x.trim()}, (y) => {return (y.replace(/,/g, "").length > 0)});
 
 		User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function (err, user) {
-
-
-
 			const chList = user.lists.find((x) => {
 				return x._id == req.params.listid;
 			});
 
-
-			
 			let chItem = chList.items.find((y) => {
 				return y._id == req.params.vodid;
 			});
@@ -352,7 +355,7 @@ const help = {
 
 			chItem = help.makeEdits(checkArr, chItem);
 
-	
+		
 
 			chItem.save((err2, item) => {
 				if (err2) {
@@ -371,8 +374,7 @@ const help = {
 					});
 
 				});
-
-			});
+			});		
 		});
 	},
 
@@ -612,83 +614,92 @@ const help = {
 
 				const chList = user.lists.splice(chIndex, 1)[0];
 
-				const mArr = req.body.mLists.trim().split(",");
+				let mArr = [];
+				for (let [key, value] of Object.entries(req.body)) {
+ 					if (key.includes("list")) {
+ 						mArr.push(value);
+ 					}
+ 				}
 
-				let mList = mArr.map((x)  => {
+ 				if (mArr.length < 1) {
+ 					res.render('merge', {chList: chList, bigList: user.lists, errMsg: "No lists were selected for merging."});
+ 				} else {
+ 					let mList = mArr.map((x)  => {
 			
-					x = user.lists.find((z) => {
-						return z.name.trim() == x;
-					});
-
-					if (x !== undefined) {
-						const xInd = user.lists.findIndex((y) => {
-							return y._id == x._id;
+						x = user.lists.find((z) => {
+							return z.name.trim() == x;
 						});
 
-						x = user.lists.splice(xInd, 1)[0];
-					}
-
-					return x;
-				});
-
-
-				if (mList.includes(undefined)) {
-					let invalStr = help.mergeErr(mArr, mList, (x) => {return x !== undefined});
-
-					res.render('merge', {chList: chList, bigList: user.lists, errMsg: "Invalid list name(s) entered: " + invalStr});
-				} else {
-
-					mList = help.arrCheck(mList, (x) => {return x}, (y) => {return y.items.length > 0});
-
-					if (mList.includes(false)) {
-						let invalStr = help.mergeErr(mArr, mList, (x) => {return x});
-						res.render('merge', {chList: chList, bigList:user.lists, errMsg: "The following lists need to have at least one item in order to merge: " + invalStr});
-					} else {
-						const rtnVal = help.mergeHelp(chList, mList);
-
-						rtnVal.name = req.body.mName;
-
-						rtnVal.save((err2, list) => {
-				        
-				        	if(err2) {
-				            	console.log('error saving nList'); 
-				          	}
-				        
-				        	user.lists.push(rtnVal);
-
-				        	//maybe need to fix this and the other delete location, check rmv Messages as well
-				        	async.each(mList, function(dList, callback) {
-
-				        		async.each(dList.items, function(dItem, callback2) {
-				        			Item.deleteOne({_id: dItem._id}, function (err6) {
-				        				if (err6) {console.log(err6);}
-
-				        				callback2();
-				        			});
-				        		}, function (err7) {
-				        			if (err7) {console.log(err7);}
-
-				        			List.deleteOne({_id: dList._id}, function (err3) {
-										if (err3) {
-											console.log(err3);
-										}
-
-										callback();
-									});
-				        		});
-							}, function(err4) {
-								if (err4) {
-									console.log(err4);
-								} else {
-									user.save(function(err5, user2, count){
-								        req.session.user = user2; //update current user
-								        res.redirect('/user'); 
-							        });
-								}
+						if (x !== undefined) {
+							const xInd = user.lists.findIndex((y) => {
+								return y._id == x._id;
 							});
-				        });
-					}
-				}				
+
+							x = user.lists.splice(xInd, 1)[0];
+						}
+
+						return x;
+					});
+
+
+					if (mList.includes(undefined)) {
+						let invalStr = help.mergeErr(mArr, mList, (x) => {return x !== undefined});
+
+						res.render('merge', {chList: chList, bigList: user.lists, errMsg: "Invalid list name(s) entered: " + invalStr});
+					} else {
+
+						mList = help.arrCheck(mList, (x) => {return x}, (y) => {return y.items.length > 0});
+
+						if (mList.includes(false)) {
+							let invalStr = help.mergeErr(mArr, mList, (x) => {return x});
+							res.render('merge', {chList: chList, bigList:user.lists, errMsg: "The following lists need to have at least one item in order to merge: " + invalStr});
+						} else {
+							const rtnVal = help.mergeHelp(chList, mList);
+
+							rtnVal.name = req.body.mName;
+
+							rtnVal.save((err2, list) => {
+					        
+					        	if(err2) {
+					            	console.log('error saving nList'); 
+					          	}
+					        
+					        	user.lists.push(rtnVal);
+
+					        	//maybe need to fix this and the other delete location, check rmv Messages as well
+					        	async.each(mList, function(dList, callback) {
+
+					        		async.each(dList.items, function(dItem, callback2) {
+					        			Item.deleteOne({_id: dItem._id}, function (err6) {
+					        				if (err6) {console.log(err6);}
+
+					        				callback2();
+					        			});
+					        		}, function (err7) {
+					        			if (err7) {console.log(err7);}
+
+					        			List.deleteOne({_id: dList._id}, function (err3) {
+											if (err3) {
+												console.log(err3);
+											}
+
+											callback();
+										});
+					        		});
+								}, function(err4) {
+									if (err4) {
+										console.log(err4);
+									} else {
+										user.save(function(err5, user2, count){
+									        req.session.user = user2; //update current user
+									        res.redirect('/user'); 
+								        });
+									}
+								});
+					        });
+						}
+					}				
+ 				}	
 			}
 		});
 	},
