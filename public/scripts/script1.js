@@ -41,21 +41,21 @@ function mergeCheck(ele, length) {
 
 function show(id, ...xtra) {
 
-	console.log("Entry log");
-	console.log(id);
-	console.log(xtra);
+	// console.log("Entry log");
+	// console.log(id);
+	// console.log(xtra);
 
 	const count = (xtra[3] !== undefined) ? (parseInt(xtra[3])):(1);
 
 	for (let i = 0; i < count; i++) {
-		console.log(`id: ${id}`);
-		console.log(i > 0);
+		// console.log(`id: ${id}`);
+		// console.log(i > 0);
 		let id2 =  (count > 1) ? (`${id}%${i}`):(id);
-		console.log(`modified id: ${id2}`);
+		// console.log(`modified id: ${id2}`);
 
 		const div = document.getElementById(id2);
-		console.log(`div: ${div}`);
-		console.log(`div.style.display = ${div.style.display}`);
+		// console.log(`div: ${div}`);
+		// console.log(`div.style.display = ${div.style.display}`);
 
 		if (div.style.display == "inline" || div.style.display == "") {
 			div.style.display = "none";
@@ -100,6 +100,60 @@ function makeForm(method, action, keys, vals) {
 	return form;
 }
 
+function findAt(testF) {
+	let inputs = document.getElementsByTagName('input');
+
+	let msgAttch = "";
+
+	for(let i = 0; i < inputs.length; i++) {
+		if(testF(inputs[i])) {
+			msgAttch += inputs[i].value + "&&";
+		}
+	}
+
+
+	return msgAttch.substring(0, msgAttch.length - 2);
+}
+
+function sendMsg(...reply) {
+
+	if (!reply.includes("form")) {
+		let vals = [];
+
+		if (reply.length > 1) {
+			vals = reply;
+		} else {
+			let msgAttch = findAt((x) => {x.type.toLowerCase() == 'checkbox' && x.checked == true});
+			vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value, msgAttch];
+		}
+		
+		const vals2 = vals.slice(0, 3);
+
+		if (vals2.includes("")) {
+			let invalStr = "Error(s):\n";
+
+			if (vals[0] == "") {invalStr+="The message must be sent to another user (empty 'To:' field)\n";}
+
+			if (vals[1] == "") {invalStr+="The message needs a subject. (empty 'Subject:' field)\n";}
+
+			if (vals[2] == "" && (vals[3] == "")) {invalStr+="The message needs a subject if there are no attachments. (empty 'Message:' field)\n";}
+
+			alert(invalStr);
+			return false;
+		} else { 
+			if (confirm('Are you sure you want to send this message?')) {
+				const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
+				const form = makeForm('post', '/user/inbox/newmsg', keys, vals);
+
+				document.body.appendChild(form);
+				form.submit();
+			}
+		}
+	}
+	
+	
+}
+
 function share(...param) {
 	let shareArr = [];
 	const prompt1 = prompt('Who do you want to send this to? (Required)');
@@ -117,49 +171,16 @@ function share(...param) {
 
 
 function writeR() {
+	
+	let msgAttch = findAt((x) => {x.type.toLowerCase() == 'checkbox' && x.checked == true});
 
-	const replyF = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value, document.getElementById("msgAttch").value];
+	const replyF = [document.getElementById("msgDest").innerText, document.getElementById("msgSubj").innerText, document.getElementById("msgText").value, msgAttch];
 
 	sendMsg(...replyF);
 }
 
-function sendMsg(...reply) {
 
-	let vals = [];
 
-	if (reply.length > 0) {
-		vals = reply;
-	} else {
-		vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value, document.getElementById("msgAttch").value];
-	}
-	
-	const vals2 = vals.slice(0, 3);
-	console.log(vals);
-
-	if (vals2.includes("")) {
-		let invalStr = "Error(s):\n";
-
-		if (vals[0] == "") {invalStr+="The message must be sent to another user (empty 'To:' field)\n";}
-
-		if (vals[1] == "") {invalStr+="The message needs a subject. (empty 'Subject:' field)\n";}
-
-		if (vals[2] == "" && vals[3] == "") {invalStr+="The message needs a subject if there are no attachments. (empty 'Message:' field)\n";}
-
-		alert(invalStr);
-	} else {
-		if (confirm('Are you sure you want to send this message?')) {
-			const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
-
-			console.log(vals);
-
-			const form = makeForm('post', '/user/inbox/newmsg', keys, vals);
-
-			document.body.appendChild(form);
-			form.submit();
-		}
-	}
-	
-}
 
 function exportList(ele, name) {
 
