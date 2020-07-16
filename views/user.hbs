@@ -54,8 +54,8 @@
 										<a class="link text-info" onclick="show('{{i}}', this, 'Edit Name', 'Cancel Edit', 2)">Edit Name</a>
 										<a class="link text-info" onclick="mergeCheck(this, '{{list.items.length}}')" id="/user/merge/{{list._id}}">Merge</a>
 										<a class="link text-info" onclick="splitCheck(this, '{{list.items.length}}')" id="/user/split/{{list._id}}">Split</a>
-										<a class="link text-info" onclick="share('{{list.name}}')">Share</a>
-										<a class="link text-danger" onclick="rmvFunction(this, '{{list.name}}')" id="/user/remove/{{list._id}}">Remove</a>
+										<a class="link text-info" onclick="share(`{{list.name}}`)">Share</a>
+										<a class="link text-danger" onclick="rmvFunction(this, `{{list.name}}`)" id="/user/remove/{{list._id}}">Remove</a>
 									</div>
 								</div>
 							</li>

@@ -17,21 +17,32 @@
 	<div class="row">
 		<div class="w-60 mx-auto" style="text-align: center; padding: 10px;">
 			<h2 class="undT"> Spliting </h2>
-			<p style="font-size: 18px;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+			<p style="font-size: 18px;">Manual Split
+				<ol>
+					<li> With the "Split List At" dropdown menu below, select an item at which to split the selected list. The list's contents are displayed below for your convenience.</li>
+					<li> Hit the "Split List" button. There will now be two lists in your list of lists: the first containing all the items before your selected cut-off point, and a second containing the rest. Note: splitting at the first item of a list is functionally identical to splitting at the second. </li>
+				</ol>
+			</p>
+			<p style="font-size: 18px;">Automatic Split
+				<ol>
+					<li>Click either the "Split List By Characters" or "Split List by Game" buttons below.</li>
+					<li>Multiple lists will be created based on the number of unique games/characters present in a list. They will all be titled like so: "[Original List Name] - [Game/Character]". Some items may be duplciated across lists if they meet the criteria to be in multiple of the child lists.</li>
+				</ol>
+			</p>
 		</div>
 	</div>
 
-	<div class="row" style="padding-top: 2%; border-top: 2px solid black;">
+	<div class="row" style="padding-top: 2%; border-top: 4px dashed black;">
 		<div class="w-60 mx-auto">
-			<h2 class="undT split"> List: {{chList.name}} </h2>
+			<h2 class="undT"> List: {{chList.name}} </h2>
 		</div>
 	</div>
 
 	<div class = "row" style="overflow-x: auto; padding-top: 2%; padding-bottom: 20px; border-bottom: 4px dashed black;">
-		<div class="w-60 mx-auto split">
+		<div class="w-60 mx-auto">
 			<ol>
 			{{#each chList.items as |vod|}}
-				<li>
+				<li style="padding-top: 15px;">
 					<td> {{vod.name}} || </td>
 					<td> <a href={{vod.url}}>{{vod.url}}</a> || </td>
 					<td> {{vod.game}} || </td>
@@ -54,7 +65,7 @@
 		<div class="w-60 mx-auto" style="text-align: center;"><form method="POST" action="" id="form1">
 			<select id="sInd">
 			{{#each chList.items as |vod i|}} 
-				<option value="{{i}}">{{vod.name}}</option>
+				<option value="{{i}}"> {{vod.name}}</option>
 			{{/each}}<br></select>
 		</form></div>
 			

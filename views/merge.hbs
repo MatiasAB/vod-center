@@ -17,7 +17,7 @@
 
 		<div class="col-8" style="text-align: center;">
 			<h2 class="undT"> Merging </h2>
-			<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+			<p>On the right, click the checkboxes next to the lists you want to merge with "List A". Merge them by pressing the "Merge List A with Selected List(s)" button on the bottom of the page. Note: the operation will not work if one of the selected lists does not have at least one item in it.</p>
 		</div>
 
 		<div class="col-2"></div>
@@ -27,7 +27,7 @@
 		<div class="col-2"></div>
 
 		<div class="col-3" style="display:inline; background-color: rgba(224, 224, 235, 0.7);">
-			<h3 class="undT"> Chosen List:</h3> <h3>{{chList.name}} </h3>
+			<h3 class="undT"> List A:</h3> <h3>{{chList.name}} </h3>
 		</div>
 
 		<div class="col-2"></div>
@@ -37,7 +37,7 @@
 			<form method="POST" action="" id="form1">
 			<ul style="display: inline;">
 				{{#each bigList as |list i|}}
-					<li><label for="list{{i}}"> {{list.name}}</label>  <input type="checkbox" id="list{{i}}" name="list{{i}}" value="{{list.name}}"></li>
+					<li>    <input type="checkbox" id="list{{i}}" name="list{{i}}" value="{{list.name}}"> <label for="list{{i}}"> {{list.name}}</label></li>
 				{{/each}}
 			</ul>
 		</div>
@@ -56,7 +56,7 @@
 
 	<div class="row" style="padding-bottom: 20px;">
 		<div class="w-60 mx-auto">
-			<button class="tBtn" type="submit" form="form1" name="mergeLists">Merge Chosen List with Selected Lists</button>
+			<button class="tBtn" onclick="mergeConf('form1', `{{chList.name}}`)" name="mergeLists">Merge List A with Selected List(s)</button>
 		</div>
 	</div>
 </div>

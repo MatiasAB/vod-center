@@ -63,6 +63,21 @@
 			</div>
 	</div>
 
+	<div class = "row nMsg" style="padding-top: 10px;">
+			<div class = "w-60 mx-auto">
+				<button type="button" onclick="show('attchG', this, 'Attachments Help')">Attachments Help</button><br>
+			</div>
+
+			<div class = "w-60 mx-auto" id="attchG" style="display:none;">
+					Instructions for Attachments
+					<ol>
+						<li> Click the Add Attachments Button below. </li>
+						<li> Click the checkboxes next to the lists and/or items you want to send. If you attach a list but you also click the box of a single item in that list, a copy of that item will also be attached separately.</li>
+						<li> Done! If the other fields are filled out, hit the Send Message button at the bottom of the page! </li>
+					</ol>
+			</div>
+	</div>
+
 	<div class = "row nMsg">
 			<div class = "w-60 mx-auto nMsg2">
 				<button type="button" onclick="show('showAt', this, 'Add Attachments')">Add Attachments</button>
@@ -73,12 +88,13 @@
 		{{#each atList as |list|}}
 		<div class = "row nMsg" style="padding-top: 10px;">
 			<div class = "w-60 mx-auto">
-				<h4>{{list.name}} <input onclick="show(`{{list.name}}`, undefined, '', '', '{{list.items.length}}')" type="checkbox" id="{{list.name}}" name="{{list.name}}{{j}}" value="{{list.name}}"></h4> 
+				<h4><input type="checkbox" id="{{list.name}}" name="{{list.name}}{{j}}" value="{{list.name}}">  {{list.name}}</h4> 
 			</div>
 		</div>
 		<div class = "row" style="overflow-x: auto; padding-bottom: 2%; border-bottom: 2px dashed black;">
 			<table class="col-12">
 				<tr>
+					<th class="rmv"></th>
 					<th class="text-info"> Entry Name </th>
 					<th class="text-info"> Entry URL </th>
 					<th class="text-info"> Game </th>
@@ -89,6 +105,9 @@
 				
 				{{#each list.items as |vod i|}}
 					<tr id="{{i}}">
+						<td class="rmv">
+							<input type="checkbox" id="{{list.name}}%{{i}}" value="{{list.name}}@#{{i}}">
+						</td>
 						<td> {{vod.name}} </td>
 						<td> <a href={{vod.url}}>{{vod.url}}</a></td>
 						<td> {{vod.game}} </td>
@@ -98,10 +117,6 @@
 						<td>
 							{{#each vod.chars as |char|}}{{char}}, {{/each}}
 						</td>
-
-						<td class="rmv">
-							<input type="checkbox" id="{{list.name}}%{{i}}" value="{{list.name}}@#{{i}}">
-						</td>
 					</tr>
 				{{/each}}
 
@@ -110,16 +125,7 @@
 		{{/each}}</form>
 	</div>
 
-	<div class = "row nMsg" style="padding-top: 10px;">
-			<div class = "w-60 mx-auto">
-				<button type="button" onclick="show('attchG', this, 'Attachments Help')">Attachments Help</button><br>
-				<div id="attchG" style="display:none;">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</div>
-			</div>
-	</div>
-
-	<div class = "row nMsg">
+	<div class = "row nMsg" style="padding-top: 15px;">
 		<div class = "w-60 mx-auto">
 			<button name="sendBtn" onclick="sendMsg(this)">Send Message</button>
 		</div>

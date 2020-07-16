@@ -39,23 +39,36 @@ function mergeCheck(ele, length) {
 	}
 }
 
-function show(id, ...xtra) {
+function mergeConf(formID, itemA) {
+	const form = document.getElementById(formID);
 
-	// console.log("Entry log");
-	// console.log(id);
-	// console.log(xtra);
+	let mLists = findAt((x) => {return x.type.toLowerCase() == 'checkbox' && x.checked == true});
+
+	mLists = mLists.split("&&");
+	let str = "";
+
+	for (let j = 0; j < mLists.length; j++) {
+		if (j == mLists.length-1) {
+			str += mLists[j] + "?";
+		} else {
+			str += mLists[j] + ", ";
+		}
+		
+	}
+
+	if (confirm(`Are you sure you want to merge ${itemA} with the following lists: ${str}`)) {
+		form.submit();
+	}
+}
+
+function show(id, ...xtra) {
 
 	const count = (xtra[3] !== undefined) ? (parseInt(xtra[3])):(1);
 
 	for (let i = 0; i < count; i++) {
-		// console.log(`id: ${id}`);
-		// console.log(i > 0);
 		let id2 =  (count > 1) ? (`${id}%${i}`):(id);
-		// console.log(`modified id: ${id2}`);
 
 		const div = document.getElementById(id2);
-		// console.log(`div: ${div}`);
-		// console.log(`div.style.display = ${div.style.display}`);
 
 		if (div.style.display == "inline" || div.style.display == "") {
 			div.style.display = "none";
@@ -102,16 +115,18 @@ function makeForm(method, action, keys, vals) {
 
 function findAt(testF) {
 	let inputs = document.getElementsByTagName('input');
-
 	let msgAttch = "";
 
 	for(let i = 0; i < inputs.length; i++) {
+		console.log(inputs[i].value);
+		console.log(inputs[i].checked);
+		console.log(inputs[i].type.toLowerCase() == 'checkbox');
 		if(testF(inputs[i])) {
+			console.log("test passed");
 			msgAttch += inputs[i].value + "&&";
 		}
+		console.log("iteration done");
 	}
-
-
 	return msgAttch.substring(0, msgAttch.length - 2);
 }
 
@@ -123,7 +138,7 @@ function sendMsg(...reply) {
 		if (reply.length > 1) {
 			vals = reply;
 		} else {
-			let msgAttch = findAt((x) => {x.type.toLowerCase() == 'checkbox' && x.checked == true});
+			let msgAttch = findAt((x) => {return x.type.toLowerCase() == 'checkbox' && x.checked == true});
 			vals = [document.getElementById("msgDest").value, document.getElementById("msgSubj").value, document.getElementById("msgText").value, msgAttch];
 		}
 		
@@ -143,7 +158,9 @@ function sendMsg(...reply) {
 		} else { 
 			if (confirm('Are you sure you want to send this message?')) {
 				const keys = ["msgDest", "msgSubj", "msgText", "msgAttch"];
+				
 				const form = makeForm('post', '/user/inbox/newmsg', keys, vals);
+				console.log(vals[3]);
 
 				document.body.appendChild(form);
 				form.submit();

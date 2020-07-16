@@ -467,9 +467,13 @@ const help = {
 				arrB.items.push({name: field, items:[curr]});
 			} else {
 				const pList = arrB.items.find((z) => {
-					return z.name == field});
-				pList.items.push(curr);
-				bigArr = arrB;
+					return z.name == field;
+				});
+
+				if (!pList.items.find((a) => {return a._id == curr._id;})) {
+					pList.items.push(curr);
+					bigArr = arrB;
+				}
 			}
 		};
 
@@ -656,7 +660,7 @@ const help = {
 						} else {
 							const rtnVal = help.mergeHelp(chList, mList);
 
-							rtnVal.name = req.body.mName;
+							rtnVal.name = (req.body.mName !== "") ? (req.body.mName) : (chList.name);
 
 							rtnVal.save((err2, list) => {
 					        
@@ -666,7 +670,7 @@ const help = {
 					        
 					        	user.lists.push(rtnVal);
 
-					        	//maybe need to fix this and the other delete location, check rmv Messages as well
+					        	
 					        	async.each(mList, function(dList, callback) {
 
 					        		async.each(dList.items, function(dItem, callback2) {
@@ -813,23 +817,47 @@ const help = {
 						items:[]
 					});
 
-					for (let j = 0; j < item.items.length; j++) {
-						minList.items.push(item.items[j]._id);
-					}
+					async.each(item.items, function(dItem, callback2) {
 
-					minList.save(function(err3, svList) {
-						if (err3) {
-							console.log(err3);
-						} else {
-							user.lists.push(svList);
-							callback();
-						}
+						let spItem = new Item({
+							name: dItem.name,
+							url: dItem.url,
+							game: dItem.game,
+							players: dItem.players,
+							chars: dItem.chars
+						});
+
+					    Item.deleteOne({_id: dItem._id}, function (err6) {
+					       	if (err6) {console.log(err6);}
+
+					       		spItem.save(function(errG, svItem) {
+					       			if (errG) {
+										console.log(errG);
+									} else {
+										minList.items.push(svItem)
+										callback2();
+									}
+					       		});
+					    });
+
+					}, function (err7) {
+
+					    minList.save(function(err3, svList) {
+							if (err3) {
+								console.log(err3);
+							} else {
+								user.lists.push(svList);
+								callback();
+							}
+						});
 					});
 
 				}, function(err2) {
+
 					if (err2) {
 						console.log(err2);
 					} else {
+
 						List.deleteOne({_id: chList._id}, function (err3) {
 							if (err3) {
 								console.log(err3);
@@ -979,7 +1007,9 @@ const help = {
 
 				User.findOne({_id: req.session.user._id}).populate({path: 'lists', populate: {path: 'items'}}).exec(function(errA, userB) {
 					let attch = [];
+					
 					if (req.body.msgAttch !== "") {
+						console.log(req.body.msgAttch);
 						attch = help.findAttch(req.body.msgAttch, userB, uDest._id);
 					}
 					
@@ -1056,6 +1086,7 @@ const help = {
 			if (place[1] == undefined) {
 
 				if (place[0].includes("sent") || msg.read == true) {
+					console.log(msg);
 					res.render('viewMsg', {msg:msg, place:place[0].substring(5), tell:place[2]}); 
 				} else {
 
