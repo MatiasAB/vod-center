@@ -13,15 +13,15 @@
 <div class="container">
 	<div style="padding-top:30px;" class = "row">
 		<div class = "w-60 titleR mx-auto">
-			<h2 class="backg usr titleT">List Name: {{list.name}}</h2>
+			<h2 class="backg usr titleT vis">List Name: {{list.name}}</h2>
 		</div>
 	</div>
 </div>
 
 
-<div class="container backg usr" style="overflow-x: auto;">
+<div class="container backg vis usr" style="overflow-x: auto;">
 
-	<form method="GET" action="/user/lists/{{list._id}}" id="form2" style="display:inline-flex;">
+	<form method="GET" action="/user/lists/{{list._id}}" id="formB" style="display:inline-flex;">
 		<div class="row">
 			<div class="col-12">
 				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
@@ -42,7 +42,7 @@
 				Players (comma separated): <input type="text" name="playsQuery"><br>
 				 Characters (comma separated): <input type="text" name="charsQuery"><br>
 				
-				<button class="tBtn" type="submit" form="form2" value="Filter">Filter Items</button>
+				<button class="tBtn" type="submit" form="formB" value="Filter">Filter Items</button>
 			</div>
 		</div>
 
@@ -92,9 +92,9 @@
 
 					<td class="rmv">
 						<div class="dropdown">
-							<button class="dropbtn">Choose an Action</button>
+							<button class="dropbtn">. . .</button>
 							<div class="dropdown-content">
-								<a class = "link text-info" href="/user/lists/{{../list._id}}/edit/{{vod._id}}">Edit</a>
+								<a class = "link text-info" href="/user/lists/{{../list._id}}/edit/{{vod._id}}">Edit Item</a>
 								<a class="link text-info" onclick="share('{{../list.name}}@#{{i}}')">Share</a>
 								<a onclick="rmvFunction(this, `{{vod.name}}`)" class = "link text-danger" id="/user/lists/{{../list._id}}/remove/{{vod._id}}">Remove</a>
 							</div>
@@ -102,7 +102,6 @@
 					</td>
 				</tr>
 			{{/each}}
-
 		</table>
 	</div>
 
@@ -118,7 +117,7 @@
 
 <div class="container usr" style="margin-top:2%; display: inline-flex;">
 
-	<form method="POST" class="backg" action="" id="form1" style="margin-left: 43%; padding: 5px;">
+	<form method="POST" class="backg vis" action="" id="formA" style="margin-left: 43%; padding: 5px;">
 
 		<div class="row">
 			<div class="col-6">
@@ -164,7 +163,7 @@
 
 		<div class = "row addF">
 			<div class = "col-12">
-				<button type="submit" form="form1"  name="createNewEntry">Add Entry</button>
+				<button type="submit" form="formA"  name="createNewEntry">Add Entry</button>
 			</div>
 		</div>
 

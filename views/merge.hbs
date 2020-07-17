@@ -35,14 +35,12 @@
 		<div class="col-3" style="display:inline; background-color: rgba(224, 224, 235, 0.7);">
 			<h3 class="undT"> Other Lists </h3>
 			<form method="POST" action="" id="form1">
-			<ul style="display: inline;">
+			<ul style="display: table;">
 				{{#each bigList as |list i|}}
-					<li>    <input type="checkbox" id="list{{i}}" name="list{{i}}" value="{{list.name}}"> <label for="list{{i}}"> {{list.name}}</label></li>
+					<li><input type="checkbox" id="list{{i}}" name="list{{i}}" value="{{list.name}}">  <label for="list{{i}}">{{list.name}}</label></li>
 				{{/each}}
 			</ul>
 		</div>
-
-		<div class="col-1"></div>
 	</div>
 
 	<div class="row" style="border-top: 4px dotted black; padding-top: 15px; padding-bottom: 5px;">

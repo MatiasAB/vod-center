@@ -14,7 +14,7 @@
 <div class="container">
 	<div style="padding-top:10px;" class = "row">
 		<div class = "w-60 titleR mx-auto">
-			<h2 class="backg titleT">{{tUser.username}}'s Inbox</h2>
+			<h2 class="backg titleT vis">{{tUser.username}}'s Inbox</h2>
 		</div>
 	</div>
 </div>
@@ -52,7 +52,7 @@
 					<td> {{msg.read}} </td>
 					<td class="rmv">
 						<div class="dropdown">
-							<button class="dropbtn">Choose an Action</button>
+							<button class="dropbtn">. . .</button>
 							<div class="dropdown-content">
 								<a class = "link text-info" href="/user/inbox/reply/{{msg._id}}">Reply</a>
 								<a class = "link text-info" href="/user/inbox/markR/{{msg._id}}">Mark as Read</a>

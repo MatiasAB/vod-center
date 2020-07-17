@@ -15,7 +15,7 @@
 <div class="container">
 	<div style="padding-top:10px;" class = "row">
 		<div class = "w-60 titleR mx-auto">
-			<h2 class="backg titleT">{{theUser.username}}'s Page</h2>
+			<h2 class="backg titleT vis">{{theUser.username}}'s Page</h2>
 		</div>
 	</div>
 </div>
@@ -27,7 +27,7 @@
 
 		<div class="w-60 mx-auto">
 
-			<div class="backg w-60 mx-auto" style="display: inline-block; padding-left: 55px; padding-right: 55px;">
+			<div class="backg w-60 mx-auto vis" style="display: inline-block; padding-left: 55px; padding-right: 55px;">
 				<div class = "row">
 					<div class = "w-60 mx-auto">
 						<h2 style="text-decoration: underline;">Lists:</h2><br>
@@ -45,11 +45,11 @@
 				<ul style="padding-left: 15px; display: inline;">
 				{{#each theUser.lists as |list i|}}
 					<div class = "row listR">
-						<div class = "w-60 mx-auto">
+						<div class = "col-12">
 							<li>
-								<h3 class = "info"><a class="link text-secondary" href="/user/lists/{{list._id}}">{{list.name}}</a></h3>
-								<div class="dropdown">
-									<button class="dropbtn">Choose an Action</button>
+								<h3 class = "info" style="display: inline;"><a class="link text-secondary" href="/user/lists/{{list._id}}">{{list.name}}</a></h3>
+								<div class="dropdown" style="display: inline;">
+									<button class="dropbtn">. . .</button>
 									<div class="dropdown-content">
 										<a class="link text-info" onclick="show('{{i}}', this, 'Edit Name', 'Cancel Edit', 2)">Edit Name</a>
 										<a class="link text-info" onclick="mergeCheck(this, '{{list.items.length}}')" id="/user/merge/{{list._id}}">Merge</a>
