@@ -18,33 +18,51 @@
 	</div>
 </div>
 
-<div class="container backg usr" style="overflow-x: auto; margin-top: 1%; margin-bottom: 1%;">
+<div class="container usr" style="margin-top:2%; display: inline-flex;">
 
-	<form method="GET" action="/user/lists/{{list._id}}" id="form2" style="display:inline-flex;">
+	<form method="POST" class="backg" action="" id="form1" style="margin-left: 43%; padding: 5px;">
+
 		<div class="row">
-			<div class="col-12">
-				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
+			<div class="col-6">
+				<h2 style="text-decoration: underline;"> Add Entry</h2>
 			</div>
 		</div>
-		<div class = "row">
-			<div class = "col-12">
-			Name: <input type="text" name="nameQuery"><br>
-				 URL: <input type="text" name="urlQuery"><br>
-				 Game: <input type="text" name="gameQuery"><br>
-				
-				
+		
+		<div class = "row addF">
+			<div class = "col-12" style="display:inline;">
+				Name:  <input type="text" name="entryName"><br>
 			</div>
 		</div>
 
-		<div class = "row" style="padding-left: 15px;">
+		<div class = "row addF">
 			<div class = "col-12">
-				Players (comma separated): <input type="text" name="playsQuery"><br>
-				 Characters (comma separated): <input type="text" name="charsQuery"><br>
-				
-				<button class="rBtn" type="submit" form="form2" value="Filter">Filter Items</button>
-			</div>
+					URL:  <input type="text" name="entryURL">
+			</div>			
 		</div>
 
+		<div class = "row addF">
+				<div class = "col-12">
+					Game:  <input type="text" name="entryGame">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Players (comma separated):  <input type="text" name="entryPlays">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Characters (comma separated):  <input type="text" name="entryChars">
+				</div>
+		</div>
+
+		<div class = "row addF">
+			<div class = "col-12">
+				<button type="submit" form="form1"  name="createNewEntry">Add Entry</button>
+			</div>
+		</div>
 	</form>
 </div>
 
@@ -102,50 +120,33 @@
 
 </div>
 
-<div class="container usr" style="margin-top:2%; display: inline-flex;">
+<div class="container backg usr" style="overflow-x: auto; margin-top: 1%; margin-bottom: 1%;">
 
-	<form method="POST" class="backg" action="" id="form1" style="margin-left: 43%; padding: 5px;">
-
+	<form method="GET" action="/user/lists/{{list._id}}" id="form2" style="display:inline-flex;">
 		<div class="row">
-			<div class="col-6">
-				<h2 style="text-decoration: underline;"> Add Entry</h2>
+			<div class="col-12">
+				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
 			</div>
 		</div>
-		
-		<div class = "row addF">
-			<div class = "col-12" style="display:inline;">
-				Name:  <input type="text" name="entryName"><br>
-			</div>
-		</div>
-
-		<div class = "row addF">
+		<div class = "row">
 			<div class = "col-12">
-					URL:  <input type="text" name="entryURL">
-			</div>			
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Game:  <input type="text" name="entryGame">
-				</div>
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Players (comma separated):  <input type="text" name="entryPlays">
-				</div>
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Characters (comma separated):  <input type="text" name="entryChars">
-				</div>
-		</div>
-
-		<div class = "row addF">
-			<div class = "col-12">
-				<button type="submit" form="form1"  name="createNewEntry">Add Entry</button>
+			Name: <input type="text" name="nameQuery"><br>
+				 URL: <input type="text" name="urlQuery"><br>
+				 Game: <input type="text" name="gameQuery"><br>
+				
+				
 			</div>
 		</div>
+
+		<div class = "row" style="padding-left: 15px;">
+			<div class = "col-12">
+				Players (comma separated): <input type="text" name="playsQuery"><br>
+				 Characters (comma separated): <input type="text" name="charsQuery"><br>
+				
+				<button class="rBtn" type="submit" form="form2" value="Filter">Filter Items</button>
+			</div>
+		</div>
+
 	</form>
 </div>
+

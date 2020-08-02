@@ -20,6 +20,37 @@
 	</div>
 </div>
 
+<div class="container usr" style="margin-top:2%; padding-left: 10px; padding-right: 10px;">
+
+	<div class="row">
+
+	<div class="w-60 mx-auto">
+
+	<div class="backg" style="padding-left: 5px; display: inline-block;">
+		<h2 style="text-decoration: underline;"> Create New List</h2>
+		<form method="POST" action="/user" id="formA">
+		
+			<div class = "row" style="padding-right: 25px;">
+					<div style="font-weight:bold;" class = "col-4">
+						Name:  
+					</div>
+
+					<div class = "col-8" >
+						<input type="text" name="listname">
+					</div>
+			</div>
+		</form>
+
+		<div class = "row" style="padding-top: 10px; padding-bottom: 5px;">
+			<div class = "col-2">
+				<button style="margin-left: 105px;" type="submit" form="formA"  name="createNewList">Create New List</button>
+			</div>
+		</div>
+	</div>
+
+	</div>
+	</div>
+</div>
 
 <div class="container">
 
@@ -80,34 +111,3 @@
 	</div>
 </div>
 
-<div class="container usr" style="margin-top:2%; padding-left: 10px; padding-right: 10px;">
-
-	<div class="row">
-
-	<div class="w-60 mx-auto">
-
-	<div class="backg" style="padding-left: 5px; display: inline-block;">
-		<h2 style="text-decoration: underline;"> Create New List</h2>
-		<form method="POST" action="/user" id="formA">
-		
-			<div class = "row" style="padding-right: 25px;">
-					<div style="font-weight:bold;" class = "col-4">
-						Name:  
-					</div>
-
-					<div class = "col-8" >
-						<input type="text" name="listname">
-					</div>
-			</div>
-		</form>
-
-		<div class = "row" style="padding-top: 10px; padding-bottom: 5px;">
-			<div class = "col-2">
-				<button style="margin-left: 105px;" type="submit" form="formA"  name="createNewList">Create New List</button>
-			</div>
-		</div>
-	</div>
-
-	</div>
-	</div>
-</div>

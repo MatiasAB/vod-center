@@ -19,34 +19,61 @@
 </div>
 
 
-<div class="container backg vis usr" style="overflow-x: auto;">
+<div class="container usr" style="margin-top:2%; display: inline-flex;">
 
-	<form method="GET" action="/user/lists/{{list._id}}" id="formB" style="display:inline-flex;">
+	<form method="POST" class="backg vis" action="" id="formA" style="margin-left: 43%; padding: 5px;">
+
+		<div class="row">
+			<div class="col-6">
+				<h2 style="text-decoration: underline;"> Add Entry</h2>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-12">
-				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
+				<p class="text-danger info boldT">{{warn}}</p>
 			</div>
 		</div>
-		<div class = "row">
-			<div class = "col-12">
-			Name: <input type="text" name="nameQuery"><br>
-				 URL: <input type="text" name="urlQuery"><br>
-				 Game: <input type="text" name="gameQuery"><br>
-				
-				
+		
+		<div class = "row addF">
+			<div class = "col-12" style="display:inline;">
+				Name:  <input type="text" name="entryName"><br>
 			</div>
 		</div>
 
-		<div class = "row" style="padding-left: 15px;">
+		<div class = "row addF">
 			<div class = "col-12">
-				Players (comma separated): <input type="text" name="playsQuery"><br>
-				 Characters (comma separated): <input type="text" name="charsQuery"><br>
-				
-				<button class="tBtn" type="submit" form="formB" value="Filter">Filter Items</button>
+					URL:  <input type="text" name="entryURL">
+			</div>			
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Game:  <input type="text" name="entryGame">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Players (comma separated):  <input type="text" name="entryPlays">
+				</div>
+		</div>
+
+		<div class = "row addF">
+				<div class = "col-12">
+					Characters (comma separated):  <input type="text" name="entryChars">
+				</div>
+		</div>
+
+		<div class = "row addF">
+			<div class = "col-12">
+				<button type="submit" form="formA"  name="createNewEntry">Add Entry</button>
 			</div>
 		</div>
 
 	</form>
+	
+	
 </div>
 
 
@@ -115,59 +142,34 @@
 
 </div>
 
-<div class="container usr" style="margin-top:2%; display: inline-flex;">
 
-	<form method="POST" class="backg vis" action="" id="formA" style="margin-left: 43%; padding: 5px;">
 
-		<div class="row">
-			<div class="col-6">
-				<h2 style="text-decoration: underline;"> Add Entry</h2>
-			</div>
-		</div>
+<div class="container backg vis usr" style="overflow-x: auto;">
 
+	<form method="GET" action="/user/lists/{{list._id}}" id="formB" style="display:inline-flex;">
 		<div class="row">
 			<div class="col-12">
-				<p class="text-danger info boldT">{{warn}}</p>
+				<h5 style="text-decoration: underline; padding-right: 10px;"> Filter Items by</h5>
 			</div>
 		</div>
-		
-		<div class = "row addF">
-			<div class = "col-12" style="display:inline;">
-				Name:  <input type="text" name="entryName"><br>
+		<div class = "row">
+			<div class = "col-12">
+			Name: <input type="text" name="nameQuery"><br>
+				 URL: <input type="text" name="urlQuery"><br>
+				 Game: <input type="text" name="gameQuery"><br>
+				
+				
 			</div>
 		</div>
 
-		<div class = "row addF">
+		<div class = "row" style="padding-left: 15px;">
 			<div class = "col-12">
-					URL:  <input type="text" name="entryURL">
-			</div>			
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Game:  <input type="text" name="entryGame">
-				</div>
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Players (comma separated):  <input type="text" name="entryPlays">
-				</div>
-		</div>
-
-		<div class = "row addF">
-				<div class = "col-12">
-					Characters (comma separated):  <input type="text" name="entryChars">
-				</div>
-		</div>
-
-		<div class = "row addF">
-			<div class = "col-12">
-				<button type="submit" form="formA"  name="createNewEntry">Add Entry</button>
+				Players (comma separated): <input type="text" name="playsQuery"><br>
+				 Characters (comma separated): <input type="text" name="charsQuery"><br>
+				
+				<button class="tBtn" type="submit" form="formB" value="Filter">Filter Items</button>
 			</div>
 		</div>
 
 	</form>
-	
-	
 </div>
