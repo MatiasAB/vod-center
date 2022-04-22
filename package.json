@@ -36,6 +36,6 @@
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^7.2.0",
     "mongoose-autopopulate": "^0.12.2",
-    "nconf": "^0.10.0"
+    "nconf": "^0.11.4"
   }
 }
