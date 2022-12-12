@@ -18,7 +18,7 @@
   "homepage": "https://github.com/nyu-csci-ua-0480-008-spring-2020/MatiasAB-final-project#readme",
   "dependencies": {
     "bootstrap": "^4.5.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.1",
     "hbs": "^4.1.1",
     "mongoose": "^5.9.16",
